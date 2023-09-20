@@ -1,7 +1,13 @@
 import Layout from "../components/Layout";
+import { HeartIcon, UserIcon } from "../src/sharedui/assets/icons";
 
 const Home = () => {
-  return <></>;
+  return (
+    <>
+      <UserIcon size={20} />
+      <HeartIcon size={40} className="text-danger" />
+    </>
+  );
 };
 
 Home.getLayout = function getLayout(page) {
