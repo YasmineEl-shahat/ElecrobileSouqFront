@@ -1,0 +1,41 @@
+@import "../abstracts/variables.scss";
+@import "../abstracts/mixins.scss";
+
+body {
+  .btn--global {
+    padding: 1rem 2rem;
+    height: fit-content;
+    color: white;
+    background-color: $primary;
+    border-radius: 3px;
+  }
+
+  .btn--forms {
+    float: right;
+    text-transform: capitalize;
+    padding: 1rem 4rem;
+  }
+
+  .modal-btns {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    button {
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 1rem;
+    }
+  }
+  .btn--cancel {
+    background-color: $secondary;
+  }
+  .btn--confirm {
+    background-color: $primary;
+  }
+  .btn--toggle i {
+    color: $primary;
+  }
+}
