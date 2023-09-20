@@ -4,6 +4,7 @@ import { HeartIcon, UserIcon } from "../src/sharedui/assets/icons";
 const Home = () => {
   return (
     <>
+      example
       <UserIcon size={20} />
       <HeartIcon size={40} className="text-danger" />
     </>
