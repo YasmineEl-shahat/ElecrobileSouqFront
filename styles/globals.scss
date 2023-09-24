@@ -63,11 +63,12 @@ html {
       color: red;
     }
     .mainContainer {
-      margin-left: 25.1rem;
-      padding: 3rem 5rem;
-
-      @include mQ(500px) {
-        padding: 2rem;
+      width: 82.39%;
+      @include mQ(1300px) {
+        width: 88.39%;
+      }
+      @include mQ(992px) {
+        width: 90%;
       }
     }
     ul {

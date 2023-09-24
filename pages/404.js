@@ -2,7 +2,7 @@ import Layout from "../components/Layout";
 
 const NotFound = () => {
   return (
-    <div className="notfound mainContainer">
+    <div className="notfound ">
       <div className="forbidden">
         <div className="text">Not Found</div>
       </div>
