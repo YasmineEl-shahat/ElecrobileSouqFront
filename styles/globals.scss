@@ -11,6 +11,7 @@
 
 @import "./pages/index.scss";
 @import "./pages/notfound.scss";
+@import "./pages/products.scss";
 
 * {
   box-sizing: border-box;
@@ -26,7 +27,6 @@ html {
 
   body {
     font-family: "Mulish", sans-serif;
-
     overflow-x: hidden;
 
     &::-webkit-scrollbar {
