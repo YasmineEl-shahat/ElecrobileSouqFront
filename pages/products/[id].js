@@ -3,38 +3,53 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.min.css";
 import InnerImageZoom from "react-inner-image-zoom";
-import { getProduct } from "../api/products";
+import { getProduct, getProducts } from "../api/products";
 import Layout from "../../components/Layout";
-
+import { image_url } from "../../config/config";
 const Product = () => {
   const router = useRouter();
   const [product, setProduct] = useState({});
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [selectedImg, setSelectedImg] = useState("");
+  const [images, setImages] = useState([]);
 
   const { id } = router.query;
   useEffect(() => {
-    getProduct(id)
-      .then((response) => {
-        console.log(response);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    // getProducts(2).then()
+    if (id !== undefined)
+      getProduct(id)
+        .then((response) => {
+          setProduct(response.data.data.data);
+          setSelectedImg(
+            image_url + response.data.data.data.variants[2].imageCover
+          );
+          const variants = response.data.data.data.variants[2].images.map(
+            (image) => {
+              return image_url + image;
+            }
+          );
+          setImages([
+            image_url + response.data.data.data.variants[2].imageCover,
+            ...variants,
+          ]);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
-    setProduct({
-      category: "smartphone",
-      subCategory: "Telephones",
-      name: "iphone 14 pro",
-      images: [
-        "http://localhost:3001/assets/products/1.png",
-        "http://localhost:3001/assets/products/2.png",
-        "http://localhost:3001/assets/products/3.png",
-        "http://localhost:3001/assets/products/4.png",
-      ],
-    });
-    setSelectedImg("http://localhost:3001/assets/products/1.png");
+    // setProduct({
+    //   category: "smartphone",
+    //   subCategory: "Telephones",
+    //   name: "iphone 14 pro",
+    //   images: [
+    //     "http://localhost:3001/assets/products/1.png",
+    //     "http://localhost:3001/assets/products/2.png",
+    //     "http://localhost:3001/assets/products/3.png",
+    //     "http://localhost:3001/assets/products/4.png",
+    //   ],
+    // });
+    // setSelectedImg("http://localhost:3001/assets/products/1.png");
     // eslint-disable-next-line
   }, [id]);
 
@@ -65,11 +80,11 @@ const Product = () => {
                 href={`/search?category=${product?.category}&sub-category=${product?.subCategory}`}
                 passHref
               >
-                {product?.subCategory ?? "sub category"}
+                {product?.subCategory?.name ?? "sub category"}
               </Link>
             </li>
             <li className="breadcrumb-item active">
-              {product?.name ?? "product name"}
+              {product?.brand?.name + " " + product?.name ?? "product name"}
             </li>
           </ol>
 
@@ -77,7 +92,7 @@ const Product = () => {
           <section className="product-choose-wrapper">
             <div className="prodChoose">
               {/* eslint-disable */}
-              {product?.images?.map((image, index) => (
+              {images?.map((image, index) => (
                 <img
                   key={`image ${index}`}
                   onClick={(e) => {
@@ -93,8 +108,8 @@ const Product = () => {
               afterZoomIn={() => {
                 change_zoom();
               }}
-              src={`${product?.images?.[0]}`}
-              zoomSrc={`${product?.images?.[0]}`}
+              src={`${images?.[0]}`}
+              zoomSrc={`${images?.[0]}`}
               alt="prod"
               zoomType="click"
               zoomScale={1.5}
