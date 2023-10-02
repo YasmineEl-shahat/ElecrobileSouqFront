@@ -1,7 +1,9 @@
 import Head from "next/head";
 import Navbar from "./Navbar";
 import Header from "./Header";
-
+import CategoriesNav from "./CategoriesNav";
+import Footer from "./Footer";
+import Home from "../pages";
 const Layout = ({ title, children }) => {
   return (
     <>
@@ -11,8 +13,11 @@ const Layout = ({ title, children }) => {
       </Head>
       <Header />
       <Navbar />
-
+     <CategoriesNav />
+    
+     <Footer/>
       {children}
+     
     </>
   );
 };

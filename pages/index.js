@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
 import Layout from "../components/Layout";
 import { HeartIcon, UserIcon } from "../src/assets/icons";
 import { getProducts } from "./api/products";
@@ -9,7 +10,16 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation, Autoplay } from "swiper";
 
+
 const Home = () => {
+
+  const [records,setRecords]= useState([])
+  useEffect(()=>{
+    fetch('http://localhost:3001/api/v1/products')
+    .then(response => response.json())
+    .then(data=> setRecords(data))
+    .catch(err=> console.log(err))
+  },[])
   // useEffect(() => {
   //   getProducts()
   //     .then((res) => {
@@ -20,24 +30,28 @@ const Home = () => {
   //     });
   // }, []);
 
-  const homeSlider = [
-    {
-      name: "slide1",
-      number: 1,
-      image: "/assets/logo.png",
-    },
-    {
-      name: "slide2",
-      number: 2,
-      image: "/assets/logo.png",
-    },
-  ];
+  // const homeSlider = [
+  //   {
+  //     name: "slide1",
+  //     number: 1,
+  //     image: "/assets/logo.png",
+  //   },
+  //   {
+  //     name: "slide2",
+  //     number: 2,
+  //     image: "/assets/logo.png",
+  //   },
+  // ];
   return (
     <>
-      example
-      <UserIcon size={20} />
-      <HeartIcon size={40} className="text-danger" />
-      <Swiper
+      <div>
+        <ul>
+          {records.map((list,index)=>(
+            <li>{list.id}</li>
+          ))}
+        </ul>
+      </div>
+      {/* <Swiper
         // modules={[Navigation, Autoplay]}
         className="homePageSlider"
         navigation={homeSlider && homeSlider.length > 1 ? true : false}
@@ -61,7 +75,7 @@ const Home = () => {
         ) : (
           <SwiperSlide className="bg-dark"></SwiperSlide>
         )}
-      </Swiper>
+      </Swiper> */}
     </>
   );
 };
