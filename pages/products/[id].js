@@ -12,11 +12,17 @@ const Product = () => {
   const [loading, setLoading] = useState(false);
   const [selectedImg, setSelectedImg] = useState("");
 
-  const id = router.query.id;
+  const { id } = router.query;
   useEffect(() => {
-    // getProduct().then((res) => {
-    //   setLoading(false);
-    // });
+    getProduct(id)
+      .then((response) => {
+        console.log(response);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     setProduct({
       category: "smartphone",
       subCategory: "Telephones",
