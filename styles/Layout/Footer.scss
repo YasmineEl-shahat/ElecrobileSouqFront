@@ -1,0 +1,38 @@
+@import "../abstracts/variables.scss";
+@import "../abstracts/mixins.scss";
+
+footer{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.main-footer{
+color: $blue;
+background-image: linear-gradient(70deg,#03366521 30% ,#DEE5EB 50%,#F65F0403 60%  ,#F65F0403 70%,
+#FFFFFF 80%);
+//padding-top: 3rem;
+//position: relative;
+//bottom: 0;
+width: 100%;
+padding: 2rem;
+
+}
+.big-logo{
+  font-size: large;
+}
+.icons{
+    //margin: 2rem;
+    display: flex;
+    flex-direction: row;
+   // align-items:flex-start;
+   // justify-content: center;
+}
+.footerIcons{
+  margin-right: 1rem;
+
+}
+.copy{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

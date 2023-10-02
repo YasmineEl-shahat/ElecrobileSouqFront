@@ -8,11 +8,11 @@
   font-size: $MediumFont;
 
   @include placeholder-color(#bdc1caff);
-  color: $primaryGray;
+  color: $mediumGray;
   border-radius: 6px;
 
   &:focus {
-    border: 1px solid $primaryGray;
+    border: 1px solid $mediumGray;
   }
   @include mQ(562px) {
     width: 80vw !important;
@@ -28,4 +28,11 @@
   outline: none;
   border: none !important;
   padding: 0rem 1.2rem;
+}
+.blueText{
+  color: $blue;
+
+}
+.orangeText{
+  color: $secondary;
 }

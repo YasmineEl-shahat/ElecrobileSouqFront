@@ -1,2 +1,80 @@
-@import "./abstracts/variables.scss";
-@import "./abstracts/mixins.scss";
+@import "../abstracts/variables.scss";
+@import "../abstracts/mixins.scss";
+
+.contain{
+    color: $blue;
+   // display: flex;
+   // flex-direction: row;
+   // justify-content: center;
+    //align-items: center;
+   // text-align: center;
+   // padding: 2rem;
+    margin: 1rem;
+}
+
+.search{
+    border: 0.1rem solid $blue;
+    border-radius: 2.5rem;
+    width: 30rem;
+    height: 2rem;
+    //margin: 1rem;
+
+    
+}
+
+.wrapper {
+    position: relative;
+   // display: flex;
+   // min-width: 100px;
+  }
+  
+  .search-icon {
+   position: absolute;
+   
+    right: 0.8rem;
+   top: 0rem;
+   text-align: center;
+   cursor: pointer;
+  }
+.icon{
+    margin-left: 1rem;
+}
+//   .clear-icon {
+//     position: absolute;
+//     top: 8px;
+//     right: 8px;
+//     width: 10px;
+   
+   
+//   }
+
+
+// .search:hover, .search:focus {
+//     border: 1.5px solid #009688;
+//     background-color: white;
+//   }
+p{
+    display: inline;
+}
+span{
+    margin-left: 9rem;
+    // @include mQ(1900)
+    // {
+    //     margin-left: 2rem;
+    // }
+}
+.logo{
+  // margin-left: 2rem;
+    // @include mQ(1049)
+    // {
+    //     margin-left: 1rem;
+    // }
+}
+.list{
+    
+}
+.iconContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
