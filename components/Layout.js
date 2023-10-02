@@ -13,11 +13,10 @@ const Layout = ({ title, children }) => {
       </Head>
       <Header />
       <Navbar />
-     <CategoriesNav />
-    
-     <Footer/>
+      <CategoriesNav />
+
       {children}
-     
+      <Footer />
     </>
   );
 };
