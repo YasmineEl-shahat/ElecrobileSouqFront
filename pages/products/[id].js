@@ -20,18 +20,18 @@ const Product = () => {
     if (id !== undefined)
       getProduct(id)
         .then((response) => {
-          console.log(response.data);
+          console.log(response.data.data.data);
           setProduct(response.data.data.data);
           setSelectedImg(
-            image_url + response.data.data.data.variants[2].imageCover
+            image_url + response.data.data.data.variants[0].imageCover
           );
-          const variants = response.data.data.data.variants[2].images.map(
+          const variants = response.data.data.data.variants[0].images.map(
             (image) => {
               return image_url + image;
             }
           );
           setImages([
-            image_url + response.data.data.data.variants[2].imageCover,
+            image_url + response.data.data.data.variants[0].imageCover,
             ...variants,
           ]);
           setLoading(false);
