@@ -8,7 +8,9 @@ const Layout = ({ title, children }) => {
   return (
     <>
       <Head>
-        <title>{title ? title | "Electrobile Souq" : "Electrobile Souq"}</title>
+        <title>
+          {title ? `${title} | Electrobile Souq` : "Electrobile Souq"}
+        </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
