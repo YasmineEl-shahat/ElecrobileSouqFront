@@ -1,2 +1,43 @@
 @import "./abstracts/variables.scss";
 @import "./abstracts/mixins.scss";
+
+.head{
+    background-color: #0035660F;
+    padding: 2rem;
+}
+.categories-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    // border-radius: 1rem;
+   
+    padding: 3rem;
+}
+h3 {
+    text-decoration: underline;
+    text-decoration-color: $primary;
+    
+
+  }
+
+  .card{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    width: 30rem;
+    height: 30rem;
+    margin: 3rem;
+    border: 0.1rem solid $white;
+    border-radius: 3rem;
+    &:hover{
+        border: 0.1rem solid $primary;
+    }
+   // padding: 3rem;
+  }
+  .categories-name
+  {
+font-size: small;
+font-weight: bold;
+color: $darkGray;
+  }
