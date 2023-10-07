@@ -6,30 +6,35 @@ import InnerImageZoom from "react-inner-image-zoom";
 import { getProduct, getProducts } from "../api/products";
 import Layout from "../../components/Layout";
 import { image_url } from "../../config/config";
+import Rating from "../../src/sharedui/Rating";
 const Product = () => {
   const router = useRouter();
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
   const [selectedImg, setSelectedImg] = useState("");
   const [images, setImages] = useState([]);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [colors, setColors] = useState([]);
 
   const { id } = router.query;
   useEffect(() => {
     // getProducts(2).then()
+
     if (id !== undefined)
       getProduct(id)
         .then((response) => {
+          console.log(response.data.data.data);
           setProduct(response.data.data.data);
           setSelectedImg(
-            image_url + response.data.data.data.variants[2].imageCover
+            image_url + response.data.data.data.variants[0].imageCover
           );
-          const variants = response.data.data.data.variants[2].images.map(
+          const variants = response.data.data.data.variants[0].images.map(
             (image) => {
               return image_url + image;
             }
           );
           setImages([
-            image_url + response.data.data.data.variants[2].imageCover,
+            image_url + response.data.data.data.variants[0].imageCover,
             ...variants,
           ]);
           setLoading(false);
@@ -37,19 +42,6 @@ const Product = () => {
         .catch((error) => {
           console.log(error);
         });
-
-    // setProduct({
-    //   category: "smartphone",
-    //   subCategory: "Telephones",
-    //   name: "iphone 14 pro",
-    //   images: [
-    //     "http://localhost:3001/assets/products/1.png",
-    //     "http://localhost:3001/assets/products/2.png",
-    //     "http://localhost:3001/assets/products/3.png",
-    //     "http://localhost:3001/assets/products/4.png",
-    //   ],
-    // });
-    // setSelectedImg("http://localhost:3001/assets/products/1.png");
     // eslint-disable-next-line
   }, [id]);
 
@@ -65,64 +57,78 @@ const Product = () => {
   };
 
   return (
-    !loading && (
-      <div className="d-flex justify-content-center">
-        <main className="mainContainer">
-          {/* sub header */}
-          <ol className="breadcrumb">
-            <li className="breadcrumb-item">
-              <Link href={`/search?category=${product?.category}`} passHref>
-                {product?.category ?? "Category"}
-              </Link>
-            </li>
-            <li className="breadcrumb-item ">
-              <Link
-                href={`/search?category=${product?.category}&sub-category=${product?.subCategory}`}
-                passHref
-              >
-                {product?.subCategory?.name ?? "sub category"}
-              </Link>
-            </li>
-            <li className="breadcrumb-item active">
-              {product?.brand?.name + " " + product?.name ?? "product name"}
-            </li>
-          </ol>
+    <div className="d-flex justify-content-center">
+      <main className="mainContainer">
+        {!loading && (
+          <>
+            {/* sub header */}
+            <ol className="breadcrumb my-5">
+              {product?.category && (
+                <li className="breadcrumb-item">
+                  <Link href={`/search?category=${product?.category}`} passHref>
+                    {product?.category}
+                  </Link>
+                </li>
+              )}
+              <li className="breadcrumb-item ">
+                <Link
+                  href={`/search?category=${product?.category}&sub-category=${product?.subCategory}`}
+                  passHref
+                >
+                  {product?.subCategory?.name}
+                </Link>
+              </li>
+              <li className="breadcrumb-item active">{product?.name}</li>
+            </ol>
 
-          {/* Product Details */}
-          <section className="product-choose-wrapper">
-            <div className="prodChoose">
-              {/* eslint-disable */}
-              {images?.map((image, index) => (
-                <img
-                  key={`image ${index}`}
-                  onClick={(e) => {
-                    change_img(e);
+            {/* Product Details */}
+            <section className="product-choose-wrapper">
+              <div>
+                <InnerImageZoom
+                  afterZoomIn={() => {
+                    change_zoom();
                   }}
-                  src={image}
-                  alt="product image"
-                  className={image == selectedImg && "selected"}
+                  src={`${images?.[0]}`}
+                  zoomSrc={`${images?.[0]}`}
+                  alt="prod"
+                  zoomType="click"
+                  zoomScale={1.5}
+                  width={410}
+                  height={500}
                 />
-              ))}
-            </div>
-            <InnerImageZoom
-              afterZoomIn={() => {
-                change_zoom();
-              }}
-              src={`${images?.[0]}`}
-              zoomSrc={`${images?.[0]}`}
-              alt="prod"
-              zoomType="click"
-              zoomScale={1.5}
-              width={410}
-              height={500}
-            />
-            <div className=" productDetails">
-              <h2>{product?.name}</h2>
-              <div className="subDetail">
-                <h5>
-                  <span>Code : </span>
-                  {product?.code}
-                </h5>
+                <section className="product-choose">
+                  {/* eslint-disable */}
+                  {images?.map((image, index) => (
+                    <img
+                      key={`image ${index}`}
+                      onClick={(e) => {
+                        change_img(e);
+                      }}
+                      src={image}
+                      alt="product image"
+                      className={image == selectedImg && "selected"}
+                    />
+                  ))}
+                </section>
+              </div>
+
+              <div className="product-details">
+                <h6 className="mb-5">
+                  {product?.category && <span>{product?.category},</span>}
+                  <span> {product?.subCategory?.name}</span>
+                </h6>
+                <h2 className="mb-5">{product?.name}</h2>
+                <article className="d-flex align-items-center">
+                  <Rating ratingsAverage={product?.ratingsAverage} />
+                  <span className="rate-average">
+                    {product?.ratingsAverage}
+                  </span>
+                  <span className="rate-quantity">
+                    ({product?.ratingsQuantity})
+                  </span>
+                </article>
+                <pre className="my-4 rate-quantity">{product?.description}</pre>
+                <h5>Code :{product?.code}</h5>
                 {product?.size && (
                   <h5>
                     <span>Available size : </span>
@@ -141,64 +147,57 @@ const Product = () => {
                     {product?.materials}
                   </h5>
                 )}
-              </div>
-              <div className="subDetail">
-                <h5>
-                  <span>Country of Origin : </span>
-                  {product?.["country_of_origin"]}
-                </h5>
-                <h5>
-                  {product?.color?.length > 0 && (
-                    <div>
-                      <span>Colors : </span>{" "}
-                      {product.color.map((color) => (
-                        <div className="colWrap" key={color.code}>
-                          <div
-                            className="colCont"
-                            style={{ background: color.code }}
-                          ></div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </h5>
-                <h5>
-                  {product?.parteners?.length > 0 && (
-                    <div>
-                      <span>Certification: </span>{" "}
-                      {product.parteners.map((partner) => (
-                        <div className="colWrap" key={partner.id}>
-                          <div className="cerCont">
-                            {/* eslint-disable */}
-                            <img
-                              src={`${partner.partener.image}`}
-                              alt="certificate"
-                            />
+                <div className="subDetail">
+                  <h5>
+                    <span>Country of Origin : </span>
+                    {product?.["country_of_origin"]}
+                  </h5>
+                  <h5>
+                    {product?.color?.length > 0 && (
+                      <div>
+                        <span>Colors : </span>{" "}
+                        {product.color.map((color) => (
+                          <div className="colWrap" key={color.code}>
+                            <div
+                              className="colCont"
+                              style={{ background: color.code }}
+                            ></div>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </h5>
+                        ))}
+                      </div>
+                    )}
+                  </h5>
+                  <h5>
+                    {product?.parteners?.length > 0 && (
+                      <div>
+                        <span>Certification: </span>{" "}
+                        {product.parteners.map((partner) => (
+                          <div className="colWrap" key={partner.id}>
+                            <div className="cerCont">
+                              {/* eslint-disable */}
+                              <img
+                                src={`${partner.partener.image}`}
+                                alt="certificate"
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </h5>
+                </div>
+                <div className="reqWrap">
+                  <span className="price">Price on request</span>
+                  <button className="btn--global btn--big">
+                    <i className="fa-solid fa-bag-shopping"></i>Request Product
+                  </button>
+                </div>
               </div>
-              <div className="reqWrap">
-                <span className="price">Price on request</span>
-                <button className="btn--global btn--big">
-                  <i className="fa-solid fa-bag-shopping"></i>Request Product
-                </button>
-              </div>
-            </div>
-          </section>
-
-          {/* Product Description */}
-          <section className="row des">
-            <h4>Description</h4>
-
-            <pre>{product?.description}</pre>
-          </section>
-        </main>
-      </div>
-    )
+            </section>
+          </>
+        )}
+      </main>
+    </div>
   );
 };
 Product.getLayout = function getLayout(page) {
