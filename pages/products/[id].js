@@ -7,12 +7,14 @@ import { getProduct, getProducts } from "../api/products";
 import Layout from "../../components/Layout";
 import { image_url } from "../../config/config";
 import Rating from "../../src/sharedui/Rating";
+import { CheckIcon } from "../../src/assets/icons";
 const Product = () => {
   const router = useRouter();
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
   const [selectedImg, setSelectedImg] = useState("");
   const [images, setImages] = useState([]);
+  const [selectedVariant, setSelectedVariant] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
   const [colors, setColors] = useState([]);
 
@@ -23,20 +25,17 @@ const Product = () => {
     if (id !== undefined)
       getProduct(id)
         .then((response) => {
-          console.log(response.data.data.data);
-          setProduct(response.data.data.data);
-          setSelectedImg(
-            image_url + response.data.data.data.variants[0].imageCover
-          );
-          const variants = response.data.data.data.variants[0].images.map(
-            (image) => {
-              return image_url + image;
-            }
-          );
-          setImages([
-            image_url + response.data.data.data.variants[0].imageCover,
-            ...variants,
-          ]);
+          const data = response.data.data.data;
+          console.log(data);
+          setProduct(data);
+          setSelectedColor(data.variants[0].color);
+          setColors(data.variants.map((variant) => variant.color));
+          setSelectedVariant(data.variants[0]);
+          setSelectedImg(image_url + data.variants[0].imageCover);
+          const images = data.variants[0].images.map((image) => {
+            return image_url + image;
+          });
+          setImages([image_url + data.variants[0].imageCover, ...images]);
           setLoading(false);
         })
         .catch((error) => {
@@ -45,12 +44,22 @@ const Product = () => {
     // eslint-disable-next-line
   }, [id]);
 
-  const change_img = (e) => {
+  const changeColor = (color) => {
+    setSelectedColor(color);
+    const variant = product.variants.find((variant) => variant.color === color);
+    setSelectedVariant(variant);
+    setSelectedImg(image_url + variant.imageCover);
+    const images = variant.images.map((image) => {
+      return image_url + image;
+    });
+    setImages([image_url + variant.imageCover, ...images]);
+  };
+  const changeImg = (e) => {
     let mainContainer = document.getElementsByClassName("iiz__img")[0];
     mainContainer.src = e.target.src;
     setSelectedImg(e.target.src);
   };
-  const change_zoom = () => {
+  const changeZoom = () => {
     let src = document.getElementsByClassName("iiz__img")[0].src;
     let mainContainer = document.getElementsByClassName("iiz__zoom-img")[0];
     mainContainer.src = src;
@@ -63,16 +72,19 @@ const Product = () => {
           <>
             {/* sub header */}
             <ol className="breadcrumb my-5">
-              {product?.category && (
+              {product?.subCategory?.category && (
                 <li className="breadcrumb-item">
-                  <Link href={`/search?category=${product?.category}`} passHref>
-                    {product?.category}
+                  <Link
+                    href={`/search?category=${product?.subCategory?.category?.id}`}
+                    passHref
+                  >
+                    {product?.subCategory?.category?.name}
                   </Link>
                 </li>
               )}
               <li className="breadcrumb-item ">
                 <Link
-                  href={`/search?category=${product?.category}&sub-category=${product?.subCategory}`}
+                  href={`/search?category=${product?.subCategory?.category?.id}&sub-category=${product?.subCategory?.id}`}
                   passHref
                 >
                   {product?.subCategory?.name}
@@ -86,7 +98,7 @@ const Product = () => {
               <div>
                 <InnerImageZoom
                   afterZoomIn={() => {
-                    change_zoom();
+                    changeZoom();
                   }}
                   src={`${images?.[0]}`}
                   zoomSrc={`${images?.[0]}`}
@@ -102,7 +114,7 @@ const Product = () => {
                     <img
                       key={`image ${index}`}
                       onClick={(e) => {
-                        change_img(e);
+                        changeImg(e);
                       }}
                       src={image}
                       alt="product image"
@@ -114,7 +126,9 @@ const Product = () => {
 
               <div className="product-details">
                 <h6 className="mb-5">
-                  {product?.category && <span>{product?.category},</span>}
+                  {product?.subCategory?.category && (
+                    <span>{product?.subCategory?.category?.name},</span>
+                  )}
                   <span> {product?.subCategory?.name}</span>
                 </h6>
                 <h2 className="mb-5">{product?.name}</h2>
@@ -128,70 +142,44 @@ const Product = () => {
                   </span>
                 </article>
                 <pre className="my-4 rate-quantity">{product?.description}</pre>
-                <h5>Code :{product?.code}</h5>
-                {product?.size && (
-                  <h5>
-                    <span>Available size : </span>
-                    {product?.size}
-                  </h5>
+
+                <h5 className="mb-4">
+                  <span className="rate-quantity">SKU : </span>
+                  <span className="rate-average"> {selectedVariant?.sku}</span>
+                </h5>
+
+                <h5 className="mb-4 rate-average mx-0">
+                  <b>Brand</b>
+                </h5>
+
+                <h1 className="brand mb-5">{product?.brand?.name}</h1>
+
+                {colors?.length > 0 && (
+                  <>
+                    <h5 className="mb-4 rate-average mx-0">
+                      <b>Colors</b>
+                    </h5>
+                    <article className="d-flex">
+                      {colors.map((color) => (
+                        <div
+                          className="color"
+                          key={color}
+                          style={{ background: color }}
+                          onClick={() => changeColor(color)}
+                        >
+                          {color == selectedColor && (
+                            <CheckIcon
+                              size={20}
+                              style={{
+                                color: color != "white" && "white",
+                              }}
+                            />
+                          )}
+                        </div>
+                      ))}
+                    </article>
+                  </>
                 )}
-                {product?.quantity && (
-                  <h5>
-                    <span>Quantity : </span>
-                    {product?.quantity}
-                  </h5>
-                )}
-                {product?.materials && (
-                  <h5>
-                    <span>Materials:</span>
-                    {product?.materials}
-                  </h5>
-                )}
-                <div className="subDetail">
-                  <h5>
-                    <span>Country of Origin : </span>
-                    {product?.["country_of_origin"]}
-                  </h5>
-                  <h5>
-                    {product?.color?.length > 0 && (
-                      <div>
-                        <span>Colors : </span>{" "}
-                        {product.color.map((color) => (
-                          <div className="colWrap" key={color.code}>
-                            <div
-                              className="colCont"
-                              style={{ background: color.code }}
-                            ></div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </h5>
-                  <h5>
-                    {product?.parteners?.length > 0 && (
-                      <div>
-                        <span>Certification: </span>{" "}
-                        {product.parteners.map((partner) => (
-                          <div className="colWrap" key={partner.id}>
-                            <div className="cerCont">
-                              {/* eslint-disable */}
-                              <img
-                                src={`${partner.partener.image}`}
-                                alt="certificate"
-                              />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </h5>
-                </div>
-                <div className="reqWrap">
-                  <span className="price">Price on request</span>
-                  <button className="btn--global btn--big">
-                    <i className="fa-solid fa-bag-shopping"></i>Request Product
-                  </button>
-                </div>
               </div>
             </section>
           </>

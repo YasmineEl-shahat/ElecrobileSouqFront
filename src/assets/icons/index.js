@@ -5,11 +5,13 @@ import {
   AiOutlineTwitter,
   AiOutlineInstagram,
   AiFillYoutube,
+  AiOutlineCheck,
 } from "react-icons/ai";
 import { MdLanguage } from "react-icons/md";
 import { FaFacebookF, FaStar } from "react-icons/fa6";
 import { BsList } from "react-icons/bs";
 
+export const CheckIcon = AiOutlineCheck;
 export const StarIcon = FaStar;
 export const UserIcon = AiOutlineUser;
 export const HeartIcon = AiOutlineHeart;
