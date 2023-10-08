@@ -2,12 +2,32 @@
 import Layout from "../components/Layout";
 import { HeartIcon, UserIcon } from "../src/assets/icons";
 
-// Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
+
+
+
+
+// import Swiper core and required modules
+import { Navigation, Pagination, Scrollbar, A11y, Mousewheel, Keyboard  } from 'swiper/modules';
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+
 // Import Swiper styles
-import "swiper/css";
-import "swiper/css/navigation";
-import { Navigation, Autoplay } from "swiper";
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+// import 'swiper/css/pagination';
+// import { Pagination } from 'swiper/modules';
+
+
+// // Import Swiper React components
+// import { Swiper, SwiperSlide } from "swiper/react";
+
+// import ReactSlider from "react-slider";
+// // Import Swiper styles
+// import "swiper/css";
+// import "swiper/css/navigation";
+// import { Navigation, Autoplay } from "swiper";
 import { api_url } from "../config/config";
 import { httpJson } from "../config/http";
 import { getProduct, getProducts } from "./api/products";
@@ -42,39 +62,50 @@ const Home = () => {
     },[]);
   return (
     <>
+          
 
-<Swiper
-      spaceBetween={50}
-      slidesPerView={3}
-      onSlideChange={() => console.log('slide change')}
-      onSwiper={(swiper) => console.log(swiper)}
-    >
-      <SwiperSlide>Slide 1</SwiperSlide>
-      <SwiperSlide>Slide 2</SwiperSlide>
-      <SwiperSlide>Slide 3</SwiperSlide>
-      <SwiperSlide>Slide 4</SwiperSlide>
+           <Swiper  className="mySwiper"
       
-
+      // modules={[Navigation, Pagination, Scrollbar, A11y]}
+      // spaceBetween={50}
+      // slidesPerView={3}
+      // navigation
+     //pagination={{ clickable: true }}
+      // onSwiper={(swiper) => console.log(swiper)}
+      // onSlideChange={() => console.log('slide change')}
+    > 
     </Swiper>
+    
     {/* top product */}
      <Swiper 
+          cssMode={true}
+          navigation={true}
+          pagination={{ clickable: true }}
+          mousewheel={true}
+          keyboard={true}
+          modules={[Navigation, Pagination, Mousewheel, Keyboard]}
+          className="mySwiper"
      spaceBetween={10}
      slidesPerView={1}
      onSlideChange={() => console.log('slide change')}
-     onSwiper={(swiper) => console.log(swiper)}>
+     onSwiper={(swiper) => console.log(swiper)}
+      >
       {products.map((item)=> (
         <SwiperSlide
          key={item.id}
          className="">
-          <p>{item.name}</p><br/>
-          <img
+
+        <div className="topProductContainer">
+          <span className="topProdutName">{item.name} <br/>coming soon</span><br/>
+          <button className="orangeBtn">find out</button>
+          <img className="productImage"
           src={image_url+item.variants[0].imageCover}
-          width={150}
-          height={150}
+          
           alt="hi"
           >
 
           </img>
+          </div>
         </SwiperSlide>
       ))}
      </Swiper>

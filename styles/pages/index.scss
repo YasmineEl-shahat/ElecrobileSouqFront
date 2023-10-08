@@ -17,10 +17,35 @@
 h3 {
     text-decoration: underline;
     text-decoration-color: $primary;
-    
-
+  
   }
-
+  .topProductContainer{
+    position: relative;
+   // text-align: left;
+  }
+  .topProdutName{
+    text-transform: uppercase;
+    position: absolute;
+    font-size:  3rem ;
+    top: 8rem;
+    left: 10rem;
+    color: $darkGray;
+  }
+  .orangeBtn{
+    position: absolute;
+    background-color: $secondary;
+    border-radius: 2.5rem;
+    color: $white;
+    width: 7rem;
+    height: 3rem;
+    font-size: small;
+    top: 18rem;
+    left: 10rem;
+  }
+.productImage{
+  width: 100%;
+  height: 25rem;
+}
   .card{
     display: flex;
     align-items: center;
