@@ -1,9 +1,6 @@
 
 import Layout from "../components/Layout";
-import { HeartIcon, UserIcon } from "../src/assets/icons";
-
-
-
+import { ArrowIcon } from "../src/assets/icons";
 
 
 // import Swiper core and required modules
@@ -16,21 +13,10 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-// import 'swiper/css/pagination';
-// import { Pagination } from 'swiper/modules';
 
-
-// // Import Swiper React components
-// import { Swiper, SwiperSlide } from "swiper/react";
-
-// import ReactSlider from "react-slider";
-// // Import Swiper styles
-// import "swiper/css";
-// import "swiper/css/navigation";
-// import { Navigation, Autoplay } from "swiper";
 import { api_url } from "../config/config";
 import { httpJson } from "../config/http";
-import { getProduct, getProducts } from "./api/products";
+import { getProduct, getProducts , getBrands} from "./api/products";
 import {getCategories,getCategory} from "./api/categories";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -40,6 +26,7 @@ const Home = () => {
  // const router = useRouter();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [brands,setBrands]= useState([]);
   
   //const { limit } = router.query;
   useEffect(() => {
@@ -59,12 +46,24 @@ const Home = () => {
         setCategories(res.data.data.data);
         console.log(res.data.data.data);
       })
+      .catch((error) => {
+        console.log(error);
+     });
+
+      getBrands()
+      .then((result)=>{
+        setBrands(result.data.data.data);
+        console.log(result.data.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+     });
     },[]);
   return (
     <>
           
 
-           <Swiper  className="mySwiper"
+           <Swiper  
       
       // modules={[Navigation, Pagination, Scrollbar, A11y]}
       // spaceBetween={50}
@@ -99,7 +98,7 @@ const Home = () => {
           <span className="topProdutName">{item.name} <br/>coming soon</span><br/>
           <button className="orangeBtn">find out</button>
           <img className="productImage"
-          src={image_url+item.variants[0].imageCover}
+          src={image_url+item?.variants?.[0]?.imageCover}
           
           alt="hi"
           >
@@ -110,53 +109,104 @@ const Home = () => {
       ))}
      </Swiper>
 
+     {/* bidding products */}
+
+     <div className="biddingContainer">
+      <div className="">
+      <h3 className="orangeText">Bidding Products</h3>
+
+      </div>
+      </div>
+
 {/* categories */}
 <div className="head">
-     <h3 className="orangeText">categories</h3>
+     <h3 className="orangeText">Categories</h3>
      <div className="categories-container">
       {categories.map((item)=> (
        <div className="card">
        <p className="categories-name">{item.name}</p>
           <img
+          className="categories-image"
           src={image_url+item.image}
-          width={100}
-          height={100}
+          width={150}
+          height={150}
           alt="hi"
           >
-          </img>
-          <div> arrow</div>
+          </img >
+          <div ><ArrowIcon className="arrow"/> </div>
           </div>
        
       ))}
      </div>
      </div>
+     {/* brands */}
+     <div className="">
+     <h3 className="orangeText">Popular Brands</h3>
+     <div className="brands-container">
+      {brands.map((item)=> (
+       <div className="">
       
+          <img
+          className=""
+          src={image_url+item.image}
+          width={150}
+          height={150}
+          alt="hi"
+          >
+          </img >
+          </div>
+       
+      ))}
+     </div>
+     </div>
+     
+     <div className="">
+     <h3 className="orangeText">BestSellers</h3>
+     <div className="brands-container">
+      {brands.map((item)=> (
+       <div className="">
       
-      {/* <Swiper
-        // modules={[Navigation, Autoplay]}
-        className="homePageSlider"
-        navigation={products && products > 1 ? true : false}
-        autoplay={{
-          delay: 3500,
-          disableOnInteraction: true,
-        }}
-        dir="ltr"
-      >
-        {products && products.length > 0 ? (
-          products.map((slide, i) => {
-            return (
-              <SwiperSlide
-                key={i}
-                // style={{ backgroundImage: `url(${slide.image})` }}
-              >
-                <img src={slide.image} />
-              </SwiperSlide>
-            );
-          })
-        ) : (
-          <SwiperSlide className="bg-dark"></SwiperSlide>
-        )}
-      </Swiper> */}
+          <img
+          className=""
+          src={image_url+item.image}
+          width={150}
+          height={150}
+          alt="hi"
+          >
+          </img >
+          </div>
+       
+      ))}
+     </div>
+     </div>
+     <div className="">
+     <h3 className="orangeText">Big Deals</h3>
+     <div className="brands-container">
+      {brands.map((item)=> (
+       <div className="">
+      
+          <img
+          className=""
+          src={image_url+item.image}
+          width={150}
+          height={150}
+          alt="hi"
+          >
+          </img >
+          </div>
+       
+      ))}
+     </div>
+     </div>
+
+
+     <div className="firstOrder">
+      <span>
+      Subscribe to Our Newsletter - get a $20 Coupon for your first order!
+      </span>
+      <span className="email"><input type="email" placeholder="enter your email"></input></span>
+     </div>
+      
     </>
   );
 };

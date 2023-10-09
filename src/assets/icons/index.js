@@ -9,8 +9,9 @@ import {
 } from "react-icons/ai";
 import { MdLanguage } from "react-icons/md";
 import { FaFacebookF, FaStar } from "react-icons/fa6";
-import { BsList } from "react-icons/bs";
+import { BsList,BsFillArrowRightCircleFill } from "react-icons/bs";
 
+export const ArrowIcon=BsFillArrowRightCircleFill;
 export const CheckIcon = AiOutlineCheck;
 export const StarIcon = FaStar;
 export const UserIcon = AiOutlineUser;
