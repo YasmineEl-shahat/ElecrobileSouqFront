@@ -19,7 +19,7 @@ import Tab from "../../src/sharedui/Tab";
 
 const Product = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const { id, activeTab } = router.query;
 
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
@@ -286,6 +286,8 @@ const Product = () => {
 
             {/* description and reviews */}
             <Tab
+              propActiveTab={activeTab}
+              id={id}
               tabs={[
                 {
                   label: "description",
