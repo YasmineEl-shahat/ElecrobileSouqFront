@@ -16,6 +16,7 @@ import {
 } from "../../src/assets/icons";
 import Image from "next/image";
 import Tab from "../../src/sharedui/Tab";
+import AddRate from "../../src/sharedui/AddRate";
 
 const Product = () => {
   const router = useRouter();
@@ -31,6 +32,7 @@ const Product = () => {
   const [price, setPrice] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const [rating, setRating] = useState(0);
 
   useEffect(() => {
     if (id !== undefined)
@@ -297,7 +299,33 @@ const Product = () => {
                 },
                 {
                   label: "reviews",
-                  content: <pre className="rate-quantity">reviews</pre>,
+                  content: (
+                    <section className="reviews-wrapper">
+                      <article className="row">
+                        <div className="col-6 preview">
+                          <span className="rate-average">
+                            {product?.ratingsAverage}
+                          </span>
+                          <span className="rate-quantity">
+                            ({product?.ratingsQuantity} reviews)
+                          </span>
+                        </div>
+                        <div className="col-6">
+                          <AddRate rating={rating} setRating={setRating} />
+                        </div>
+                      </article>
+
+                      <hr className="mx-2" />
+                      {product?.reviews.map((review) => (
+                        <div key={review._id} className="my-4">
+                          <Rating ratingsAverage={review.rating} />
+                          <pre className="rate-quantity mt-2">
+                            {review.review}
+                          </pre>
+                        </div>
+                      ))}
+                    </section>
+                  ),
                 },
               ]}
             />

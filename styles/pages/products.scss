@@ -12,10 +12,17 @@
     }
   }
 }
+
 .rate-quantity {
   color: $mediumGray;
   font-size: 1.4rem;
 }
+.rate-average {
+  color: $darkGray;
+  font-size: 1.4rem;
+  margin: 0 0.8rem;
+}
+
 .product-choose-wrapper {
   @include flexBet;
   flex-wrap: wrap;
@@ -82,11 +89,6 @@
       color: $primary;
       font-weight: 500;
     }
-    .rate-average {
-      color: $darkGray;
-      font-size: 1.4rem;
-      margin: 0 0.8rem;
-    }
 
     .brand {
       color: $lightGray;
@@ -129,5 +131,20 @@
   }
   .btn--cart {
     width: 100%;
+  }
+}
+
+.reviews-wrapper {
+  .rate-average {
+    font-size: 2rem;
+  }
+  .rate-quantity {
+    font-size: $MediumFont;
+  }
+  hr {
+    color: $lightGray;
+  }
+  .preview {
+    border-right: 1px solid $light-border-color;
   }
 }
