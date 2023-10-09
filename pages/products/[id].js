@@ -3,13 +3,24 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.min.css";
 import InnerImageZoom from "react-inner-image-zoom";
-import { getProduct, getProducts } from "../api/products";
+import { getProduct } from "../api/products";
 import Layout from "../../components/Layout";
 import { image_url } from "../../config/config";
 import Rating from "../../src/sharedui/Rating";
-import { CheckIcon } from "../../src/assets/icons";
+import {
+  CartIcon,
+  CheckIcon,
+  FilledHeartIcon,
+  MinusIcon,
+  PlusIcon,
+} from "../../src/assets/icons";
+import Image from "next/image";
+import Tab from "../../src/sharedui/Tab";
+
 const Product = () => {
   const router = useRouter();
+  const { id } = router.query;
+
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
   const [selectedImg, setSelectedImg] = useState("");
@@ -17,20 +28,42 @@ const Product = () => {
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
   const [colors, setColors] = useState([]);
+  const [price, setPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [quantity, setQuantity] = useState(1);
 
-  const { id } = router.query;
   useEffect(() => {
-    // getProducts(2).then()
-
     if (id !== undefined)
       getProduct(id)
         .then((response) => {
+          // extracting data and setting variant
           const data = response.data.data.data;
           console.log(data);
           setProduct(data);
+          setSelectedVariant(data.variants[0]);
+
+          // setting price
+          setPrice(data.price + data.variants[0].extraPrice);
+          if (data?.priceDiscount?.type == "fixed")
+            setTotalPrice(
+              data.price +
+                data.variants[0].extraPrice -
+                data?.priceDiscount?.value
+            );
+          else
+            setTotalPrice(
+              data.price +
+                data.variants[0].extraPrice -
+                (data?.priceDiscount?.value *
+                  (data.price + data.variants[0].extraPrice)) /
+                  100
+            );
+
+          // setting color
           setSelectedColor(data.variants[0].color);
           setColors(data.variants.map((variant) => variant.color));
-          setSelectedVariant(data.variants[0]);
+
+          //  setting image
           setSelectedImg(image_url + data.variants[0].imageCover);
           const images = data.variants[0].images.map((image) => {
             return image_url + image;
@@ -45,14 +78,37 @@ const Product = () => {
   }, [id]);
 
   const changeColor = (color) => {
+    // color
     setSelectedColor(color);
+
+    // quantity
+    setQuantity(1);
+
+    // variant
     const variant = product.variants.find((variant) => variant.color === color);
     setSelectedVariant(variant);
+
+    // images
     setSelectedImg(image_url + variant.imageCover);
     const images = variant.images.map((image) => {
       return image_url + image;
     });
     setImages([image_url + variant.imageCover, ...images]);
+
+    // price
+    setPrice(product.price + variant.extraPrice);
+    if (product?.priceDiscount?.type == "fixed")
+      setTotalPrice(
+        product.price + variant.extraPrice - product?.priceDiscount?.value
+      );
+    else
+      setTotalPrice(
+        product.price +
+          variant.extraPrice -
+          (product?.priceDiscount?.value *
+            (product.price + variant.extraPrice)) /
+            100
+      );
   };
   const changeImg = (e) => {
     let mainContainer = document.getElementsByClassName("iiz__img")[0];
@@ -65,8 +121,14 @@ const Product = () => {
     mainContainer.src = src;
   };
 
+  const increaseQuantity = () => {
+    if (quantity < selectedVariant?.quantity) setQuantity(quantity + 1);
+  };
+  const decreaseQuantity = () => {
+    if (quantity > 1) setQuantity(quantity - 1);
+  };
   return (
-    <div className="d-flex justify-content-center">
+    <div className="d-flex justify-content-center mb-5">
       <main className="mainContainer">
         {!loading && (
           <>
@@ -141,7 +203,10 @@ const Product = () => {
                     ({product?.ratingsQuantity})
                   </span>
                 </article>
-                <pre className="my-4 rate-quantity">{product?.description}</pre>
+                <pre className="my-4 rate-quantity">
+                  {product?.description?.substring(0, 100)}
+                  {product?.description?.length > 100 && "..."}
+                </pre>
 
                 <h5 className="mb-4">
                   <span className="rate-quantity">SKU : </span>
@@ -152,7 +217,13 @@ const Product = () => {
                   <b>Brand</b>
                 </h5>
 
-                <h1 className="brand mb-5">{product?.brand?.name}</h1>
+                <img
+                  width={100}
+                  height={70}
+                  className="brand mb-5"
+                  alt="brand"
+                  src={image_url + product?.brand?.image}
+                />
 
                 {colors?.length > 0 && (
                   <>
@@ -181,7 +252,53 @@ const Product = () => {
                   </>
                 )}
               </div>
+
+              <div className="p-4">
+                <button className="btn--wishlist mb-5">
+                  Wishlist <FilledHeartIcon />
+                </button>
+                {price !== totalPrice && (
+                  <h1 className="price prev-price">$ {price}</h1>
+                )}
+                <h1 className="price total-price ">$ {totalPrice}</h1>
+
+                <section className="quantity-container my-4">
+                  <button
+                    onClick={() => decreaseQuantity()}
+                    disabled={quantity === 1}
+                  >
+                    <MinusIcon />
+                  </button>
+                  {quantity}
+                  <button
+                    onClick={() => increaseQuantity()}
+                    disabled={quantity === selectedVariant?.quantity}
+                  >
+                    <PlusIcon />
+                  </button>
+                </section>
+
+                <button className="btn--cart">
+                  Add to Cart <CartIcon />
+                </button>
+              </div>
             </section>
+
+            {/* description and reviews */}
+            <Tab
+              tabs={[
+                {
+                  label: "description",
+                  content: (
+                    <pre className="rate-quantity">{product?.description}</pre>
+                  ),
+                },
+                {
+                  label: "reviews",
+                  content: <pre className="rate-quantity">reviews</pre>,
+                },
+              ]}
+            />
           </>
         )}
       </main>

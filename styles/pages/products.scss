@@ -12,10 +12,36 @@
     }
   }
 }
+.rate-quantity {
+  color: $mediumGray;
+  font-size: 1.4rem;
+}
 .product-choose-wrapper {
   @include flexBet;
   flex-wrap: wrap;
 
+  & > div {
+    width: 25vw;
+    margin-bottom: 4rem;
+    @include mQ(1096px) {
+      width: 40vw;
+    }
+
+    @include mQ(770px) {
+      width: 100vw;
+      figure {
+        width: 100% !important;
+        img:not(.iiz__zoom-img) {
+          width: 100% !important;
+        }
+      }
+    }
+    &:last-of-type {
+      border: 1px solid $light-border-color;
+      height: fit-content;
+      border-radius: 6px;
+    }
+  }
   .iiz__img {
     height: 40rem;
   }
@@ -61,10 +87,7 @@
       font-size: 1.4rem;
       margin: 0 0.8rem;
     }
-    .rate-quantity {
-      color: $mediumGray;
-      font-size: 1.4rem;
-    }
+
     .brand {
       color: $lightGray;
       font-size: 4rem;
@@ -79,5 +102,32 @@
       cursor: pointer;
       @include flexCenter;
     }
+  }
+
+  .price {
+    font-size: 3.6rem;
+  }
+  .prev-price {
+    color: $mediumGray;
+    text-decoration: line-through;
+  }
+  .total-price {
+    color: $darkGray;
+  }
+
+  .quantity-container {
+    border: 1px solid $lightGray;
+    border-radius: 2rem;
+    padding: 0.5rem 1rem;
+    @include flexBet;
+    width: 50%;
+    font-size: $MediumFont;
+    color: $darkGray;
+    button {
+      color: $mediumGray;
+    }
+  }
+  .btn--cart {
+    width: 100%;
   }
 }
