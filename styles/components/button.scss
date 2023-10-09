@@ -2,20 +2,6 @@
 @import "../abstracts/mixins.scss";
 
 body {
-  .btn--global {
-    padding: 1rem 2rem;
-    height: fit-content;
-    color: white;
-    background-color: $primary;
-    border-radius: 3px;
-  }
-
-  .btn--forms {
-    float: right;
-    text-transform: capitalize;
-    padding: 1rem 4rem;
-  }
-
   .modal-btns {
     position: absolute;
     bottom: 1rem;
@@ -35,7 +21,19 @@ body {
   .btn--confirm {
     background-color: $primary;
   }
-  .btn--toggle i {
-    color: $primary;
+  .btn--wishlist {
+    border-radius: 2.4rem;
+    border: 1px solid $mediumGray;
+    width: 100%;
+    padding: 0.5rem 0;
+    font-size: 1.4rem;
+    color: $mediumGray;
+  }
+  .btn--cart {
+    background-color: $secondary;
+    color: white;
+    font-size: 1.6rem;
+    padding: 1rem;
+    border-radius: 2.8rem;
   }
 }

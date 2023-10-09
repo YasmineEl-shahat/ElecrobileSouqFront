@@ -11,7 +11,6 @@ const Rating = ({ ratingsAverage }) => {
         return (
           <FaStar
             key={index}
-            className="star"
             color={ratingValue <= coloredStars ? "#ffc045" : "#DDE1E8"}
             size={16}
           />
