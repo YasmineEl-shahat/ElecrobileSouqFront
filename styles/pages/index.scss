@@ -3,14 +3,17 @@
 
 .head{
     background-color: #0035660F;
-    padding: 2rem;
+   // padding: 2rem;
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
 
 h3 {
     text-decoration: underline;
+    text-underline-offset: 1rem;
     text-decoration-color: $primary;
+    margin: 2rem;
+    padding: 2rem;
   
   }
   .topProductContainer{
@@ -43,13 +46,39 @@ h3 {
 
 .biddingContainer{
     background-image: linear-gradient(to right, #00356617 , #FF600017);
-    // display: flex;
+    display: flex;
     // flex-direction: row;
     //  align-items: center;
     //  justify-content: center;
      // border-radius: 1rem;
-    
-     padding: 2rem;
+  
+  }
+  .biddings{
+    background-color: $white;
+width: 130rem;
+height: 30rem;
+border-radius: 2.5rem;
+margin-left: 3rem;
+margin-right: 3rem;
+margin-bottom: 5rem;
+display: flex;
+align-items: center;
+//justify-content: center;
+
+  }
+  .bidding-card{
+    background-color: $white;
+    border: 0.1rem solid #EEF0F4;
+    border-radius: 2rem;
+    width: 20rem;
+    height: 25rem;
+    margin: 2rem;
+
+  }
+  .bidding-name{
+    color: $darkGray;
+  }
+  .bidding-image{
 
   }
 
@@ -61,7 +90,7 @@ h3 {
   justify-content: center;
   // border-radius: 1rem;
  
-  padding: 3rem;
+ // padding: 3rem;
 }
  .card{
   position: relative;
@@ -102,6 +131,10 @@ right: 1rem;
     justify-content: center;
     background-color: $white;
     margin: 2rem;
+    padding: 2rem;
+  }
+  .brand{
+    margin: 2rem;
   }
 
   .firstOrder{
@@ -119,4 +152,6 @@ position: relative;
     color: $white;
     background-color: $white;
     right: 2rem;
+    bottom: 1.5rem;
+    padding: 0.5rem;
   }

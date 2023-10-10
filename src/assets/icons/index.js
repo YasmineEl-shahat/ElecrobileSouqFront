@@ -11,7 +11,7 @@ import {
 } from "react-icons/ai";
 import { MdLanguage } from "react-icons/md";
 import { FaFacebookF, FaStar } from "react-icons/fa6";
-import { BsList,BsFillArrowRightCircleFill } from "react-icons/bs";
+import { BsFillArrowRightCircleFill } from "react-icons/bs";
 
 export const ArrowIcon=BsFillArrowRightCircleFill;
 import { BsList, BsFillHeartFill } from "react-icons/bs";

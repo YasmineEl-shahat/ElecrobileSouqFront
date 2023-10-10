@@ -16,7 +16,7 @@ import 'swiper/css/scrollbar';
 
 import { api_url } from "../config/config";
 import { httpJson } from "../config/http";
-import { getProduct, getProducts , getBrands} from "./api/products";
+import { getProduct, getProducts , getBrands , getBiddings} from "./api/products";
 import {getCategories,getCategory} from "./api/categories";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -27,8 +27,8 @@ const Home = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [brands,setBrands]= useState([]);
-  
-  //const { limit } = router.query;
+  const [biddings,setBiddings]= useState([]);
+ 
   useEffect(() => {
     
     getProducts(2)
@@ -58,6 +58,7 @@ const Home = () => {
       .catch((error) => {
         console.log(error);
      });
+     
     },[]);
   return (
     <>
@@ -114,6 +115,23 @@ const Home = () => {
      <div className="biddingContainer">
       <div className="">
       <h3 className="orangeText">Bidding Products</h3>
+      <div className="biddings">
+      {biddings.map((item)=> (
+       <div className="bidding-card">
+       <p className="bidding-name">{item.name}</p>
+          <img
+          className="bidding-image"
+          src={image_url+item.image}
+          width={150}
+          height={150}
+          alt="hi"
+          >
+          </img >
+          {/* <div ><ArrowIcon className="arrow"/> </div> */}
+          </div>
+       
+      ))}
+     </div>
 
       </div>
       </div>
@@ -147,7 +165,7 @@ const Home = () => {
        <div className="">
       
           <img
-          className=""
+          className="brand"
           src={image_url+item.image}
           width={150}
           height={150}
@@ -163,7 +181,7 @@ const Home = () => {
      <div className="">
      <h3 className="orangeText">BestSellers</h3>
      <div className="brands-container">
-      {brands.map((item)=> (
+      {/* {brands.map((item)=> (
        <div className="">
       
           <img
@@ -176,13 +194,13 @@ const Home = () => {
           </img >
           </div>
        
-      ))}
+      ))} */}
      </div>
      </div>
      <div className="">
      <h3 className="orangeText">Big Deals</h3>
      <div className="brands-container">
-      {brands.map((item)=> (
+      {/* {brands.map((item)=> (
        <div className="">
       
           <img
@@ -195,7 +213,7 @@ const Home = () => {
           </img >
           </div>
        
-      ))}
+      ))} */}
      </div>
      </div>
 

@@ -13,3 +13,7 @@ export async function getProduct(id) {
 export async function getBrands() {
   return await httpJson.get(`${api_url}/brands`);
 }
+
+export async function getBiddings() {
+  return await httpJson.get(`${api_url}/biddings`);
+}
