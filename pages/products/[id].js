@@ -129,6 +129,12 @@ const Product = () => {
   const decreaseQuantity = () => {
     if (quantity > 1) setQuantity(quantity - 1);
   };
+
+  const dateOptions = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  };
   return (
     <div className="d-flex justify-content-center mb-5">
       <main className="mainContainer">
@@ -301,8 +307,8 @@ const Product = () => {
                   label: "reviews",
                   content: (
                     <section className="reviews-wrapper">
-                      <article className="row">
-                        <div className="col-6 preview">
+                      <article className="row preview">
+                        <div className="col-6">
                           <span className="rate-average">
                             {product?.ratingsAverage}
                           </span>
@@ -311,17 +317,49 @@ const Product = () => {
                           </span>
                         </div>
                         <div className="col-6">
+                          <p className="rate-average">
+                            <b>Add Your Review</b>
+                          </p>
                           <AddRate rating={rating} setRating={setRating} />
+                          <button
+                            className="btn--primary"
+                            disabled={rating < 1}
+                            onClick={() => console.log(rating)}
+                          >
+                            Add a Review
+                          </button>
                         </div>
                       </article>
 
                       <hr className="mx-2" />
                       {product?.reviews.map((review) => (
-                        <div key={review._id} className="my-4">
-                          <Rating ratingsAverage={review.rating} />
-                          <pre className="rate-quantity mt-2">
-                            {review.review}
-                          </pre>
+                        <div
+                          key={review._id}
+                          className="d-flex align-items-center my-4 review"
+                        >
+                          <article className="me-2 d-flex flex-column align-items-center">
+                            <img
+                              src={image_url + review?.user?.image}
+                              width={50}
+                              height={50}
+                              className=""
+                            />
+                            <p className="rate-average text-capitalize ">
+                              {review?.user?.name}
+                            </p>
+                            <p className="rate-quantity">
+                              {new Date(review?.updatedAt).toLocaleString(
+                                "en-US",
+                                dateOptions
+                              )}
+                            </p>
+                          </article>
+                          <div>
+                            <Rating ratingsAverage={review.rating} />
+                            <pre className="rate-quantity mt-2">
+                              {review.review}
+                            </pre>
+                          </div>
                         </div>
                       ))}
                     </section>
