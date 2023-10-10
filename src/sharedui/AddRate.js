@@ -18,9 +18,7 @@ function AddRate({ rating, setRating }) {
     <div
       className="starRating"
       onMouseOut={() => hoverOver(null)}
-      onClick={() =>
-        setRating(event.target.getAttribute("star-id") || this.state.rating)
-      }
+      onClick={() => setRating(event.target.getAttribute("star-id") || rating)}
       onMouseOver={hoverOver}
     >
       {Array.from({ length: 5 }, (v, i) => (
