@@ -135,16 +135,31 @@
 }
 
 .reviews-wrapper {
-  .rate-average {
-    font-size: 2rem;
-  }
-  .rate-quantity {
-    font-size: $MediumFont;
-  }
   hr {
     color: $lightGray;
   }
   .preview {
-    border-right: 1px solid $light-border-color;
+    div {
+      &:first-of-type {
+        border-right: 1px solid $light-border-color;
+      }
+    }
+
+    .rate-average {
+      font-size: 2rem;
+    }
+    .rate-quantity {
+      font-size: $MediumFont;
+    }
+  }
+  .review {
+    article {
+      img {
+        border-radius: 50%;
+      }
+    }
+    &:not(:last-of-type) {
+      border-bottom: 1px solid $light-border-color;
+    }
   }
 }
