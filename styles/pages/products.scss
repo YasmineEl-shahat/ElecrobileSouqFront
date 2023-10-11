@@ -15,17 +15,16 @@
 
 .rate-quantity {
   color: $mediumGray;
-  font-size: 1.4rem;
+  font-size: $smallFont;
 }
 .rate-average {
   color: $darkGray;
-  font-size: 1.4rem;
+  font-size: $smallFont;
   margin: 0 0.8rem;
 }
 
 .product-choose-wrapper {
   @include flexBet;
-  flex-wrap: wrap;
 
   & > div {
     width: 25vw;

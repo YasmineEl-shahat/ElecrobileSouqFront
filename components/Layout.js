@@ -14,11 +14,12 @@ const Layout = ({ title, children }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <Navbar />
-     <CategoriesNav />
+      <div className="navbarContainer">
+        <Navbar />
+        <CategoriesNav />
+      </div>
       {children}
-      <Footer/>
-     
+      <Footer />
     </>
   );
 };
