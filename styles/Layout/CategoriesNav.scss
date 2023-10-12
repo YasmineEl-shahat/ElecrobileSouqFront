@@ -1,69 +1,30 @@
 @import "../abstracts/variables.scss";
 @import "../abstracts/mixins.scss";
-.secondNav{
-    background-color: $blue;
-height: 2.5rem;
-border-radius: 2rem;
-//color: $white;
 
-}
-.categorie{
-    height: 2.5rem;
-   width: 100%;
-    color: $white;
-   
- display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: center;
-//position: relative;
-//z-index: 100;
+.categories-nav {
+  background-color: $blue;
+  border-radius: 2rem;
+  color: $white;
+  font-size: $smallFont;
 
-}
-ul{
-    list-style: none;
-    // 
-  //  margin-bottom: 0;
-    
-}
-.list{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    text-align: center;
-}
-li{text-decoration: none;}
-.categories{
-    height: 2.5rem;
-       padding: 2rem;
-       text-align: center;
-       @include mQ(971px)
-    {
-        padding: 1rem;
+  .mainContainer,
+  .list {
+    @include flexCenter;
+    .category {
+      cursor: pointer;
+      padding: 0.8rem 2rem;
+
+      border: 0.1rem solid $primary;
+      border-top: none;
+      border-bottom: none;
+
+      &:hover {
+        background-color: $secondary;
+      }
+      @include mQ(477px) {
+        font-size: 1.2rem;
+        padding: 0.5rem 1rem;
+      }
     }
-    @include mQ(752px)
-    {padding: 0.5rem;}
-    //margin-top: 1rem;
-
-color: $white;
-
-border: 0.1rem solid $primary;
-height: 2.5rem;
-padding-top: 0.5rem;
-&:hover{
-    background-color: $secondary;
+  }
 }
-}
-// li a{
-//     height: 2.5rem;
-//     padding: 2rem;
-//     text-align: center;
-//     @include mQ(971px)
-//     {
-//         padding: 1rem;
-//     }
-//     @include mQ(752px)
-//     {padding: 0.5rem;}
-//     //margin-top: 1rem;
-// }
-

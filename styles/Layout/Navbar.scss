@@ -11,6 +11,7 @@ body {
     color: $blue;
 
     .search-nav {
+      font-size: $smallFont;
       padding: 2rem 0;
       background-color: white;
       @include flexBet;
@@ -24,6 +25,7 @@ body {
       }
       @include mQ(477px) {
         justify-content: center;
+        font-size: 1.2rem;
         .search-form {
           margin-bottom: 1rem;
         }
@@ -38,21 +40,25 @@ body {
       .search-form {
         @include flexCenter;
         border: 0.1rem solid $blue;
-        border-radius: 3rem;
+        border-radius: 2rem;
 
         .search {
           width: 20vw;
           border-right: 1px solid $lightGray;
-          font-size: $smallFont;
-          padding: 0.4rem 1.2rem;
+          @media screen and(max-width:477px) and(min-width:290px) {
+            width: 100px;
+          }
+          padding: 0.3rem 1.2rem;
         }
         .search-category {
           position: relative;
           padding-left: 1rem;
           margin-right: 1rem;
           cursor: pointer !important;
-          padding: 0.4rem 1.2rem;
-
+          padding: 0.3rem 1.2rem;
+          @include mQ(477px) {
+            padding: 0.2rem;
+          }
           select {
             border: 0.1rem solid white;
             color: $secondary;
@@ -60,6 +66,10 @@ body {
             margin-right: 2rem;
             cursor: pointer !important;
             box-shadow: none !important;
+            @include mQ(477px) {
+              font-size: 1.2rem;
+              margin-right: 0.5rem;
+            }
           }
           .dropdown-arrow {
             position: absolute;
@@ -77,8 +87,8 @@ body {
           height: 100%;
           background-color: $secondary;
           color: white;
-          padding: 0.4rem 1.2rem;
-          border-radius: 0px 3rem 3rem 0px;
+          padding: 0.3rem 1.2rem;
+          border-radius: 0px 2rem 2rem 0px;
         }
       }
       .icons-wrapper {
@@ -90,7 +100,6 @@ body {
           margin-right: 2rem;
         }
         span {
-          font-size: $smallFont;
           margin-left: 0.5rem;
         }
       }

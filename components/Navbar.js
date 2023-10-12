@@ -7,10 +7,24 @@ import {
   CartIcon,
 } from "../src/assets/icons";
 import Image from "next/image";
+import { getCategories } from "../pages/api/categories";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    getCategories()
+      .then((res) => {
+        setCategories(res.data.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   return (
-    <nav className="d-flex justify-content-center ">
+    <nav className="d-flex justify-content-center">
       <div className="mainContainer search-nav">
         <span className="logo-container">
           <List size={20} />
@@ -30,9 +44,11 @@ const Navbar = () => {
               <option value="all" default>
                 All Categories
               </option>
-              <option value="category1">Category 1</option>
-              <option value="category2">Category 2</option>
-              <option value="category3">Category 3</option>
+              {categories?.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
             </select>
             <div className="dropdown-arrow"></div>
           </label>
