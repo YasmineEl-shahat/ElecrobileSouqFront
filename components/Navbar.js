@@ -26,9 +26,8 @@ const Navbar = () => {
   return (
     <nav className="d-flex justify-content-center">
       <div className="mainContainer search-nav">
-        <span className="logo-container">
+        <span className="d-flex logo-container">
           <List size={20} />
-
           <Link href="/" passHref>
             <Image src="/assets/logo.png" width={120} height={20} alt="logo" />
           </Link>

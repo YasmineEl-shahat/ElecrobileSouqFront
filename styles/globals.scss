@@ -107,11 +107,16 @@ html {
     button {
       cursor: pointer;
     }
-    .addWrapper {
-      @include flexBet;
-      align-items: center;
-      margin-bottom: 1rem;
-      font-size: $smallFont;
+    .dropdown-arrow {
+      position: absolute;
+      top: 50%;
+      right: 5px;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-top: 6px solid $secondary;
+      border-right: 4px solid transparent;
+      border-left: 4px solid transparent;
     }
   }
 }

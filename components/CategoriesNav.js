@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getCategories } from "../pages/api/categories";
 import { useEffect, useState } from "react";
 
@@ -19,9 +20,29 @@ const CategoriesNav = () => {
       <div className="mainContainer">
         <ul className="list">
           {categories?.map((category) => (
-            <li className="category" key={category?.id}>
-              {category?.name}
-            </li>
+            <Link
+              key={category?.id}
+              href={`/search?category=${category?.id}`}
+              passHref
+            >
+              <li className="category">
+                {category?.name}
+                <div className="dropdown-arrow"></div>
+                {category?.subCategories.length > 0 && (
+                  <ul className="subcategories">
+                    {category?.subCategories?.map((subcategory) => (
+                      <Link
+                        key={subcategory?.id}
+                        href={`/search?category=${category?.id}&sub-category=${subcategory?.id}`}
+                        passHref
+                      >
+                        <li className="subcategory">{subcategory?.name}</li>
+                      </Link>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            </Link>
           ))}
         </ul>
       </div>

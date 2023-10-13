@@ -12,14 +12,41 @@
     @include flexCenter;
     .category {
       cursor: pointer;
-      padding: 0.8rem 2rem;
-
+      padding: 0.8rem 4rem;
       border: 0.1rem solid $primary;
       border-top: none;
       border-bottom: none;
+      position: relative;
+      .dropdown-arrow {
+        right: 2.5rem;
+        border-top: 4px solid $white;
+      }
+      .subcategories {
+        background-color: $blue;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        display: none;
+        min-width: 100%;
+        padding: 0.6rem;
+        border-radius: 0 0 0.4rem 0.4rem;
 
+        .subcategory {
+          cursor: pointer;
+          padding: 0.4rem 0.8rem;
+          &:not(:first-child) {
+            border-top: 0.1rem solid $primary;
+          }
+          &:hover {
+            background-color: $secondary;
+          }
+        }
+      }
       &:hover {
         background-color: $secondary;
+        .subcategories {
+          display: block;
+        }
       }
       @include mQ(477px) {
         font-size: 1.2rem;

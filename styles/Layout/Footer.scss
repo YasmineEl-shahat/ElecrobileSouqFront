@@ -2,40 +2,29 @@
 @import "../abstracts/mixins.scss";
 
 footer {
-  display: flex;
-  flex-direction: column;
-}
-.main-footer {
-  color: $blue;
-  background-image: linear-gradient(
-    70deg,
-    #03366521 30%,
-    #dee5eb 50%,
-    #f65f0403 60%,
-    #f65f0403 70%,
-    #ffffff 80%
+  background: linear-gradient(
+    92deg,
+    rgba(3, 54, 101, 0.13) 6.65%,
+    rgba(246, 95, 4, 0.01) 98.64%
   );
-  //padding-top: 3rem;
-  //position: relative;
-  //bottom: 0;
-  width: 100%;
-  padding: 2rem;
-}
-.big-logo {
-  font-size: large;
-}
-.icons {
-  //margin: 2rem;
-  display: flex;
-  flex-direction: row;
-  // align-items:flex-start;
-  // justify-content: center;
-}
-.footerIcons {
-  margin-right: 1rem;
-}
-.copy {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
+  font-size: $smallFont;
+  color: $mediumGray;
+  h4 {
+    color: $darkGray;
+    font-size: 1.6rem;
+    font-weight: 600;
+    line-height: $HeadLineSpacing;
+  }
+  .icons-wrapper {
+    margin-top: 2rem;
+    a {
+      margin-right: 2rem;
+    }
+  }
+  .links {
+    p {
+      cursor: pointer;
+    }
+  }
 }

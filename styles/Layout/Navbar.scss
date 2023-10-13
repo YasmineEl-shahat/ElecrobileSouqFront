@@ -7,6 +7,16 @@ body {
     z-index: 200;
     top: 0px;
   }
+  .logo-container {
+    svg {
+      margin-right: 2rem;
+    }
+    img,
+    svg {
+      cursor: pointer;
+    }
+  }
+
   nav {
     color: $blue;
 
@@ -28,12 +38,6 @@ body {
         font-size: 1.2rem;
         .search-form {
           margin-bottom: 1rem;
-        }
-      }
-      .logo-container {
-        @include flexCenter;
-        svg {
-          margin-right: 2rem;
         }
       }
 
@@ -70,17 +74,6 @@ body {
               font-size: 1.2rem;
               margin-right: 0.5rem;
             }
-          }
-          .dropdown-arrow {
-            position: absolute;
-            top: 50%;
-            right: 5px;
-            transform: translateY(-50%);
-            width: 0;
-            height: 0;
-            border-top: 6px solid $secondary;
-            border-right: 4px solid transparent;
-            border-left: 4px solid transparent;
           }
         }
         button {
