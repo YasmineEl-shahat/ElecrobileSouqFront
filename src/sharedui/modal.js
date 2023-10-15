@@ -4,7 +4,7 @@ const CustomModal = ({ isModalOpen, handleCancel, children }) => {
   const customStyles = {
     overlay: {
       backgroundColor: "rgba(0, 0, 0, 0.20)",
-      zIndex: 2,
+      zIndex: 3,
     },
     content: {
       top: "50%",
