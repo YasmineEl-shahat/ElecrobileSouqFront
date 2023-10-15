@@ -17,6 +17,7 @@ import {
 import Image from "next/image";
 import Tab from "../../src/sharedui/Tab";
 import AddRate from "../../src/sharedui/AddRate";
+import { getRatingReviews } from "../api/reviews";
 
 const Product = () => {
   const router = useRouter();
@@ -33,49 +34,83 @@ const Product = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [rating, setRating] = useState(0);
+  const [ratingReviews, setRatingReviews] = useState(null);
 
   useEffect(() => {
-    if (id !== undefined)
+    if (id !== undefined) {
       getProduct(id)
         .then((response) => {
           // extracting data and setting variant
           const data = response.data.data.data;
-          console.log(data);
+
           setProduct(data);
           setSelectedVariant(data.variants[0]);
 
           // setting price
-          setPrice(data.price + data.variants[0].extraPrice);
-          if (data?.priceDiscount?.type == "fixed")
-            setTotalPrice(
-              data.price +
-                data.variants[0].extraPrice -
-                data?.priceDiscount?.value
-            );
-          else
-            setTotalPrice(
-              data.price +
-                data.variants[0].extraPrice -
-                (data?.priceDiscount?.value *
-                  (data.price + data.variants[0].extraPrice)) /
-                  100
-            );
+          if (data.variants[0]?.extraPrice) {
+            setPrice(data.price + data.variants[0]?.extraPrice);
+            if (data?.priceDiscount?.type == "fixed")
+              setTotalPrice(
+                data.price +
+                  data.variants[0]?.extraPrice -
+                  data?.priceDiscount?.value
+              );
+            else
+              setTotalPrice(
+                data.price +
+                  data.variants[0]?.extraPrice -
+                  (data?.priceDiscount?.value *
+                    (data.price + data.variants[0]?.extraPrice)) /
+                    100
+              );
+          } else {
+            setPrice(data.price);
+            setTotalPrice(data.price);
+          }
 
           // setting color
-          setSelectedColor(data.variants[0].color);
-          setColors(data.variants.map((variant) => variant.color));
+          setSelectedColor(data.variants[0]?.color);
+          setColors(data?.variants?.map((variant) => variant?.color));
 
           //  setting image
-          setSelectedImg(image_url + data.variants[0].imageCover);
-          const images = data.variants[0].images.map((image) => {
-            return image_url + image;
-          });
-          setImages([image_url + data.variants[0].imageCover, ...images]);
+          setSelectedImg(image_url + data.variants[0]?.imageCover);
+          let images = [];
+          if (data?.variants[0]?.images)
+            images = data?.variants[0]?.images?.map((image) => {
+              return image_url + image;
+            });
+          setImages([image_url + data.variants[0]?.imageCover, ...images]);
           setLoading(false);
         })
         .catch((error) => {
           console.log(error);
         });
+
+      // setRating review
+      getRatingReviews(id)
+        .then((res) => {
+          const reviewData = res?.data?.data?.ratingReviews;
+          let reviews = [];
+          for (let i = 5; i > 0; i--) {
+            const review = reviewData.filter(
+              (review) => review.rating == i
+            )?.[0];
+            if (review)
+              reviews.push({
+                rate: i,
+                quantity: review.nunmberOfRating,
+              });
+            else
+              reviews.push({
+                rate: i,
+                quantity: 0,
+              });
+          }
+          setRatingReviews(reviews);
+        })
+        .catch((error) => console.log(error));
+    }
+
     // eslint-disable-next-line
   }, [id]);
 
@@ -98,17 +133,17 @@ const Product = () => {
     setImages([image_url + variant.imageCover, ...images]);
 
     // price
-    setPrice(product.price + variant.extraPrice);
+    setPrice(product.price + variant?.extraPrice);
     if (product?.priceDiscount?.type == "fixed")
       setTotalPrice(
-        product.price + variant.extraPrice - product?.priceDiscount?.value
+        product.price + variant?.extraPrice - product?.priceDiscount?.value
       );
     else
       setTotalPrice(
         product.price +
-          variant.extraPrice -
+          variant?.extraPrice -
           (product?.priceDiscount?.value *
-            (product.price + variant.extraPrice)) /
+            (product.price + variant?.extraPrice)) /
             100
       );
   };
@@ -152,14 +187,17 @@ const Product = () => {
                   </Link>
                 </li>
               )}
-              <li className="breadcrumb-item ">
-                <Link
-                  href={`/search?category=${product?.subCategory?.category?.id}&sub-category=${product?.subCategory?.id}`}
-                  passHref
-                >
-                  {product?.subCategory?.name}
-                </Link>
-              </li>
+              {product?.subCategory && (
+                <li className="breadcrumb-item ">
+                  <Link
+                    href={`/search?category=${product?.subCategory?.category?.id}&sub-category=${product?.subCategory?.id}`}
+                    passHref
+                  >
+                    {product?.subCategory?.name}
+                  </Link>
+                </li>
+              )}
+
               <li className="breadcrumb-item active">{product?.name}</li>
             </ol>
 
@@ -308,15 +346,39 @@ const Product = () => {
                   content: (
                     <section className="reviews-wrapper">
                       <article className="row preview">
-                        <div className="col-6">
+                        <div className="col-12 col-sm-6">
                           <span className="rate-average">
                             {product?.ratingsAverage}
                           </span>
                           <span className="rate-quantity">
                             ({product?.ratingsQuantity} reviews)
                           </span>
+
+                          <section>
+                            {ratingReviews?.map((rateReview, index) => (
+                              <div
+                                key={"review" + index}
+                                className="d-flex align-items-center"
+                              >
+                                <Rating ratingsAverage={rateReview.rate} />
+                                <div className="progress">
+                                  <div
+                                    className="progress-bar"
+                                    style={{
+                                      width:
+                                        (rateReview.quantity /
+                                          product?.ratingsQuantity) *
+                                          100 +
+                                        "%",
+                                    }}
+                                  ></div>
+                                </div>
+                                {rateReview.quantity}
+                              </div>
+                            ))}
+                          </section>
                         </div>
-                        <div className="col-6">
+                        <div className="col-12 col-sm-6 mt-2 mt-md-0">
                           <p className="rate-average">
                             <b>Add Your Review</b>
                           </p>

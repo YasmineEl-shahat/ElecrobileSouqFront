@@ -138,7 +138,7 @@
     color: $lightGray;
   }
   .preview {
-    div {
+    & > div {
       &:first-of-type {
         border-right: 1px solid $light-border-color;
       }
@@ -159,6 +159,19 @@
     }
     &:not(:last-of-type) {
       border-bottom: 1px solid $light-border-color;
+    }
+  }
+  section {
+    font-size: $smallFont;
+    color: $mediumGray;
+    margin-top: 1rem;
+    .progress {
+      min-width: 30%;
+      margin: 0 1.5rem;
+      .progress-bar {
+        border-radius: 4px;
+        background-color: $primary;
+      }
     }
   }
 }
