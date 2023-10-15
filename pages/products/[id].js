@@ -14,12 +14,18 @@ import {
   MinusIcon,
   PlusIcon,
 } from "../../src/assets/icons";
-import Image from "next/image";
 import Tab from "../../src/sharedui/Tab";
 import AddRate from "../../src/sharedui/AddRate";
 import { getRatingReviews } from "../api/reviews";
+import CustomModal from "../../src/sharedui/modal";
+import { savedToken } from "../../config/http";
 
 const Product = () => {
+  const dateOptions = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  };
   const router = useRouter();
   const { id, activeTab } = router.query;
 
@@ -35,6 +41,7 @@ const Product = () => {
   const [quantity, setQuantity] = useState(1);
   const [rating, setRating] = useState(0);
   const [ratingReviews, setRatingReviews] = useState(null);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   useEffect(() => {
     if (id !== undefined) {
@@ -165,274 +172,306 @@ const Product = () => {
     if (quantity > 1) setQuantity(quantity - 1);
   };
 
-  const dateOptions = {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
+  const addToWishList = () => {
+    if (!savedToken) setIsLoginModalOpen(true);
+    else {
+    }
   };
+  const addToCart = () => {
+    if (!savedToken) setIsLoginModalOpen(true);
+    else {
+    }
+  };
+  const addRate = () => {
+    if (!savedToken) setIsLoginModalOpen(true);
+    else {
+    }
+  };
+
   return (
-    <div className="d-flex justify-content-center mb-5">
-      <main className="mainContainer">
-        {!loading && (
-          <>
-            {/* sub header */}
-            <ol className="breadcrumb my-5">
-              {product?.subCategory?.category && (
-                <li className="breadcrumb-item">
-                  <Link
-                    href={`/search?category=${product?.subCategory?.category?.id}`}
-                    passHref
-                  >
-                    {product?.subCategory?.category?.name}
-                  </Link>
-                </li>
-              )}
-              {product?.subCategory && (
-                <li className="breadcrumb-item ">
-                  <Link
-                    href={`/search?category=${product?.subCategory?.category?.id}&sub-category=${product?.subCategory?.id}`}
-                    passHref
-                  >
-                    {product?.subCategory?.name}
-                  </Link>
-                </li>
-              )}
-
-              <li className="breadcrumb-item active">{product?.name}</li>
-            </ol>
-
-            {/* Product Details */}
-            <section className="product-choose-wrapper">
-              <div>
-                <InnerImageZoom
-                  afterZoomIn={() => {
-                    changeZoom();
-                  }}
-                  src={`${images?.[0]}`}
-                  zoomSrc={`${images?.[0]}`}
-                  alt="prod"
-                  zoomType="click"
-                  zoomScale={1.5}
-                  width={410}
-                  height={500}
-                />
-                <section className="product-choose">
-                  {/* eslint-disable */}
-                  {images?.map((image, index) => (
-                    <img
-                      key={`image ${index}`}
-                      onClick={(e) => {
-                        changeImg(e);
-                      }}
-                      src={image}
-                      alt="product image"
-                      className={image == selectedImg && "selected"}
-                    />
-                  ))}
-                </section>
-              </div>
-
-              <div className="product-details">
-                <h6 className="mb-5">
-                  {product?.subCategory?.category && (
-                    <span>{product?.subCategory?.category?.name},</span>
-                  )}
-                  <span> {product?.subCategory?.name}</span>
-                </h6>
-                <h2 className="mb-5">{product?.name}</h2>
-                <article className="d-flex align-items-center">
-                  <Rating ratingsAverage={product?.ratingsAverage} />
-                  <span className="rate-average">
-                    {product?.ratingsAverage}
-                  </span>
-                  <span className="rate-quantity">
-                    ({product?.ratingsQuantity})
-                  </span>
-                </article>
-                <pre className="my-4 rate-quantity">
-                  {product?.description?.substring(0, 100)}
-                  {product?.description?.length > 100 && "..."}
-                </pre>
-
-                <h5 className="mb-4">
-                  <span className="rate-quantity">SKU : </span>
-                  <span className="rate-average"> {selectedVariant?.sku}</span>
-                </h5>
-
-                <h5 className="mb-4 rate-average mx-0">
-                  <b>Brand</b>
-                </h5>
-
-                <img
-                  width={100}
-                  height={70}
-                  className="brand mb-5"
-                  alt="brand"
-                  src={image_url + product?.brand?.image}
-                />
-
-                {colors?.length > 0 && (
-                  <>
-                    <h5 className="mb-4 rate-average mx-0">
-                      <b>Colors</b>
-                    </h5>
-                    <article className="d-flex">
-                      {colors.map((color) => (
-                        <div
-                          className="color"
-                          key={color}
-                          style={{ background: color }}
-                          onClick={() => changeColor(color)}
-                        >
-                          {color == selectedColor && (
-                            <CheckIcon
-                              size={20}
-                              style={{
-                                color: color != "white" && "white",
-                              }}
-                            />
-                          )}
-                        </div>
-                      ))}
-                    </article>
-                  </>
+    <>
+      <div className="d-flex justify-content-center mb-5">
+        <main className="mainContainer">
+          {!loading && (
+            <>
+              {/* sub header */}
+              <ol className="breadcrumb my-5">
+                {product?.subCategory?.category && (
+                  <li className="breadcrumb-item">
+                    <Link
+                      href={`/search?category=${product?.subCategory?.category?.id}`}
+                      passHref
+                    >
+                      {product?.subCategory?.category?.name}
+                    </Link>
+                  </li>
                 )}
-              </div>
-
-              <div className="p-4">
-                <button className="btn--wishlist mb-5">
-                  Wishlist <FilledHeartIcon />
-                </button>
-                {price !== totalPrice && (
-                  <h1 className="price prev-price">$ {price}</h1>
+                {product?.subCategory && (
+                  <li className="breadcrumb-item ">
+                    <Link
+                      href={`/search?category=${product?.subCategory?.category?.id}&sub-category=${product?.subCategory?.id}`}
+                      passHref
+                    >
+                      {product?.subCategory?.name}
+                    </Link>
+                  </li>
                 )}
-                <h1 className="price total-price ">$ {totalPrice}</h1>
 
-                <section className="quantity-container my-4">
-                  <button
-                    onClick={() => decreaseQuantity()}
-                    disabled={quantity === 1}
-                  >
-                    <MinusIcon />
-                  </button>
-                  {quantity}
-                  <button
-                    onClick={() => increaseQuantity()}
-                    disabled={quantity === selectedVariant?.quantity}
-                  >
-                    <PlusIcon />
-                  </button>
-                </section>
+                <li className="breadcrumb-item active">{product?.name}</li>
+              </ol>
 
-                <button className="btn--cart">
-                  Add to Cart <CartIcon />
-                </button>
-              </div>
-            </section>
+              {/* Product Details */}
+              <section className="product-choose-wrapper">
+                <div>
+                  <InnerImageZoom
+                    afterZoomIn={() => {
+                      changeZoom();
+                    }}
+                    src={`${images?.[0]}`}
+                    zoomSrc={`${images?.[0]}`}
+                    alt="prod"
+                    zoomType="click"
+                    zoomScale={1.5}
+                    width={410}
+                    height={500}
+                  />
+                  <section className="product-choose">
+                    {/* eslint-disable */}
+                    {images?.map((image, index) => (
+                      <img
+                        key={`image ${index}`}
+                        onClick={(e) => {
+                          changeImg(e);
+                        }}
+                        src={image}
+                        alt="product image"
+                        className={image == selectedImg && "selected"}
+                      />
+                    ))}
+                  </section>
+                </div>
 
-            {/* description and reviews */}
-            <Tab
-              propActiveTab={activeTab}
-              id={id}
-              tabs={[
-                {
-                  label: "description",
-                  content: (
-                    <pre className="rate-quantity">{product?.description}</pre>
-                  ),
-                },
-                {
-                  label: "reviews",
-                  content: (
-                    <section className="reviews-wrapper">
-                      <article className="row preview">
-                        <div className="col-12 col-sm-6">
-                          <span className="rate-average">
-                            {product?.ratingsAverage}
-                          </span>
-                          <span className="rate-quantity">
-                            ({product?.ratingsQuantity} reviews)
-                          </span>
+                <div className="product-details">
+                  <h6 className="mb-5">
+                    {product?.subCategory?.category && (
+                      <span>{product?.subCategory?.category?.name},</span>
+                    )}
+                    <span> {product?.subCategory?.name}</span>
+                  </h6>
+                  <h2 className="mb-5">{product?.name}</h2>
+                  <article className="d-flex align-items-center">
+                    <Rating ratingsAverage={product?.ratingsAverage} />
+                    <span className="rate-average">
+                      {product?.ratingsAverage}
+                    </span>
+                    <span className="rate-quantity">
+                      ({product?.ratingsQuantity})
+                    </span>
+                  </article>
+                  <pre className="my-4 rate-quantity">
+                    {product?.description?.substring(0, 100)}
+                    {product?.description?.length > 100 && "..."}
+                  </pre>
 
-                          <section>
-                            {ratingReviews?.map((rateReview, index) => (
-                              <div
-                                key={"review" + index}
-                                className="d-flex align-items-center"
-                              >
-                                <Rating ratingsAverage={rateReview.rate} />
-                                <div className="progress">
-                                  <div
-                                    className="progress-bar"
-                                    style={{
-                                      width:
-                                        (rateReview.quantity /
-                                          product?.ratingsQuantity) *
-                                          100 +
-                                        "%",
-                                    }}
-                                  ></div>
-                                </div>
-                                {rateReview.quantity}
-                              </div>
-                            ))}
-                          </section>
-                        </div>
-                        <div className="col-12 col-sm-6 mt-2 mt-md-0">
-                          <p className="rate-average">
-                            <b>Add Your Review</b>
-                          </p>
-                          <AddRate rating={rating} setRating={setRating} />
-                          <button
-                            className="btn--primary"
-                            disabled={rating < 1}
-                            onClick={() => console.log(rating)}
+                  <h5 className="mb-4">
+                    <span className="rate-quantity">SKU : </span>
+                    <span className="rate-average">
+                      {" "}
+                      {selectedVariant?.sku}
+                    </span>
+                  </h5>
+
+                  <h5 className="mb-4 rate-average mx-0">
+                    <b>Brand</b>
+                  </h5>
+
+                  <img
+                    width={100}
+                    height={70}
+                    className="brand mb-5"
+                    alt="brand"
+                    src={image_url + product?.brand?.image}
+                  />
+
+                  {colors?.length > 0 && (
+                    <>
+                      <h5 className="mb-4 rate-average mx-0">
+                        <b>Colors</b>
+                      </h5>
+                      <article className="d-flex">
+                        {colors.map((color) => (
+                          <div
+                            className="color"
+                            key={color}
+                            style={{ background: color }}
+                            onClick={() => changeColor(color)}
                           >
-                            Add a Review
-                          </button>
-                        </div>
-                      </article>
-
-                      <hr className="mx-2" />
-                      {product?.reviews.map((review) => (
-                        <div
-                          key={review._id}
-                          className="d-flex align-items-center my-4 review"
-                        >
-                          <article className="me-2 d-flex flex-column align-items-center">
-                            <img
-                              src={image_url + review?.user?.image}
-                              width={50}
-                              height={50}
-                              className=""
-                            />
-                            <p className="rate-average text-capitalize ">
-                              {review?.user?.name}
-                            </p>
-                            <p className="rate-quantity">
-                              {new Date(review?.updatedAt).toLocaleString(
-                                "en-US",
-                                dateOptions
-                              )}
-                            </p>
-                          </article>
-                          <div>
-                            <Rating ratingsAverage={review.rating} />
-                            <pre className="rate-quantity mt-2">
-                              {review.review}
-                            </pre>
+                            {color == selectedColor && (
+                              <CheckIcon
+                                size={20}
+                                style={{
+                                  color: color != "white" && "white",
+                                }}
+                              />
+                            )}
                           </div>
-                        </div>
-                      ))}
-                    </section>
-                  ),
-                },
-              ]}
-            />
-          </>
-        )}
-      </main>
-    </div>
+                        ))}
+                      </article>
+                    </>
+                  )}
+                </div>
+
+                <div className="p-4">
+                  <button
+                    className="btn--wishlist mb-5"
+                    onClick={addToWishList}
+                  >
+                    Wishlist <FilledHeartIcon />
+                  </button>
+                  {price !== totalPrice && (
+                    <h1 className="price prev-price">$ {price}</h1>
+                  )}
+                  <h1 className="price total-price ">$ {totalPrice}</h1>
+
+                  <section className="quantity-container my-4">
+                    <button
+                      onClick={() => decreaseQuantity()}
+                      disabled={quantity === 1}
+                    >
+                      <MinusIcon />
+                    </button>
+                    {quantity}
+                    <button
+                      onClick={() => increaseQuantity()}
+                      disabled={quantity === selectedVariant?.quantity}
+                    >
+                      <PlusIcon />
+                    </button>
+                  </section>
+
+                  <button className="btn--cart" onClick={addToCart}>
+                    Add to Cart <CartIcon />
+                  </button>
+                </div>
+              </section>
+
+              {/* description and reviews */}
+              <Tab
+                propActiveTab={activeTab}
+                id={id}
+                tabs={[
+                  {
+                    label: "description",
+                    content: (
+                      <pre className="rate-quantity">
+                        {product?.description}
+                      </pre>
+                    ),
+                  },
+                  {
+                    label: "reviews",
+                    content: (
+                      <section className="reviews-wrapper">
+                        <article className="row preview">
+                          <div className="col-12 col-sm-6">
+                            <span className="rate-average">
+                              {product?.ratingsAverage}
+                            </span>
+                            <span className="rate-quantity">
+                              ({product?.ratingsQuantity} reviews)
+                            </span>
+
+                            <section>
+                              {ratingReviews?.map((rateReview, index) => (
+                                <div
+                                  key={"review" + index}
+                                  className="d-flex align-items-center"
+                                >
+                                  <Rating ratingsAverage={rateReview.rate} />
+                                  <div className="progress">
+                                    <div
+                                      className="progress-bar"
+                                      style={{
+                                        width:
+                                          (rateReview.quantity /
+                                            product?.ratingsQuantity) *
+                                            100 +
+                                          "%",
+                                      }}
+                                    ></div>
+                                  </div>
+                                  {rateReview.quantity}
+                                </div>
+                              ))}
+                            </section>
+                          </div>
+                          <div className="col-12 col-sm-6 mt-2 mt-md-0">
+                            <p className="rate-average">
+                              <b>Add Your Review</b>
+                            </p>
+                            <AddRate rating={rating} setRating={setRating} />
+                            <button
+                              className="btn--primary"
+                              disabled={rating < 1}
+                              onClick={addRate}
+                            >
+                              Add a Review
+                            </button>
+                          </div>
+                        </article>
+
+                        <hr className="mx-2" />
+                        {product?.reviews.map((review) => (
+                          <div
+                            key={review._id}
+                            className="d-flex align-items-center my-4 review"
+                          >
+                            <article className="me-2 d-flex flex-column align-items-center">
+                              <img
+                                src={image_url + review?.user?.image}
+                                width={50}
+                                height={50}
+                                className=""
+                              />
+                              <p className="rate-average text-capitalize ">
+                                {review?.user?.name}
+                              </p>
+                              <p className="rate-quantity">
+                                {new Date(review?.updatedAt).toLocaleString(
+                                  "en-US",
+                                  dateOptions
+                                )}
+                              </p>
+                            </article>
+                            <div>
+                              <Rating ratingsAverage={review.rating} />
+                              <pre className="rate-quantity mt-2">
+                                {review.review}
+                              </pre>
+                            </div>
+                          </div>
+                        ))}
+                      </section>
+                    ),
+                  },
+                ]}
+              />
+            </>
+          )}
+        </main>
+      </div>
+      <CustomModal
+        isModalOpen={isLoginModalOpen}
+        handleCancel={() => setIsLoginModalOpen(false)}
+      >
+        <p className="text-center my-5 modal-text">
+          You are not login , Please Login
+        </p>
+        <Link href="/login" passHref>
+          <button className="btn--cart w-100">LOGIN</button>
+        </Link>
+      </CustomModal>
+    </>
   );
 };
 Product.getLayout = function getLayout(page) {

@@ -1,0 +1,18 @@
+@import "../abstracts/variables.scss";
+@import "../abstracts/mixins.scss";
+
+.modal-text {
+  color: $secondary;
+  font-size: $MediumFont;
+}
+.modal-content {
+  padding: 2rem;
+}
+@include mQ(400px) {
+  .modal-content {
+    padding: 1rem;
+  }
+  .modal-text {
+    font-size: $smallFont;
+  }
+}
