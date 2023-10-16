@@ -19,16 +19,8 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
-import { api_url } from "../config/config";
-import { httpJson } from "../config/http";
-import {
-  getProduct,
-  getProducts,
-  getBrands,
-  getBiddings,
-} from "./api/products";
+import { getProducts, getBrands, getBiddings } from "./api/products";
 import { getCategories, getCategory } from "./api/categories";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { image_url } from "../config/config";
 import Image from "next/image";
@@ -38,6 +30,8 @@ const Home = () => {
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
   const [biddings, setBiddings] = useState([]);
+  const [bestSellers, setBestSellers] = useState([]);
+  const [bigDeals, setBigDeals] = useState([]);
 
   useEffect(() => {
     getProducts(2)
@@ -69,7 +63,7 @@ const Home = () => {
   }, []);
   return (
     <>
-      {/* top product */}
+      {/* top product swiper */}
       <Swiper
         cssMode={true}
         navigation={true}
@@ -104,113 +98,104 @@ const Home = () => {
       </Swiper>
 
       {/* bidding products */}
-
-      <div className="biddingContainer">
-        <div className="">
-          <h3 className="orangeText">Bidding Products</h3>
-          <div className="biddings">
-            {biddings.map((item) => (
-              <div className="bidding-card">
-                <p className="bidding-name">{item.name}</p>
-                <img
-                  className="bidding-image"
-                  src={image_url + item.image}
-                  width={150}
-                  height={150}
-                  alt="hi"
-                ></img>
-                {/* <div ><ArrowIcon className="arrow"/> </div> */}
-              </div>
-            ))}
+      {biddings.length > 0 && (
+        <div className="d-flex justify-content-center biddingContainer mb-4">
+          <div className="mainContainer">
+            <h3 className="heading-text">Bidding Products</h3>
+            <div className="biddings">
+              {biddings.map((item) => (
+                <div className="bidding-card" key={item.id}>
+                  <p className="bidding-name">{item.name}</p>
+                  <Image
+                    className="bidding-image"
+                    src={image_url + item.image}
+                    width={150}
+                    height={150}
+                    alt="bidding product"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* categories */}
-      <div className="head">
-        <h3 className="orangeText">Categories</h3>
-        <div className="categories-container">
-          {categories.map((item) => (
-            <div className="card">
-              <p className="categories-name">{item.name}</p>
-              <img
-                className="categories-image"
-                src={image_url + item.image}
-                width={150}
-                height={150}
-                alt="hi"
-              ></img>
-              <div>
-                <ArrowIcon className="arrow" />{" "}
-              </div>
+      {categories.length > 0 && (
+        <div className="categoriesContainer d-flex justify-content-center">
+          <div className="mainContainer">
+            <h3 className="heading-text">Categories</h3>
+            <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-4 row-cols-md-3 g-4">
+              {categories.map((item) => (
+                <div key={item.id} className="col">
+                  <div className="card">
+                    <p className="category-name">{item.name}</p>
+                    <Image
+                      src={image_url + item.image}
+                      width={150}
+                      height={150}
+                      alt="category-image"
+                    />
+                    <button>
+                      <ArrowIcon className="arrow" />
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
-      </div>
+      )}
       {/* brands */}
-      <div className="">
-        <h3 className="orangeText">Popular Brands</h3>
-        <div className="brands-container">
-          {brands.map((item) => (
-            <div className="">
-              <img
-                className="brand"
-                src={image_url + item.image}
-                width={150}
-                height={150}
-                alt="hi"
-              ></img>
+      {brands.length > 0 && (
+        <div className="d-flex justify-content-center my-5">
+          <section className="mainContainer">
+            <h3 className="text-center mb-5 brand-heading">Popular Brands</h3>
+            <div className="brands-container row row-cols-1 row-cols-sm-2 row-cols-md-3  row-cols-lg-5 g-4">
+              {brands.map((item) => (
+                <div className="col" key={item.id}>
+                  <Image
+                    src={image_url + item.image}
+                    width={150}
+                    height={150}
+                    alt="brand"
+                  />
+                </div>
+              ))}
             </div>
-          ))}
+          </section>
         </div>
-      </div>
+      )}
 
-      <div className="">
-        <h3 className="orangeText">BestSellers</h3>
-        <div className="brands-container">
-          {/* {brands.map((item)=> (
-       <div className="">
-      
-          <img
-          className=""
-          src={image_url+item.image}
-          width={150}
-          height={150}
-          alt="hi"
-          >
-          </img >
+      {bestSellers.length > 0 && (
+        <div className="d-flex justify-content-center">
+          <div className="mainContainer">
+            <h3 className="heading-text">BestSellers</h3>
           </div>
-       
-      ))} */}
         </div>
-      </div>
-      <div className="">
-        <h3 className="orangeText">Big Deals</h3>
-        <div className="brands-container">
-          {/* {brands.map((item)=> (
-       <div className="">
-      
-          <img
-          className=""
-          src={image_url+item.image}
-          width={150}
-          height={150}
-          alt="hi"
-          >
-          </img >
-          </div>
-       
-      ))} */}
-        </div>
-      </div>
+      )}
 
-      <div className="firstOrder">
-        <span>
-          Subscribe to Our Newsletter - get a $20 Coupon for your first order!
-        </span>
-        <span className="email">
-          <input type="email" placeholder="enter your email"></input>
-        </span>
+      {bigDeals.length > 0 && (
+        <div className="d-flex justify-content-center">
+          <div className="mainContainer">
+            <h3 className="heading-text">Big Deals</h3>
+          </div>
+        </div>
+      )}
+
+      <div className="firstOrder d-flex justify-content-center py-4 mb-3">
+        <div className="mainContainer d-flex justify-content-between flex-wrap align-items-center">
+          <span>
+            Subscribe to Our Newsletter - get a $20 Coupon for your first order!
+          </span>
+          <form className="email-form">
+            <input
+              type="email"
+              className="text--global"
+              placeholder="Enter your email address"
+            ></input>
+          </form>
+        </div>
       </div>
     </>
   );

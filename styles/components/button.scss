@@ -22,6 +22,9 @@ body {
     font-size: 1.6rem;
     padding: 1rem 4rem;
     border-radius: 2.8rem;
+    @include mQ(678px) {
+      font-size: $smallFont;
+    }
   }
   .btn--primary {
     padding: 1rem 4rem;

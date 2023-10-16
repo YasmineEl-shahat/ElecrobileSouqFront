@@ -48,7 +48,7 @@ html {
     }
 
     &::-webkit-scrollbar-thumb {
-      background: linear-gradient($primary, transparent);
+      background: $primary;
       border-radius: 6px;
     }
 
