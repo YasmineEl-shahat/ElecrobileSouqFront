@@ -154,10 +154,11 @@ const Home = () => {
             <div className="brands-container row row-cols-1 row-cols-sm-2 row-cols-md-3  row-cols-lg-5 g-4">
               {brands.map((item) => (
                 <div className="col" key={item.id}>
-                  <Image
+                  <img
                     src={image_url + item.image}
-                    width={150}
-                    height={150}
+                    // width={150}
+                    // height={150}
+                    width={100}
                     alt="brand"
                   />
                 </div>
