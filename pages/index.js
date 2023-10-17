@@ -24,38 +24,27 @@ import { getCategories, getCategory } from "./api/categories";
 import { useEffect, useState } from "react";
 import { image_url } from "../config/config";
 import Image from "next/image";
-const Home = () => {
-  // const router = useRouter();
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [brands, setBrands] = useState([]);
+
+export const getServerSideProps = async () => {
+  let products = (await getProducts(2))?.data?.data?.data ?? [];
+  let categories = (await getCategories())?.data?.data?.data ?? [];
+  let brands = (await getBrands())?.data?.data?.data ?? [];
+  // let bestSellers = (await getBestSellers())?.data?.data?.data ?? [];
+  // let bigDeals = (await getBigDeals())?.data?.data?.data ?? [];
+  let bestSellers = [];
+  let bigDeals = [];
+
+  return {
+    props: { products, categories, brands, bestSellers, bigDeals },
+  };
+};
+const Home = ({ products, categories, brands, bestSellers, bigDeals }) => {
   const [biddings, setBiddings] = useState([]);
-  const [bestSellers, setBestSellers] = useState([]);
-  const [bigDeals, setBigDeals] = useState([]);
 
   useEffect(() => {
-    getProducts(2)
+    getBiddings()
       .then((response) => {
-        setProducts(response.data.data.data);
-        console.log(response.data.data.data);
-      })
-
-      .catch((error) => {
-        console.log(error);
-      });
-    getCategories()
-      .then((res) => {
-        setCategories(res.data.data.data);
-        console.log(res.data.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    getBrands()
-      .then((result) => {
-        setBrands(result.data.data.data);
-        console.log(result.data.data.data);
+        setBiddings(response?.data?.data?.data);
       })
       .catch((error) => {
         console.log(error);
