@@ -1,11 +1,16 @@
 import axios from "axios";
-import cookieCutter from "cookie-cutter";
 
 const ISSERVER = typeof window === "undefined";
 export let savedToken;
 
-if (!ISSERVER) {
-  savedToken = cookieCutter.get("auth");
+if (
+  !ISSERVER &&
+  localStorage.getItem("persist:root") &&
+  JSON.parse(localStorage.getItem("persist:root"))?.token
+) {
+  savedToken = JSON.parse(
+    JSON.parse(localStorage.getItem("persist:root"))?.token
+  );
 }
 
 const token = `Bearer ` + savedToken;

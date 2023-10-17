@@ -62,7 +62,7 @@ const Home = () => {
       });
   }, []);
   return (
-    <>
+    <main>
       {/* top product swiper */}
       <Swiper
         cssMode={true}
@@ -154,10 +154,9 @@ const Home = () => {
             <div className="brands-container row row-cols-1 row-cols-sm-2 row-cols-md-3  row-cols-lg-5 g-4">
               {brands.map((item) => (
                 <div className="col" key={item.id}>
-                  <img
+                  <Image
                     src={image_url + item.image}
-                    // width={150}
-                    // height={150}
+                    height={40}
                     width={100}
                     alt="brand"
                   />
@@ -198,12 +197,12 @@ const Home = () => {
           </form>
         </div>
       </div>
-    </>
+    </main>
   );
 };
 
 Home.getLayout = function getLayout(page) {
-  return <Layout title="home">{page}</Layout>;
+  return <Layout>{page}</Layout>;
 };
 
 export default Home;
