@@ -10,7 +10,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!isAuthenticated) router.push("/login");
+    if (!isAuthenticated) router.push("/auth/login");
     else {
       refreshToken()
         .then((res) => {
@@ -18,7 +18,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         })
         .catch((error) => {
           dispatch(logout());
-          router.push("/login");
+          router.push("/auth/login");
         });
     }
   }, []);
