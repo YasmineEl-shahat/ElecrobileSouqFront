@@ -1,9 +1,9 @@
-import Layout from "../../components/Layout";
+import Layout from "../components/Layout";
 
 export async function getServerSideProps() {
   return {
     props: {
-      publicRoute: true,
+      privateRoute: true,
     },
   };
 }
