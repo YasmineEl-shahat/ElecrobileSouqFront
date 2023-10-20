@@ -6,10 +6,14 @@
 .css-qbdosj-Input {
   font-size: $smallFont;
   @include placeholder-color(#bdc1caff);
-  color: $secondary;
 }
 
 .text--global {
   background-color: white;
   padding: 0.5rem 1rem;
+}
+
+.text--input {
+  border: 1px solid #003566;
+  border-radius: 0.9rem;
 }

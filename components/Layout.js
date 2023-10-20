@@ -4,7 +4,7 @@ import Header from "./Header";
 import CategoriesNav from "./CategoriesNav";
 import Footer from "./Footer";
 import Home from "../pages";
-const Layout = ({ title, children }) => {
+const Layout = ({ title, categories, children }) => {
   return (
     <>
       <Head>

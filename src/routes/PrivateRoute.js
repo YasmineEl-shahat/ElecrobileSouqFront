@@ -21,7 +21,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
           router.push("/auth/login");
         });
     }
-  }, []);
+    // eslint-disable-next-line
+  }, [isAuthenticated, router]);
 
   return <Component {...rest} />;
 };

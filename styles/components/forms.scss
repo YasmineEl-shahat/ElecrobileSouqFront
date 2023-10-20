@@ -1,0 +1,67 @@
+@import "../abstracts/variables.scss";
+@import "../abstracts/mixins.scss";
+
+.auth-tabs {
+  font-size: 2rem;
+  color: $blue;
+  border-bottom: 4px solid $blue;
+  margin-bottom: 1rem;
+  button {
+    margin-bottom: 1rem;
+    &:first-of-type {
+      margin-left: 5rem;
+    }
+    &:last-child {
+      margin-right: 5rem;
+    }
+    &.active {
+      &::after {
+        content: "";
+        display: block;
+        width: 10rem;
+        height: 7px;
+        border-radius: 10px 10px 0px 0px;
+        background-color: $secondary;
+        position: relative;
+        top: 1.4rem;
+      }
+    }
+  }
+  span {
+    display: inline-block;
+    margin: -1rem 5rem;
+    width: 3px;
+    height: 3rem;
+    background-color: $mediumGray;
+  }
+}
+.registration-form {
+  width: 20vw;
+  min-width: 280px;
+  padding: 1rem;
+  .text-danger {
+    font-size: 1.2rem;
+  }
+  input:not(.PhoneInputInput, [type="radio"]) {
+    width: 100%;
+  }
+  .control--container {
+    margin-bottom: 2rem;
+  }
+  .gender-container {
+    margin-bottom: 1rem;
+  }
+  .form-group {
+    position: relative;
+    i {
+      position: absolute;
+      top: 1.2rem;
+      right: 1rem;
+      cursor: pointer;
+    }
+  }
+}
+
+.field-error {
+  border: 1px solid #dc3545;
+}

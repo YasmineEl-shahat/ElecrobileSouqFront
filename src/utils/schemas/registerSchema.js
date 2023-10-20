@@ -1,6 +1,10 @@
 import * as yup from "yup";
 
-import { emailPattern, phonePattern } from "../validators/regexPattern";
+import {
+  emailPattern,
+  phonePattern,
+  passwordPattern,
+} from "../validators/regexPattern";
 export const schema = yup
   .object({
     firstName: yup.string().required("First name is required"),
@@ -12,12 +16,22 @@ export const schema = yup
       .trim(),
     password: yup
       .string()
-      .min(6, "Password should be at least 6 chars")
+      .matches(
+        passwordPattern,
+        "password must be at lest 8 characters, one uppercase letter, one lowercase letter and one number"
+      )
+
+      .min(8, "Password should be at least 8 chars")
       .required("Password is required")
       .trim(),
     passwordConfirm: yup
       .string()
-      .min(6, "Password should be at least 6 chars")
+      .matches(
+        passwordPattern,
+        "password must be at lest 8 characters, one uppercase letter, one lowercase letter and one number"
+      )
+
+      .min(8, "Password should be at least 8 chars")
       .required("Password confirmation is required")
       .oneOf([yup.ref("password"), null], "Passwords should match")
       .trim(),
