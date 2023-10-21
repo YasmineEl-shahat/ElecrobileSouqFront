@@ -24,6 +24,7 @@ import { getCategories, getCategory } from "./api/categories";
 import { useEffect, useState } from "react";
 import { image_url } from "../config/config";
 import Image from "next/image";
+import Link from "next/link";
 
 export const getServerSideProps = async () => {
   let products = (await getProducts(2))?.data?.data?.data ?? [];
@@ -73,7 +74,11 @@ const Home = ({ products, categories, brands, bestSellers, bigDeals }) => {
                   coming soon
                 </p>
 
-                <button className="btn--cart">find out</button>
+                <button className="btn--cart">
+                  <Link href={`/products/${item.id}`} passHref>
+                    find out
+                  </Link>
+                </button>
               </section>
               <Image
                 width={600}
@@ -140,15 +145,17 @@ const Home = ({ products, categories, brands, bestSellers, bigDeals }) => {
         <div className="d-flex justify-content-center my-5">
           <section className="mainContainer">
             <h3 className="text-center mb-5 brand-heading">Popular Brands</h3>
-            <div className="brands-container row row-cols-1 row-cols-sm-2 row-cols-md-3  row-cols-lg-5 g-4">
+            <div className="brands-container row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
               {brands.map((item) => (
-                <div className="col" key={item.id}>
-                  <Image
-                    src={image_url + item.image}
-                    height={40}
-                    width={100}
-                    alt="brand"
-                  />
+                <div className="col" key={item._id}>
+                  <Link href={`/products?brand=${item._id}`} passHref>
+                    <Image
+                      src={image_url + item.image}
+                      height={40}
+                      width={100}
+                      alt="brand"
+                    />
+                  </Link>
                 </div>
               ))}
             </div>

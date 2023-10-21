@@ -18,7 +18,7 @@ import {
 import Tab from "../../src/sharedui/Tab";
 import AddRate from "../../src/sharedui/AddRate";
 import CustomModal from "../../src/sharedui/modal";
-import { savedToken } from "../../config/http";
+import { useSelector } from "react-redux";
 
 export const getServerSideProps = async ({ query }) => {
   const { id } = query;
@@ -86,6 +86,7 @@ const Product = ({
   colors,
   reviews,
 }) => {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dateOptions = {
     year: "numeric",
     month: "short",
@@ -165,17 +166,17 @@ const Product = ({
   };
 
   const addToWishList = () => {
-    if (!savedToken) setIsLoginModalOpen(true);
+    if (!isAuthenticated) setIsLoginModalOpen(true);
     else {
     }
   };
   const addToCart = () => {
-    if (!savedToken) setIsLoginModalOpen(true);
+    if (!isAuthenticated) setIsLoginModalOpen(true);
     else {
     }
   };
   const addRate = () => {
-    if (!savedToken) setIsLoginModalOpen(true);
+    if (!isAuthenticated) setIsLoginModalOpen(true);
     else {
     }
   };
@@ -189,7 +190,7 @@ const Product = ({
             {product?.subCategory?.category && (
               <li className="breadcrumb-item">
                 <Link
-                  href={`/search?category=${product?.subCategory?.category?.id}`}
+                  href={`/products?category=${product?.subCategory?.category?.id}`}
                   passHref
                 >
                   {product?.subCategory?.category?.name}
@@ -199,7 +200,7 @@ const Product = ({
             {product?.subCategory && (
               <li className="breadcrumb-item ">
                 <Link
-                  href={`/search?category=${product?.subCategory?.category?.id}&sub-category=${product?.subCategory?.id}`}
+                  href={`/products?category=${product?.subCategory?.category?.id}&sub-category=${product?.subCategory?.id}`}
                   passHref
                 >
                   {product?.subCategory?.name}
@@ -446,7 +447,12 @@ const Product = ({
           You are not login , Please Login
         </p>
         <Link href="/auth/login" passHref>
-          <button className="btn--cart w-100">LOGIN</button>
+          <button
+            className="btn--cart w-100"
+            onClick={() => setIsLoginModalOpen(false)}
+          >
+            LOGIN
+          </button>
         </Link>
       </CustomModal>
     </>

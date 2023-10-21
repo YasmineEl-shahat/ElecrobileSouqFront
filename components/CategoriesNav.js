@@ -22,7 +22,7 @@ const CategoriesNav = () => {
           {categories?.map((category) => (
             <Link
               key={category?.id}
-              href={`/search?category=${category?.id}`}
+              href={`/products?category=${category?.id}`}
               passHref
             >
               <li className="category">
@@ -33,7 +33,7 @@ const CategoriesNav = () => {
                     {category?.subCategories?.map((subcategory) => (
                       <Link
                         key={subcategory?.id}
-                        href={`/search?category=${category?.id}&sub-category=${subcategory?.id}`}
+                        href={`/products?category=${category?.id}&sub-category=${subcategory?.id}`}
                         passHref
                       >
                         <li className="subcategory">{subcategory?.name}</li>

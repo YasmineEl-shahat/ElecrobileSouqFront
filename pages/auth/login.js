@@ -27,7 +27,6 @@ const Login = () => {
 
   useEffect(() => {
     if (isAuthenticated) router.push("/");
-    //  window.location.href = "/";
   }, [router, isAuthenticated]);
 
   const {
@@ -51,16 +50,16 @@ const Login = () => {
         router.push("/");
       })
       .catch((error) => {
-        console.log(error);
         setBackError(error?.response?.data?.message);
-        // Object.entries(error?.response?.data?.errors).forEach(
-        //   ([key, value]) => {
-        //     setError(key, {
-        //       type: "custom",
-        //       message: value[0],
-        //     });
-        //   }
-        // );
+        if (error?.response?.data?.errors)
+          Object.entries(error?.response?.data?.errors).forEach(
+            ([key, value]) => {
+              setError(key, {
+                type: "custom",
+                message: value[0],
+              });
+            }
+          );
 
         setSubmitting(false);
       });

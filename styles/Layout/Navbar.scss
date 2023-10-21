@@ -89,9 +89,15 @@ body {
         color: $mediumGray;
         @include flexCenter;
         cursor: pointer;
-
-        svg:not(:last-of-type) {
-          margin-right: 2rem;
+        .dropdown-toggle,
+        ul {
+          font-size: $smallFont;
+        }
+        button {
+          color: $mediumGray;
+          &:not(:last-of-type) {
+            margin-right: 2rem;
+          }
         }
         span {
           margin-left: 0.5rem;

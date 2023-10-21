@@ -101,6 +101,9 @@
   padding: 2rem;
   border-radius: 25px;
   border: 1px solid $light-border-color;
+  .col {
+    cursor: pointer;
+  }
 }
 
 .firstOrder {
