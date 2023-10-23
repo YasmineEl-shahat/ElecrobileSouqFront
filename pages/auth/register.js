@@ -29,6 +29,7 @@ const Register = () => {
     control,
     setError,
     clearErrors,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -41,7 +42,8 @@ const Register = () => {
         clearErrors();
         setBackError("");
         toast.success("Registered Successfully");
-        history.push("/auth/login");
+        reset();
+        router.push("/auth/login");
       })
       .catch((error) => {
         console.log(error);

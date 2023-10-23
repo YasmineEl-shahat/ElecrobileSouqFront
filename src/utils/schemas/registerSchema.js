@@ -18,7 +18,7 @@ export const schema = yup
       .string()
       .matches(
         passwordPattern,
-        "password must be at lest 8 characters, one uppercase letter, one lowercase letter and one number"
+        "Password must be at least 8 characters and contain at least 1 uppercase, 1 lowercase, 1 number and 1 symbol"
       )
 
       .min(8, "Password should be at least 8 chars")
@@ -28,7 +28,7 @@ export const schema = yup
       .string()
       .matches(
         passwordPattern,
-        "password must be at lest 8 characters, one uppercase letter, one lowercase letter and one number"
+        "Password must be at least 8 characters and contain at least 1 uppercase, 1 lowercase, 1 number and 1 symbol"
       )
 
       .min(8, "Password should be at least 8 chars")

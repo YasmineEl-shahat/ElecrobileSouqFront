@@ -51,6 +51,10 @@ module.exports = {
     includePaths: [path.join(__dirname, "styles")],
   },
   images: {
-    domains: ["http://localhost:3000", "localhost"],
+    domains: [
+      "http://localhost:3000",
+      "localhost",
+      "http://localhost:3000undefined",
+    ],
   },
 };
