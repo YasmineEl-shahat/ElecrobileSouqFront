@@ -1,0 +1,29 @@
+@import "../abstracts/variables.scss";
+@import "../abstracts/mixins.scss";
+
+.product-card {
+  cursor: pointer;
+
+  border: 0.1rem solid $light-border-color;
+  border-radius: 6px;
+  padding: 1rem 2rem;
+  height: 300px !important;
+  text-transform: capitalize;
+  img {
+    height: 65%;
+    margin-bottom: 1rem;
+  }
+  .product-category {
+    color: $mediumGray;
+    font-size: 1.2rem;
+  }
+  .product-name {
+    color: $primary;
+    font-size: $smallFont;
+    font-weight: 500;
+  }
+  .product-price {
+    font-size: $MediumFont;
+    color: $darkGray;
+  }
+}

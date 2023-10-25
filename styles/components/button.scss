@@ -2,12 +2,6 @@
 @import "../abstracts/mixins.scss";
 
 body {
-  .btn--cancel {
-    background-color: $secondary;
-  }
-  .btn--confirm {
-    background-color: $primary;
-  }
   .btn--wishlist {
     border-radius: 2.4rem;
     border: 1px solid $mediumGray;
@@ -32,6 +26,13 @@ body {
     color: white;
     background-color: $primary;
     font-size: 1.4rem;
+  }
+  .btn--card {
+    background-color: $lightGray;
+    color: white;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
   }
   button {
     &:disabled {

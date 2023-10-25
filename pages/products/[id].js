@@ -200,7 +200,7 @@ const Product = ({
             {product?.subCategory && (
               <li className="breadcrumb-item ">
                 <Link
-                  href={`/products?category=${product?.subCategory?.category?.id}&sub-category=${product?.subCategory?.id}`}
+                  href={`/products?category=${product?.subCategory?.category?.id}&subCategory=${product?.subCategory?.id}`}
                   passHref
                 >
                   {product?.subCategory?.name}

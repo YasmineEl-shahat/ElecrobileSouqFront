@@ -70,7 +70,7 @@ const Footer = () => {
             {categories?.map((category) => (
               <Link
                 key={category?.id}
-                href={`/search?category=${category?.id}`}
+                href={`/products?category=${category?.id}`}
                 passHref
               >
                 <p className="category">{category?.name}</p>

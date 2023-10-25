@@ -33,7 +33,7 @@ const CategoriesNav = () => {
                     {category?.subCategories?.map((subcategory) => (
                       <Link
                         key={subcategory?.id}
-                        href={`/products?category=${category?.id}&sub-category=${subcategory?.id}`}
+                        href={`/products?category=${category?.id}&subCategory=${subcategory?.id}`}
                         passHref
                       >
                         <li className="subcategory">{subcategory?.name}</li>

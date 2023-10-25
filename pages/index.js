@@ -20,7 +20,7 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
 import { getProducts, getBrands, getBiddings } from "./api/products";
-import { getCategories, getCategory } from "./api/categories";
+import { getCategories } from "./api/categories";
 import { useEffect, useState } from "react";
 import { image_url } from "../config/config";
 import Image from "next/image";
@@ -101,7 +101,6 @@ const Home = ({ products, categories, brands, bestSellers, bigDeals }) => {
                 <div className="bidding-card" key={item.id}>
                   <p className="bidding-name">{item.name}</p>
                   <Image
-                    className="bidding-image"
                     src={image_url + item.image}
                     width={150}
                     height={150}

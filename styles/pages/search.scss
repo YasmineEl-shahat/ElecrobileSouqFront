@@ -1,0 +1,47 @@
+@import "./abstracts/variables.scss";
+@import "./abstracts/mixins.scss";
+
+.search-container {
+  .filtration {
+    .filter-card {
+      border: 1px solid $light-border-color;
+      margin-bottom: 1.5rem;
+      padding: 1.5rem;
+      border-radius: 6px;
+      text-transform: capitalize;
+      color: $mediumGray;
+      h3 {
+        color: $darkGray;
+        margin-bottom: 2rem;
+        font-weight: 600;
+        font-size: 1.6;
+      }
+      .selected {
+        color: $darkGray;
+        font-weight: 600;
+      }
+      h4 {
+        cursor: pointer;
+        &:not(:last-child) {
+          margin-bottom: 1.5rem;
+        }
+        &:hover {
+          color: $darkGray;
+          font-weight: 600;
+        }
+      }
+      input[type="checkbox"] {
+        margin-right: 1rem;
+        margin-top: 0;
+        box-shadow: none;
+        cursor: pointer;
+      }
+    }
+    .categories {
+      background-color: $light-border-color;
+    }
+  }
+  .products-container {
+    padding-left: 1rem;
+  }
+}
