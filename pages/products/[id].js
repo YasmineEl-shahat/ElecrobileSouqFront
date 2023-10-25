@@ -180,7 +180,7 @@ const Product = ({
     else {
     }
   };
-  console.log(product?.reviews);
+
   return (
     <>
       <div className="d-flex justify-content-center mb-5">

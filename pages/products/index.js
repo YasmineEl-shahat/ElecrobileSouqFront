@@ -4,18 +4,29 @@ import { searchProduct } from "../api/search";
 import { getCategories, getCategory } from "../api/categories";
 import { useRouter } from "next/router";
 import { getBrands } from "../api/products";
+import Rating from "../../src/sharedui/Rating";
 
 export async function getServerSideProps({ query }) {
   const name = query.name || "";
   const category = query.category || "";
   const subCategory = query.subCategory || "";
   const brand = query.brand || "";
-  const page = 1;
-  const limit = 20;
+  const ratingsAverage = query.ratingsAverage || "";
+  const page = query.page || 1;
+  const limit = query.limit || 20;
 
   const products =
-    (await searchProduct({ name, category, brand, subCategory, page, limit }))
-      ?.data?.data?.data ?? [];
+    (
+      await searchProduct({
+        name,
+        category,
+        brand,
+        subCategory,
+        page,
+        limit,
+        ratingsAverage,
+      })
+    )?.data?.data?.data ?? [];
 
   let categories = (await getCategories())?.data?.data?.data ?? [];
 
@@ -39,6 +50,7 @@ export async function getServerSideProps({ query }) {
       limit,
       name,
       subCategories,
+      ratingsAverage,
     },
   };
 }
@@ -54,8 +66,10 @@ const Search = ({
   limit,
   name,
   subCategories,
+  ratingsAverage,
 }) => {
   const router = useRouter();
+  let ratings = [5, 4, 3, 2, 1];
   const changeCategory = (id) => {
     router.push(
       `/products?name=${name === undefined ? "" : name}&category=${id}&brand=${
@@ -83,6 +97,17 @@ const Search = ({
       }&brand=${id}&limit=${limit === undefined ? "" : limit}&page=${
         page === undefined ? "" : page
       }`
+    );
+  };
+  const changeRating = (rating) => {
+    router.push(
+      `/products?name=${name === undefined ? "" : name}&category=${
+        category === undefined ? "" : category
+      }&subCategory=${subCategory === undefined ? "" : subCategory}&brand=${
+        brand === undefined ? "" : brand
+      }&limit=${limit === undefined ? "" : limit}&page=${
+        page === undefined ? "" : page
+      }&ratingsAverage=${rating}`
     );
   };
   return (
@@ -174,6 +199,24 @@ const Search = ({
                     className="form-check-input"
                   />
                   {item.name}
+                </h4>
+              ))}
+            </div>
+            <div className="filter-card">
+              <h3>Rating</h3>
+
+              {ratings?.map((rating, index) => (
+                <h4
+                  key={"rating" + index}
+                  className="d-flex align-items-center"
+                  onClick={() => changeRating(rating)}
+                >
+                  <input
+                    type="checkbox"
+                    checked={rating == ratingsAverage}
+                    className="form-check-input"
+                  />
+                  <Rating ratingsAverage={rating} />
                 </h4>
               ))}
             </div>
