@@ -1,6 +1,10 @@
 import ReactPaginate from "react-paginate";
 
-export default function Pagination({ pageNumber, pageChangeHandler }) {
+export default function Pagination({
+  totalPages,
+  pageNumber,
+  pageChangeHandler,
+}) {
   return (
     <ReactPaginate
       previousLabel={
@@ -36,11 +40,15 @@ export default function Pagination({ pageNumber, pageChangeHandler }) {
         </svg>
       }
       breakLabel={"..."}
-      pageCount={pageNumber}
+      pageCount={totalPages}
       marginPagesDisplayed={1}
-      pageRangeDisplayed={2}
-      containerClassName={"pagination justify-content-center"}
+      pageRangeDisplayed={5}
+      containerClassName={"pagination"}
       onPageChange={pageChangeHandler}
+      pageClassName="page"
+      activeClassName="active"
+      previousClassName="previous"
+      nextClassName="next"
     />
   );
 }

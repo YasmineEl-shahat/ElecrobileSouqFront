@@ -21,8 +21,8 @@ export async function getServerSideProps({ query }) {
   let minPrice = query.minPrice ?? 0;
   let maxPrice = query.maxPrice ?? 0;
   let sort = query.sort ?? "";
-  let lowestPrice;
-  let greatestPrice;
+  let lowestPrice = 0;
+  let greatestPrice = 0;
   let products = [];
 
   const totalProductsNum =
@@ -38,7 +38,7 @@ export async function getServerSideProps({ query }) {
     )?.data?.results ?? 0;
   if (limit > totalProductsNum) limit = totalProductsNum;
 
-  const totalPages = totalProductsNum / limit + (totalProductsNum % limit == 0);
+  const totalPages = totalProductsNum / limit + (totalProductsNum % limit != 0);
 
   const allProducts =
     (
@@ -54,8 +54,12 @@ export async function getServerSideProps({ query }) {
       })
     )?.data?.data?.data ?? [];
 
-  lowestPrice = getTotalPrice(allProducts[0]).totalPrice;
-  greatestPrice = getTotalPrice(allProducts[allProducts.length - 1]).totalPrice;
+  if (allProducts.length) {
+    lowestPrice = getTotalPrice(allProducts[0]).totalPrice;
+    greatestPrice = getTotalPrice(
+      allProducts[allProducts.length - 1]
+    ).totalPrice;
+  }
 
   if (sort == "-price") {
     let x = lowestPrice;
@@ -278,18 +282,19 @@ const Search = ({
     );
   };
 
-  const changePage = (e) => {
-    console.log(e);
+  const changePage = (data) => {
     router.push(
       `/products?name=${name === undefined ? "" : name}&category=${
         category === undefined ? "" : category
       }&subCategory=${subCategory === undefined ? "" : subCategory}&brand=${
         brand === undefined ? "" : brand
       }&limit=${limit === undefined ? "" : limit}&page=${
-        page + 1
+        data.selected + 1
       }&ratingsAverage=${
         ratingsAverage === undefined ? "" : ratingsAverage
-      }&minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${e.target.value}`
+      }&minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${
+        sort === undefined ? "" : sort
+      }`
     );
   };
   return (
@@ -486,8 +491,10 @@ const Search = ({
                 <h3>
                   Showing <b>1-{limit} </b>of <b>{totalProductsNum}</b>
                 </h3>
+
                 {totalPages > 1 && (
                   <Pagination
+                    totalPages={totalPages}
                     pageNumber={page}
                     pageChangeHandler={changePage}
                   />
