@@ -70,7 +70,6 @@ body {
             font-size: $smallFont;
             margin-right: 2rem;
             cursor: pointer !important;
-            box-shadow: none !important;
             @include mQ(477px) {
               font-size: 1.2rem;
               margin-right: 0.5rem;

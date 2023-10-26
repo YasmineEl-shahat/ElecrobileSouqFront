@@ -76,7 +76,7 @@ const Navbar = () => {
               id="search"
               placeholder="Search for products"
             ></input>
-            <label className="search-category" htmlFor="categories">
+            <label className="search-category" htmlFor="category">
               <select className="form-control" id="category">
                 <option value="" default>
                   All Categories

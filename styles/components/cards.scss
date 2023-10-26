@@ -4,7 +4,7 @@
 .product-card {
   cursor: pointer;
 
-  border: 0.1rem solid $light-border-color;
+  border: 0.1rem solid $light-border-color !important;
   border-radius: 6px;
   padding: 1rem 2rem;
   height: 300px !important;

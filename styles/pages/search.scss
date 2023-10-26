@@ -50,5 +50,38 @@
   }
   .products-container {
     padding-left: 1rem;
+    .info-wrapper {
+      border: 1px solid $light-border-color;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      border-radius: 6px;
+      hr {
+        color: $lightGray;
+      }
+      font-size: $smallFont;
+      h1 {
+        font-size: $HeadFont;
+        font-weight: 600;
+      }
+      h3,
+      h1 {
+        color: $darkGray;
+      }
+      label {
+        color: $mediumGray;
+        position: relative;
+        .form-control {
+          cursor: pointer;
+          border: 1px solid $light-border-color;
+          font-size: $smallFont;
+          padding: 1rem 3rem;
+          border-radius: 3rem;
+        }
+        .dropdown-arrow {
+          right: 15px;
+          border-top: 6px solid $mediumGray;
+        }
+      }
+    }
   }
 }

@@ -8,6 +8,7 @@ import Rating from "../../src/sharedui/Rating";
 import { getTotalPrice } from "../../src/utils/helpers/getTotalPrice";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
+import Pagination from "../../src/sharedui/pagination";
 
 export async function getServerSideProps({ query }) {
   const name = query.name ?? "";
@@ -16,12 +17,28 @@ export async function getServerSideProps({ query }) {
   const brand = query.brand ?? "";
   const ratingsAverage = query.ratingsAverage ?? "";
   const page = query.page ?? 1;
-  const limit = query.limit ?? 20;
+  let limit = query.limit ?? 20;
   let minPrice = query.minPrice ?? 0;
   let maxPrice = query.maxPrice ?? 0;
+  let sort = query.sort ?? "";
   let lowestPrice;
   let greatestPrice;
   let products = [];
+
+  const totalProductsNum =
+    (
+      await searchProduct({
+        name,
+        category,
+        brand,
+        subCategory,
+        ratingsAverage,
+        sort,
+      })
+    )?.data?.results ?? 0;
+  if (limit > totalProductsNum) limit = totalProductsNum;
+
+  const totalPages = totalProductsNum / limit + (totalProductsNum % limit == 0);
 
   const allProducts =
     (
@@ -33,11 +50,19 @@ export async function getServerSideProps({ query }) {
         page,
         limit,
         ratingsAverage,
+        sort,
       })
     )?.data?.data?.data ?? [];
 
   lowestPrice = getTotalPrice(allProducts[0]).totalPrice;
   greatestPrice = getTotalPrice(allProducts[allProducts.length - 1]).totalPrice;
+
+  if (sort == "-price") {
+    let x = lowestPrice;
+    lowestPrice = greatestPrice;
+    greatestPrice = x;
+  }
+
   if (!minPrice && !maxPrice) {
     minPrice = lowestPrice;
     maxPrice = greatestPrice;
@@ -55,6 +80,7 @@ export async function getServerSideProps({ query }) {
           limit,
           ratingsAverage,
           "price[gt]": minPrice,
+          sort,
         })
       )?.data?.data?.data ?? [];
   } else if (!minPrice) {
@@ -70,6 +96,7 @@ export async function getServerSideProps({ query }) {
           limit,
           ratingsAverage,
           "price[lt]": maxPrice,
+          sort,
         })
       )?.data?.data?.data ?? [];
   } else
@@ -85,6 +112,7 @@ export async function getServerSideProps({ query }) {
           ratingsAverage,
           "price[lt]": maxPrice,
           "price[gt]": minPrice,
+          sort,
         })
       )?.data?.data?.data ?? [];
 
@@ -93,10 +121,13 @@ export async function getServerSideProps({ query }) {
   let brands = (await getBrands())?.data?.data?.data ?? [];
 
   let subCategories = null;
+  let categoryName = null;
 
-  if (category !== undefined)
-    subCategories =
-      (await getCategory(category))?.data?.data?.data?.subCategories ?? [];
+  if (category !== undefined && category !== "") {
+    let data = (await getCategory(category))?.data?.data?.data ?? {};
+    subCategories = data?.subCategories;
+    categoryName = data?.name;
+  }
 
   return {
     props: {
@@ -110,11 +141,15 @@ export async function getServerSideProps({ query }) {
       limit,
       name,
       subCategories,
+      categoryName,
       ratingsAverage,
       minPrice,
       maxPrice,
       lowestPrice,
       greatestPrice,
+      totalProductsNum,
+      sort,
+      totalPages,
     },
   };
 }
@@ -130,11 +165,15 @@ const Search = ({
   limit,
   name,
   subCategories,
+  categoryName,
   ratingsAverage,
   minPrice,
   maxPrice,
   lowestPrice,
   greatestPrice,
+  totalProductsNum,
+  sort,
+  totalPages,
 }) => {
   const router = useRouter();
   let ratings = [5, 4, 3, 2, 1];
@@ -147,7 +186,9 @@ const Search = ({
         limit === undefined ? "" : limit
       }&page=${page === undefined ? "" : page}&ratingsAverage=${
         ratingsAverage === undefined ? "" : ratingsAverage
-      }&minPrice=${minPrice}&maxPrice=${maxPrice}`
+      }&minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${
+        sort === undefined ? "" : sort
+      }`
     );
   };
   const changeSubCategory = (id) => {
@@ -158,7 +199,9 @@ const Search = ({
         limit === undefined ? "" : limit
       }&page=${page === undefined ? "" : page}&ratingsAverage=${
         ratingsAverage === undefined ? "" : ratingsAverage
-      }&minPrice=${minPrice}&maxPrice=${maxPrice}`
+      }&minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${
+        sort === undefined ? "" : sort
+      }`
     );
   };
   const changeBrand = (id) => {
@@ -171,7 +214,9 @@ const Search = ({
         page === undefined ? "" : page
       }&ratingsAverage=${
         ratingsAverage === undefined ? "" : ratingsAverage
-      }&minPrice=${minPrice}&maxPrice=${maxPrice}`
+      }&minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${
+        sort === undefined ? "" : sort
+      }`
     );
   };
   const changeRating = (rating) => {
@@ -182,7 +227,9 @@ const Search = ({
         brand === undefined ? "" : brand
       }&limit=${limit === undefined ? "" : limit}&page=${
         page === undefined ? "" : page
-      }&ratingsAverage=${rating}&minPrice=${minPrice}&maxPrice=${maxPrice}`
+      }&ratingsAverage=${rating}&minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${
+        sort === undefined ? "" : sort
+      }`
     );
   };
   const changePrice = (range) => {
@@ -195,7 +242,54 @@ const Search = ({
         page === undefined ? "" : page
       }&ratingsAverage=${
         ratingsAverage === undefined ? "" : ratingsAverage
-      }&minPrice=${range[0]}&maxPrice=${range[1]}`
+      }&minPrice=${range[0]}&maxPrice=${range[1]}&sort=${
+        sort === undefined ? "" : sort
+      }`
+    );
+  };
+
+  const changeLimit = (e) => {
+    router.push(
+      `/products?name=${name === undefined ? "" : name}&category=${
+        category === undefined ? "" : category
+      }&subCategory=${subCategory === undefined ? "" : subCategory}&brand=${
+        brand === undefined ? "" : brand
+      }&limit=${e.target.value}&page=${
+        page === undefined ? "" : page
+      }&ratingsAverage=${
+        ratingsAverage === undefined ? "" : ratingsAverage
+      }&minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${
+        sort === undefined ? "" : sort
+      }`
+    );
+  };
+
+  const changeSort = (e) => {
+    router.push(
+      `/products?name=${name === undefined ? "" : name}&category=${
+        category === undefined ? "" : category
+      }&subCategory=${subCategory === undefined ? "" : subCategory}&brand=${
+        brand === undefined ? "" : brand
+      }&limit=${limit === undefined ? "" : limit}&page=${
+        page === undefined ? "" : page
+      }&ratingsAverage=${
+        ratingsAverage === undefined ? "" : ratingsAverage
+      }&minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${e.target.value}`
+    );
+  };
+
+  const changePage = (e) => {
+    console.log(e);
+    router.push(
+      `/products?name=${name === undefined ? "" : name}&category=${
+        category === undefined ? "" : category
+      }&subCategory=${subCategory === undefined ? "" : subCategory}&brand=${
+        brand === undefined ? "" : brand
+      }&limit=${limit === undefined ? "" : limit}&page=${
+        page + 1
+      }&ratingsAverage=${
+        ratingsAverage === undefined ? "" : ratingsAverage
+      }&minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${e.target.value}`
     );
   };
   return (
@@ -341,10 +435,64 @@ const Search = ({
             </div>
           </section>
           <section className="col-lg-10 col-md-9 col-sm-8 products-container">
-            <div className=" row row-cols-1 row-cols-sm-2 row-cols-lg-4 row-cols-md-3 g-4">
+            <div className="info-wrapper">
+              <article className="d-flex justify-content-between">
+                <h1>{categoryName ?? "All Categories"}</h1>
+                <h3>
+                  Showing <b>1-{limit} </b>of <b>{totalProductsNum}</b>
+                </h3>
+              </article>
+              <hr />
+              <article className="d-flex justify-content-end">
+                <label className="mx-4" htmlFor="sort">
+                  <select
+                    className="form-control"
+                    id="sort"
+                    onChange={changeSort}
+                  >
+                    <option value="price" default>
+                      Default Sort
+                    </option>
+                    <option value="price" selected={sort == "price"}>
+                      Price:low to high
+                    </option>
+                    <option value="-price" selected={sort == "-price"}>
+                      Price:high to low
+                    </option>
+                  </select>
+                  <div className="dropdown-arrow"></div>
+                </label>
+                <label>
+                  <div className="form-control">
+                    <input
+                      type="number"
+                      min={1}
+                      max={totalProductsNum}
+                      value={limit}
+                      onChange={changeLimit}
+                    />
+                    products/page
+                  </div>
+                </label>
+              </article>
+            </div>
+            <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-4 row-cols-md-3 g-4">
               {products.map((product) => (
                 <ProductCard product={product} key={product._id} />
               ))}
+            </div>
+            <div className="info-wrapper mt-4">
+              <article className="d-flex justify-content-between">
+                <h3>
+                  Showing <b>1-{limit} </b>of <b>{totalProductsNum}</b>
+                </h3>
+                {totalPages > 1 && (
+                  <Pagination
+                    pageNumber={page}
+                    pageChangeHandler={changePage}
+                  />
+                )}
+              </article>
             </div>
           </section>
         </div>
