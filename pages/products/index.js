@@ -25,17 +25,16 @@ export async function getServerSideProps({ query }) {
   let greatestPrice = 0;
   let products = [];
 
-  const totalProductsNum =
-    (
-      await searchProduct({
-        name,
-        category,
-        brand,
-        subCategory,
-        ratingsAverage,
-        sort,
-      })
-    )?.data?.results ?? 0;
+  const totalProductsNum = (
+    await searchProduct({
+      name,
+      category,
+      brand,
+      subCategory,
+      ratingsAverage,
+      sort,
+    })
+  )?.data?.results;
   if (limit > totalProductsNum) limit = totalProductsNum;
 
   const totalPages = totalProductsNum / limit + (totalProductsNum % limit != 0);
@@ -186,9 +185,11 @@ const Search = ({
     router.push(
       `/products?name=${name === undefined ? "" : name}&category=${id}&brand=${
         brand === undefined ? "" : brand
-      }&subCategory=${subCategory === undefined ? "" : subCategory}&limit=${
-        limit === undefined ? "" : limit
-      }&page=${page === undefined ? "" : page}&ratingsAverage=${
+      }&subCategory=${
+        subCategory === undefined || id === "" ? "" : subCategory
+      }&limit=${limit === undefined ? "" : limit}&page=${
+        page === undefined ? "" : page
+      }&ratingsAverage=${
         ratingsAverage === undefined ? "" : ratingsAverage
       }&minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${
         sort === undefined ? "" : sort
