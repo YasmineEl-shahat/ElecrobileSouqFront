@@ -10,6 +10,13 @@
       border-radius: 6px;
       text-transform: capitalize;
       color: $mediumGray;
+      .rc-slider-handle {
+        border: 2px solid $blue;
+      }
+      .rc-slider-track,
+      .rc-slider-tracks {
+        background-color: $blue;
+      }
       h3 {
         color: $darkGray;
         margin-bottom: 2rem;

@@ -1,24 +1,10 @@
 import { image_url } from "../../config/config";
 import { CartIcon } from "../assets/icons";
 import Link from "next/link";
+import { getTotalPrice } from "../utils/helpers/getTotalPrice";
 
 const ProductCard = ({ product }) => {
-  // setting price
-  let totalPrice = product?.price;
-  if (product?.variants[0]?.extraPrice) {
-    if (product?.priceDiscount?.type == "fixed")
-      totalPrice =
-        product?.price +
-        product?.variants[0]?.extraPrice -
-        product?.priceDiscount?.value;
-    else
-      totalPrice =
-        product?.price +
-        product?.variants[0]?.extraPrice -
-        (product?.priceDiscount?.value *
-          (product.price + product.variants[0]?.extraPrice)) /
-          100;
-  } else totalPrice = product?.price;
+  const { totalPrice } = getTotalPrice(product);
 
   return (
     <Link href={`/products/${product?._id}`} passHref>

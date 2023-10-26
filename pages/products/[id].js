@@ -19,32 +19,15 @@ import Tab from "../../src/sharedui/Tab";
 import AddRate from "../../src/sharedui/AddRate";
 import CustomModal from "../../src/sharedui/modal";
 import { useSelector } from "react-redux";
+import { getTotalPrice } from "../../src/utils/helpers/getTotalPrice";
 
 export const getServerSideProps = async ({ query }) => {
   const { id } = query;
   let product = (await getProduct(id))?.data?.data?.data ?? {};
-  let priceProb;
-  let totalPriceProb;
 
   // setting price
-  if (product?.variants[0]?.extraPrice) {
-    priceProb = product.price + product.variants[0]?.extraPrice;
-    if (product?.priceDiscount?.type == "fixed")
-      totalPriceProb =
-        product.price +
-        product.variants[0]?.extraPrice -
-        product?.priceDiscount?.value;
-    else
-      totalPriceProb =
-        product.price +
-        product.variants[0]?.extraPrice -
-        (product?.priceDiscount?.value *
-          (product.price + product.variants[0]?.extraPrice)) /
-          100;
-  } else {
-    priceProb = data.price;
-    totalPriceProb = data.price;
-  }
+  const { price: priceProb, totalPrice: totalPriceProb } =
+    getTotalPrice(product);
 
   //  setting image
   let images = [];
