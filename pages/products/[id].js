@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.min.css";
 import InnerImageZoom from "react-inner-image-zoom";
 import { getProduct } from "../api/products";
-import { getRatingReviews } from "../api/reviews";
+import { addReview, getRatingReviews } from "../api/reviews";
 import Layout from "../../components/Layout";
 import { image_url } from "../../config/config";
 import Rating from "../../src/sharedui/Rating";
@@ -20,6 +20,7 @@ import AddRate from "../../src/sharedui/AddRate";
 import CustomModal from "../../src/sharedui/modal";
 import { useSelector } from "react-redux";
 import { getTotalPrice } from "../../src/utils/helpers/getTotalPrice";
+import { toast } from "react-toastify";
 
 export const getServerSideProps = async ({ query }) => {
   const { id } = query;
@@ -78,6 +79,8 @@ const Product = ({
   const router = useRouter();
   const { id, activeTab } = router.query;
 
+  const user = useSelector((state) => state.auth.user);
+
   const [selectedVariant, setSelectedVariant] = useState(
     product?.variants[0] ?? null
   );
@@ -96,6 +99,7 @@ const Product = ({
   const [rating, setRating] = useState(0);
 
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
   const changeColor = (color) => {
     // color
@@ -160,10 +164,27 @@ const Product = ({
   };
   const addRate = () => {
     if (!isAuthenticated) setIsLoginModalOpen(true);
-    else {
-    }
+    else setIsReviewModalOpen(true);
   };
 
+  const confirmReview = () => {
+    const data = {
+      rating,
+      product: id,
+      user: user.id,
+      review: document.getElementById("reviewText").value,
+    };
+    addReview(JSON.stringify(data))
+      .then(() => {
+        toast.success("review added successfully");
+        setIsReviewModalOpen(false);
+        router.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("failed to add review");
+      });
+  };
   return (
     <>
       <div className="d-flex justify-content-center mb-5">
@@ -422,6 +443,7 @@ const Product = ({
           />
         </main>
       </div>
+      {/* ------------------------------- login modal ------------------------------------ */}
       <CustomModal
         isModalOpen={isLoginModalOpen}
         handleCancel={() => setIsLoginModalOpen(false)}
@@ -437,6 +459,21 @@ const Product = ({
             LOGIN
           </button>
         </Link>
+      </CustomModal>
+      {/* ------------------------------- review modal ------------------------------------ */}
+      <CustomModal
+        isModalOpen={isReviewModalOpen}
+        handleCancel={() => setIsReviewModalOpen(false)}
+      >
+        <p className="modal-text">Enter your review</p>
+        <textarea
+          className="text--global text--area text--secondary mb-3"
+          id="reviewText"
+          style={{ width: "280px" }}
+        />
+        <button className="btn--cart w-100" onClick={confirmReview}>
+          Confirm review
+        </button>
       </CustomModal>
     </>
   );

@@ -11,9 +11,20 @@
 .text--global {
   background-color: white;
   padding: 0.5rem 1rem;
+  border-radius: 0.9rem;
 }
 
 .text--input {
-  border: 1px solid #003566;
-  border-radius: 0.9rem;
+  border: 1px solid $blue;
+}
+
+.text--area {
+  height: 10rem;
+  &::-webkit-resizer {
+    display: none;
+  }
+}
+
+.text--secondary {
+  border: 1px solid $secondary;
 }
