@@ -22,7 +22,7 @@ export async function getServerSideProps({ query }) {
   let maxPrice = query.maxPrice ?? 0;
   let sort = query.sort ?? "";
   let lowestPrice = 0;
-  let greatestPrice = 0;
+  let highestPrice = 0;
   let products = [];
 
   const totalProductsNum = (
@@ -37,7 +37,8 @@ export async function getServerSideProps({ query }) {
   )?.data?.results;
   if (limit > totalProductsNum) limit = totalProductsNum;
 
-  const totalPages = totalProductsNum / limit + (totalProductsNum % limit != 0);
+  const totalPages =
+    Math.floor(totalProductsNum / limit) + (totalProductsNum % limit != 0);
 
   const allProducts =
     (
@@ -55,23 +56,23 @@ export async function getServerSideProps({ query }) {
 
   if (allProducts.length) {
     lowestPrice = getTotalPrice(allProducts[0]).totalPrice;
-    greatestPrice = getTotalPrice(
+    highestPrice = getTotalPrice(
       allProducts[allProducts.length - 1]
     ).totalPrice;
   }
 
   if (sort == "-price") {
     let x = lowestPrice;
-    lowestPrice = greatestPrice;
-    greatestPrice = x;
+    lowestPrice = highestPrice;
+    highestPrice = x;
   }
 
   if (!minPrice && !maxPrice) {
     minPrice = lowestPrice;
-    maxPrice = greatestPrice;
+    maxPrice = highestPrice;
     products = allProducts;
   } else if (!maxPrice) {
-    maxPrice = greatestPrice;
+    maxPrice = highestPrice;
     products =
       (
         await searchProduct({
@@ -149,7 +150,7 @@ export async function getServerSideProps({ query }) {
       minPrice,
       maxPrice,
       lowestPrice,
-      greatestPrice,
+      highestPrice,
       totalProductsNum,
       sort,
       totalPages,
@@ -173,7 +174,7 @@ const Search = ({
   minPrice,
   maxPrice,
   lowestPrice,
-  greatestPrice,
+  highestPrice,
   totalProductsNum,
   sort,
   totalPages,
@@ -430,7 +431,7 @@ const Search = ({
               <Slider
                 range
                 min={Number(lowestPrice)}
-                max={Number(greatestPrice)}
+                max={Number(highestPrice)}
                 defaultValue={[minPrice, maxPrice]}
                 onChange={changePrice}
                 className="mb-4"

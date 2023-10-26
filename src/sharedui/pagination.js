@@ -49,6 +49,7 @@ export default function Pagination({
       activeClassName="active"
       previousClassName="previous"
       nextClassName="next"
+      forcePage={pageNumber - 1} // Adjusting for zero-based index
     />
   );
 }
