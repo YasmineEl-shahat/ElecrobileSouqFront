@@ -19,9 +19,31 @@ export async function getServerSideProps({ query }) {
   const limit = query.limit ?? 20;
   let minPrice = query.minPrice ?? 0;
   let maxPrice = query.maxPrice ?? 0;
+  let lowestPrice;
+  let greatestPrice;
   let products = [];
 
-  if (!minPrice || !maxPrice) {
+  const allProducts =
+    (
+      await searchProduct({
+        name,
+        category,
+        brand,
+        subCategory,
+        page,
+        limit,
+        ratingsAverage,
+      })
+    )?.data?.data?.data ?? [];
+
+  lowestPrice = getTotalPrice(allProducts[0]).totalPrice;
+  greatestPrice = getTotalPrice(allProducts[allProducts.length - 1]).totalPrice;
+  if (!minPrice && !maxPrice) {
+    minPrice = lowestPrice;
+    maxPrice = greatestPrice;
+    products = allProducts;
+  } else if (!maxPrice) {
+    maxPrice = greatestPrice;
     products =
       (
         await searchProduct({
@@ -32,10 +54,24 @@ export async function getServerSideProps({ query }) {
           page,
           limit,
           ratingsAverage,
+          "price[gt]": minPrice,
         })
       )?.data?.data?.data ?? [];
-    minPrice = getTotalPrice(products[0]).totalPrice;
-    maxPrice = getTotalPrice(products[products.length - 1]).totalPrice;
+  } else if (!minPrice) {
+    minPrice = lowestPrice;
+    products =
+      (
+        await searchProduct({
+          name,
+          category,
+          brand,
+          subCategory,
+          page,
+          limit,
+          ratingsAverage,
+          "price[lt]": maxPrice,
+        })
+      )?.data?.data?.data ?? [];
   } else
     products =
       (
@@ -47,8 +83,8 @@ export async function getServerSideProps({ query }) {
           page,
           limit,
           ratingsAverage,
-          // "price[lt]": maxPrice,
-          // "price[gt]": minPrice,
+          "price[lt]": maxPrice,
+          "price[gt]": minPrice,
         })
       )?.data?.data?.data ?? [];
 
@@ -77,6 +113,8 @@ export async function getServerSideProps({ query }) {
       ratingsAverage,
       minPrice,
       maxPrice,
+      lowestPrice,
+      greatestPrice,
     },
   };
 }
@@ -95,6 +133,8 @@ const Search = ({
   ratingsAverage,
   minPrice,
   maxPrice,
+  lowestPrice,
+  greatestPrice,
 }) => {
   const router = useRouter();
   let ratings = [5, 4, 3, 2, 1];
@@ -287,14 +327,14 @@ const Search = ({
             <div className="filter-card">
               <h3>Price</h3>
 
-              {/* <Slider
+              <Slider
                 range
-                min={minPrice}
-                max={maxPrice}
+                min={Number(lowestPrice)}
+                max={Number(greatestPrice)}
                 defaultValue={[minPrice, maxPrice]}
                 onChange={changePrice}
                 className="mb-4"
-              /> */}
+              />
               <h4>
                 price: ${minPrice} - ${maxPrice}
               </h4>
