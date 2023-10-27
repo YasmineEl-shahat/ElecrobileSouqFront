@@ -43,13 +43,13 @@ const Home = ({ products, categories, brands, bestSellers, bigDeals }) => {
   const [biddings, setBiddings] = useState([]);
 
   useEffect(() => {
-    getBiddings()
-      .then((response) => {
-        setBiddings(response?.data?.data?.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    // getBiddings()
+    //   .then((response) => {
+    //     setBiddings(response?.data?.data?.data);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
   }, []);
   return (
     <main>

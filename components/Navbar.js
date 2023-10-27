@@ -7,32 +7,19 @@ import {
   CartIcon,
 } from "../src/assets/icons";
 import Image from "next/image";
-import { getCategories } from "../pages/api/categories";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CustomModal from "../src/sharedui/modal";
 import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { logout } from "../src/redux/reducers/authSlice";
 import { image_url } from "../config/config";
 
-const Navbar = () => {
-  const [categories, setCategories] = useState([]);
+const Navbar = ({ categories }) => {
+  const router = useRouter();
+
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const user = useSelector((state) => state.auth.user);
-  const dispatch = useDispatch();
-
-  const router = useRouter();
-
-  useEffect(() => {
-    getCategories()
-      .then((res) => {
-        setCategories(res.data.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
 
   const wishlistHandler = () => {
     if (!isAuthenticated) setIsLoginModalOpen(true);

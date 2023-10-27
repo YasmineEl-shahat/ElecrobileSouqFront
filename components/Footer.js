@@ -7,22 +7,8 @@ import {
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
-import { getCategories } from "../pages/api/categories";
-
-const Footer = () => {
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    getCategories()
-      .then((res) => {
-        setCategories(res.data.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+const Footer = ({ categories }) => {
   return (
     <footer className="d-flex justify-content-center pt-5 pb-3">
       <div className="mainContainer ">

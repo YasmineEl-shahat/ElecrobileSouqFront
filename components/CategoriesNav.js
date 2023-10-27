@@ -1,20 +1,6 @@
 import Link from "next/link";
-import { getCategories } from "../pages/api/categories";
-import { useEffect, useState } from "react";
 
-const CategoriesNav = () => {
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    getCategories()
-      .then((res) => {
-        setCategories(res.data.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
+const CategoriesNav = ({ categories }) => {
   return (
     <nav className="d-flex justify-content-center categories-nav">
       <div className="mainContainer">

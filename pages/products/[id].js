@@ -185,6 +185,7 @@ const Product = ({
         toast.error("failed to add review");
       });
   };
+
   return (
     <>
       <div className="d-flex justify-content-center mb-5">

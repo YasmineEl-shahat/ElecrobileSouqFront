@@ -1,10 +1,21 @@
 import Head from "next/head";
 import Navbar from "./Navbar";
-import Header from "./Header";
 import CategoriesNav from "./CategoriesNav";
 import Footer from "./Footer";
-import Home from "../pages";
-const Layout = ({ title, categories, children }) => {
+
+import { useDispatch, useSelector } from "react-redux";
+import { getCategoriesThunk } from "../src/redux/reducers/categoriesSlice";
+import Spinner from "./Spinner";
+import { useEffect } from "react";
+
+const Layout = ({ title, children }) => {
+  const dispatch = useDispatch();
+  const categories = useSelector((state) => state.categories.categories);
+  const loader = useSelector((state) => state.categories.loader);
+
+  useEffect(() => {
+    dispatch(getCategoriesThunk());
+  }, [dispatch]);
   return (
     <>
       <Head>
@@ -13,13 +24,18 @@ const Layout = ({ title, categories, children }) => {
         </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
-      <div className="navbarContainer">
-        <Navbar />
-        <CategoriesNav />
-      </div>
-      {children}
-      <Footer />
+      {loader ? (
+        <Spinner />
+      ) : (
+        <>
+          <div className="navbarContainer">
+            <Navbar categories={categories} />
+            <CategoriesNav categories={categories} />
+          </div>
+          {children}
+          <Footer categories={categories} />
+        </>
+      )}
     </>
   );
 };
