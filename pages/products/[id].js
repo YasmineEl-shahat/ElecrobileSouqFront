@@ -180,8 +180,10 @@ const Product = ({
       .then((res) => {
         toast.success("review added successfully");
         setIsReviewModalOpen(false);
-        console.log(res);
-        // setProductReviews([data, ...productReviews]);
+        setProductReviews([
+          { ...res?.data?.data?.data, user: { image: user?.image } },
+          ...productReviews,
+        ]);
       })
       .catch((error) => {
         console.log(error);
