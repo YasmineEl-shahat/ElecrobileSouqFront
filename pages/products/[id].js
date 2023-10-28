@@ -22,6 +22,7 @@ import { useSelector } from "react-redux";
 import { getTotalPrice } from "../../src/utils/helpers/getTotalPrice";
 import { toast } from "react-toastify";
 import { getMyCart, postCart } from "../api/cart";
+import { getMyWishList, postWishList } from "../api/wishlist";
 
 export const getServerSideProps = async ({ query }) => {
   const { id } = query;
@@ -108,6 +109,8 @@ const Product = ({
 
   const [isInCart, setIsInCart] = useState(false);
   const [cart, setCart] = useState([]);
+  const [isInWishList, setIsInWishList] = useState(false);
+  const [wishList, setWishList] = useState([]);
 
   // --------------------------- handlers ------------------------------------------
   const changeColor = (color) => {
@@ -164,12 +167,25 @@ const Product = ({
 
   const addToWishList = () => {
     if (!isAuthenticated) setIsLoginModalOpen(true);
-    else {
-    }
+    else
+      postWishList(
+        JSON.stringify({
+          product: product?._id,
+        })
+      )
+        .then((res) => {
+          setIsInWishList(true);
+          setWishList([res?.data?.data?.data, ...wishList]);
+          toast.success("added to wishlist successfully");
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error("failed to add to wishlist");
+        });
   };
   const addToCart = () => {
     if (!isAuthenticated) setIsLoginModalOpen(true);
-    else {
+    else
       postCart(
         JSON.stringify({
           variant: selectedVariant?._id,
@@ -183,9 +199,8 @@ const Product = ({
         })
         .catch((error) => {
           console.log(error);
-          toast.error("failed to add");
+          toast.error("failed to add to cart");
         });
-    }
   };
   const addRate = () => {
     if (!isAuthenticated) setIsLoginModalOpen(true);
@@ -216,7 +231,7 @@ const Product = ({
 
   // ------------------------------------------use effect -----------------------------------
   useEffect(() => {
-    if (isAuthenticated)
+    if (isAuthenticated) {
       getMyCart()
         .then((res) => {
           setCart(res?.data?.data?.cards);
@@ -229,7 +244,21 @@ const Product = ({
         .catch((error) => {
           console.log(error);
         });
-  }, []);
+      getMyWishList()
+        .then((res) => {
+          setWishList(res?.data?.data?.wishlists);
+          setIsInWishList(
+            res?.data?.data?.wishlists?.some(
+              (wishlist) => wishlist?.product?._id === product?._id
+            )
+          );
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    // eslint-disable-next-line
+  }, [isAuthenticated]);
 
   return (
     <>
