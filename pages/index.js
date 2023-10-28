@@ -129,9 +129,11 @@ const Home = ({ products, categories, brands, bestSellers, bigDeals }) => {
                       height={150}
                       alt="category-image"
                     />
-                    <button>
-                      <ArrowIcon className="arrow" />
-                    </button>
+                    <Link href={`/products?category=${item?.id}`} passHref>
+                      <button>
+                        <ArrowIcon className="arrow" />
+                      </button>
+                    </Link>
                   </div>
                 </div>
               ))}

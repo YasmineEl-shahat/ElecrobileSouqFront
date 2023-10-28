@@ -10,13 +10,13 @@ import Image from "next/image";
 import { useState } from "react";
 import CustomModal from "../src/sharedui/modal";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../src/redux/reducers/authSlice";
 import { image_url } from "../config/config";
 
 const Navbar = ({ categories }) => {
   const router = useRouter();
-
+  const dispatch = useDispatch();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const user = useSelector((state) => state.auth.user);

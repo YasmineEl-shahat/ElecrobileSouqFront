@@ -81,6 +81,8 @@ const Product = ({
 
   const user = useSelector((state) => state.auth.user);
 
+  const [productReviews, setProductReviews] = useState(product?.reviews);
+
   const [selectedVariant, setSelectedVariant] = useState(
     product?.variants[0] ?? null
   );
@@ -175,10 +177,11 @@ const Product = ({
       review: document.getElementById("reviewText").value,
     };
     addReview(JSON.stringify(data))
-      .then(() => {
+      .then((res) => {
         toast.success("review added successfully");
         setIsReviewModalOpen(false);
-        router.reload();
+        console.log(res);
+        // setProductReviews([data, ...productReviews]);
       })
       .catch((error) => {
         console.log(error);
@@ -407,9 +410,9 @@ const Product = ({
                     </article>
 
                     <hr className="mx-2" />
-                    {product?.reviews?.map((review) => (
+                    {productReviews?.map((review) => (
                       <div
-                        key={review._id}
+                        key={review?._id}
                         className="d-flex align-items-center my-4 review"
                       >
                         <article className="me-2 d-flex flex-column align-items-center">

@@ -13,6 +13,10 @@ if (
   );
 }
 
+export function setSavedToken(value) {
+  savedToken = value;
+}
+
 const token = `Bearer ` + savedToken;
 export let httpJson = axios.create({
   headers: {

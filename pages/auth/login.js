@@ -26,6 +26,8 @@ const Login = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log(router);
+
     if (isAuthenticated) router.push("/");
   }, [router, isAuthenticated]);
 
