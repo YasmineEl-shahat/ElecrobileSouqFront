@@ -123,7 +123,18 @@ const Product = ({
     // variant
     const variant = product.variants.find((variant) => variant.color === color);
     setSelectedVariant(variant);
-    setIsInCart(cart?.some((card) => card?.variant?._id === variant?._id));
+    getMyCart()
+      .then((res) => {
+        setCart(res?.data?.data?.cards);
+        setIsInCart(
+          res?.data?.data?.cards?.some(
+            (card) => card?.variant?._id === variant?._id
+          )
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
     // images
     setSelectedImg(image_url + variant.imageCover);
@@ -175,7 +186,7 @@ const Product = ({
       )
         .then((res) => {
           setIsInWishList(true);
-          setWishList([res?.data?.data?.data, ...wishList]);
+          // setWishList([res?.data?.data?.data, ...wishList]);
           toast.success("added to wishlist successfully");
         })
         .catch((error) => {
@@ -248,7 +259,7 @@ const Product = ({
         .then((res) => {
           setWishList(res?.data?.data?.wishlists);
           setIsInWishList(
-            res?.data?.data?.wishlists?.some(
+            res?.data?.data?.favorites?.some(
               (wishlist) => wishlist?.product?._id === product?._id
             )
           );
@@ -387,8 +398,13 @@ const Product = ({
             </div>
 
             <div className="p-4">
-              <button className="btn--wishlist mb-5" onClick={addToWishList}>
-                Wishlist <FilledHeartIcon />
+              <button
+                className="btn--wishlist mb-5"
+                onClick={addToWishList}
+                disabled={isInWishList}
+              >
+                {isInWishList ? "In wishlist" : "Add to Wishlist"}{" "}
+                <FilledHeartIcon />
               </button>
               {price !== totalPrice && (
                 <h1 className="price prev-price">$ {price}</h1>

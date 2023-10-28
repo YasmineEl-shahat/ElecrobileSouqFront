@@ -164,7 +164,7 @@ const Home = ({ products, categories, brands, bestSellers, bigDeals }) => {
         </div>
       )}
 
-      {bestSellers.length > 0 && (
+      {bestSellers?.length > 0 && (
         <div className="d-flex justify-content-center">
           <div className="mainContainer">
             <h3 className="heading-text">BestSellers</h3>

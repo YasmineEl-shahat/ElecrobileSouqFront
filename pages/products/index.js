@@ -192,9 +192,7 @@ const Search = ({
         page === undefined ? "" : page
       }&ratingsAverage=${
         ratingsAverage === undefined ? "" : ratingsAverage
-      }&minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${
-        sort === undefined ? "" : sort
-      }`
+      }&sort=${sort === undefined ? "" : sort}`
     );
   };
   const changeSubCategory = (id) => {
@@ -205,9 +203,7 @@ const Search = ({
         limit === undefined ? "" : limit
       }&page=${page === undefined ? "" : page}&ratingsAverage=${
         ratingsAverage === undefined ? "" : ratingsAverage
-      }&minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${
-        sort === undefined ? "" : sort
-      }`
+      }&sort=${sort === undefined ? "" : sort}`
     );
   };
   const changeBrand = (id) => {
@@ -220,9 +216,7 @@ const Search = ({
         page === undefined ? "" : page
       }&ratingsAverage=${
         ratingsAverage === undefined ? "" : ratingsAverage
-      }&minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${
-        sort === undefined ? "" : sort
-      }`
+      }&sort=${sort === undefined ? "" : sort}`
     );
   };
   const changeRating = (rating) => {
@@ -233,9 +227,7 @@ const Search = ({
         brand === undefined ? "" : brand
       }&limit=${limit === undefined ? "" : limit}&page=${
         page === undefined ? "" : page
-      }&ratingsAverage=${rating}&minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${
-        sort === undefined ? "" : sort
-      }`
+      }&ratingsAverage=${rating}&sort=${sort === undefined ? "" : sort}`
     );
   };
   const changePrice = (range) => {
@@ -260,13 +252,9 @@ const Search = ({
         category === undefined ? "" : category
       }&subCategory=${subCategory === undefined ? "" : subCategory}&brand=${
         brand === undefined ? "" : brand
-      }&limit=${e.target.value}&page=${
-        page === undefined ? "" : page
-      }&ratingsAverage=${
+      }&limit=${e.target.value}&page=1&ratingsAverage=${
         ratingsAverage === undefined ? "" : ratingsAverage
-      }&minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${
-        sort === undefined ? "" : sort
-      }`
+      }&sort=${sort === undefined ? "" : sort}`
     );
   };
 
@@ -280,7 +268,7 @@ const Search = ({
         page === undefined ? "" : page
       }&ratingsAverage=${
         ratingsAverage === undefined ? "" : ratingsAverage
-      }&minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${e.target.value}`
+      }&sort=${e.target.value}`
     );
   };
 
@@ -294,9 +282,7 @@ const Search = ({
         data.selected + 1
       }&ratingsAverage=${
         ratingsAverage === undefined ? "" : ratingsAverage
-      }&minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${
-        sort === undefined ? "" : sort
-      }`
+      }&sort=${sort === undefined ? "" : sort}`
     );
   };
   return (
