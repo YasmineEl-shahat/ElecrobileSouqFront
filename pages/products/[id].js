@@ -21,6 +21,7 @@ import CustomModal from "../../src/sharedui/modal";
 import { useSelector } from "react-redux";
 import { getTotalPrice } from "../../src/utils/helpers/getTotalPrice";
 import { toast } from "react-toastify";
+import { getMyCart, postCart } from "../api/cart";
 
 export const getServerSideProps = async ({ query }) => {
   const { id } = query;
@@ -70,6 +71,8 @@ const Product = ({
   colors,
   reviews,
 }) => {
+  // --------------------------- state and vars -------------------------------------
+
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dateOptions = {
     year: "numeric",
@@ -103,6 +106,10 @@ const Product = ({
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
+  const [isInCart, setIsInCart] = useState(false);
+  const [cart, setCart] = useState([]);
+
+  // --------------------------- handlers ------------------------------------------
   const changeColor = (color) => {
     // color
     setSelectedColor(color);
@@ -113,6 +120,7 @@ const Product = ({
     // variant
     const variant = product.variants.find((variant) => variant.color === color);
     setSelectedVariant(variant);
+    setIsInCart(cart?.some((card) => card?.variant?._id === variant?._id));
 
     // images
     setSelectedImg(image_url + variant.imageCover);
@@ -162,6 +170,21 @@ const Product = ({
   const addToCart = () => {
     if (!isAuthenticated) setIsLoginModalOpen(true);
     else {
+      postCart(
+        JSON.stringify({
+          variant: selectedVariant?._id,
+          quantity,
+        })
+      )
+        .then((res) => {
+          setIsInCart(true);
+          setCart([res?.data?.data?.data, ...cart]);
+          toast.success("added to cart successfully");
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error("failed to add");
+        });
     }
   };
   const addRate = () => {
@@ -190,6 +213,23 @@ const Product = ({
         toast.error("failed to add review");
       });
   };
+
+  // ------------------------------------------use effect -----------------------------------
+  useEffect(() => {
+    if (isAuthenticated)
+      getMyCart()
+        .then((res) => {
+          setCart(res?.data?.data?.cards);
+          setIsInCart(
+            res?.data?.data?.cards?.some(
+              (card) => card?.variant?._id === selectedVariant?._id
+            )
+          );
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+  }, []);
 
   return (
     <>
@@ -326,24 +366,30 @@ const Product = ({
               )}
               <h1 className="price total-price ">$ {totalPrice}</h1>
 
-              <section className="quantity-container my-4">
-                <button
-                  onClick={() => decreaseQuantity()}
-                  disabled={quantity === 1}
-                >
-                  <MinusIcon />
-                </button>
-                {quantity}
-                <button
-                  onClick={() => increaseQuantity()}
-                  disabled={quantity === selectedVariant?.quantity}
-                >
-                  <PlusIcon />
-                </button>
-              </section>
+              {!isInCart && (
+                <section className="quantity-container my-4">
+                  <button
+                    onClick={() => decreaseQuantity()}
+                    disabled={quantity === 1}
+                  >
+                    <MinusIcon />
+                  </button>
+                  {quantity}
+                  <button
+                    onClick={() => increaseQuantity()}
+                    disabled={quantity === selectedVariant?.quantity}
+                  >
+                    <PlusIcon />
+                  </button>
+                </section>
+              )}
 
-              <button className="btn--cart" onClick={addToCart}>
-                Add to Cart <CartIcon />
+              <button
+                className="btn--cart"
+                onClick={addToCart}
+                disabled={isInCart}
+              >
+                {isInCart ? "In Cart" : "Add to Cart"} <CartIcon />
               </button>
             </div>
           </section>

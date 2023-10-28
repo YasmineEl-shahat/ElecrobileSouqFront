@@ -17,8 +17,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
           dispatch(login({ user: res.data.user, token: res.data.token }));
         })
         .catch((error) => {
-          dispatch(logout());
-          router.push("/auth/login");
+          // dispatch(logout());
+          // router.push("/auth/login");
         });
     }
     // eslint-disable-next-line
