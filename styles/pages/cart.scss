@@ -1,0 +1,61 @@
+@import "./abstracts/variables.scss";
+@import "./abstracts/mixins.scss";
+
+.cart-header {
+  color: $secondary;
+}
+.cart-container {
+  & > div {
+    border: 1px solid $light-border-color;
+    border-radius: 20px;
+    height: fit-content;
+    padding: 1.5rem;
+  }
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-areas: "main main main aside aside";
+  grid-auto-rows: minmax(20vh, auto);
+  grid-gap: 2rem;
+  .main {
+    display: grid;
+    grid-area: main;
+  }
+  .aside {
+    display: grid;
+    grid-area: aside;
+    color: $blue;
+    font-size: $MediumFont;
+    h3 {
+      font-weight: 600;
+    }
+  }
+  .product-details {
+    &:not(:last-of-type) {
+      border-bottom: 1px solid $light-border-color;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+    }
+    .img-container {
+      border: 1px solid rgba(0, 53, 102, 0.51);
+      border-radius: 8.658px;
+      padding: 1.2rem;
+      margin-right: 2rem;
+    }
+    color: black;
+    text-transform: capitalize;
+    font-size: $smallFont;
+    h2 {
+      font-size: $MediumFont;
+      font-weight: 600;
+      &:first-child {
+        cursor: pointer;
+      }
+    }
+    .quantity-container {
+      padding: 0.5rem 1rem;
+      background-color: #f0f0f0;
+      @include flexBet;
+      width: 10rem;
+    }
+  }
+}

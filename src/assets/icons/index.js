@@ -14,13 +14,15 @@ import {
   BsList,
   BsFillArrowRightCircleFill,
   BsFillHeartFill,
+  BsFillTrashFill,
 } from "react-icons/bs";
-import { HiShoppingBag } from "react-icons/hi";
+import { HiShoppingBag, HiOutlineArrowRight } from "react-icons/hi";
 import { LiaStarSolid } from "react-icons/lia";
 
 export const ArrowIcon = BsFillArrowRightCircleFill;
 export const PlusIcon = AiOutlinePlus;
 export const CartIcon = HiShoppingBag;
+export const ArrowRightIcon = HiOutlineArrowRight;
 export const MinusIcon = AiOutlineMinus;
 export const CheckIcon = AiOutlineCheck;
 export const StarIcon = LiaStarSolid;
@@ -34,3 +36,4 @@ export const TwittwrIcon = AiOutlineTwitter;
 export const YotubeIcon = AiFillYoutube;
 export const List = BsList;
 export const Search = BiSearch;
+export const TrashIcon = BsFillTrashFill;

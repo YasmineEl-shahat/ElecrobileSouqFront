@@ -8,3 +8,7 @@ export async function postCart(data) {
 export async function getMyCart() {
   return await authorizedHttpJson.get(`${api_url}/cards/myCards`);
 }
+
+export async function updateCartItem(id, data) {
+  return await authorizedHttpJson.patch(`${api_url}/cards/${id}`, data);
+}

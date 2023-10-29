@@ -15,12 +15,10 @@ import "swiper/css/scrollbar";
 import {
   getProducts,
   getBrands,
-  getBiddings,
   getBigDeals,
   getBestSellers,
 } from "./api/products";
 import { getCategories } from "./api/categories";
-import { useEffect, useState } from "react";
 import { image_url } from "../config/config";
 import Image from "next/image";
 import Link from "next/link";
@@ -38,18 +36,14 @@ export const getServerSideProps = async () => {
     props: { products, categories, brands, bestSellers, bigDeals },
   };
 };
-const Home = ({ products, categories, brands, bestSellers, bigDeals }) => {
-  const [biddings, setBiddings] = useState([]);
-
-  useEffect(() => {
-    // getBiddings()
-    //   .then((response) => {
-    //     setBiddings(response?.data?.data?.data);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-  }, []);
+const Home = ({
+  products,
+  categories,
+  brands,
+  bestSellers,
+  bigDeals,
+  biddings,
+}) => {
   return (
     <main>
       {/* top product swiper */}
