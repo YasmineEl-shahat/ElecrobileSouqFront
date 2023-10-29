@@ -1,10 +1,10 @@
 import { image_url } from "../../config/config";
 import { CartIcon } from "../assets/icons";
 import Link from "next/link";
-import { getTotalPrice } from "../utils/helpers/getTotalPrice";
+import { getVariantPrice } from "../utils/helpers/getVariantPrice";
 
-const ProductCard = ({ product, isBigDeal }) => {
-  const { price, totalPrice } = getTotalPrice(product);
+const VariantCard = ({ product, variant }) => {
+  const { totalPrice } = getVariantPrice(product, variant);
 
   return (
     <Link href={`/products/${product?._id}`} passHref>
@@ -15,10 +15,7 @@ const ProductCard = ({ product, isBigDeal }) => {
           </p>
           <p className="product-name">{product?.name}</p>
           {/* eslint-disable */}
-          <img
-            src={image_url + product?.variants[0]?.imageCover}
-            alt={product?.name}
-          />
+          <img src={image_url + variant?.imageCover} alt={product?.name} />
           <div className="d-flex justify-content-between align-items-center">
             <span className="product-price">${totalPrice}</span>
             <button className="btn--card">
@@ -31,4 +28,4 @@ const ProductCard = ({ product, isBigDeal }) => {
   );
 };
 
-export default ProductCard;
+export default VariantCard;

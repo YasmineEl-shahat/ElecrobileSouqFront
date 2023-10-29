@@ -2,14 +2,7 @@ import Layout from "../components/Layout";
 import { ArrowIcon } from "../src/assets/icons";
 
 // import Swiper core and required modules
-import {
-  Navigation,
-  Pagination,
-  Scrollbar,
-  A11y,
-  Mousewheel,
-  Keyboard,
-} from "swiper/modules";
+import { Navigation, Pagination, Mousewheel, Keyboard } from "swiper/modules";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -19,21 +12,27 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
-import { getProducts, getBrands, getBiddings } from "./api/products";
+import {
+  getProducts,
+  getBrands,
+  getBiddings,
+  getBigDeals,
+  getBestSellers,
+} from "./api/products";
 import { getCategories } from "./api/categories";
 import { useEffect, useState } from "react";
 import { image_url } from "../config/config";
 import Image from "next/image";
 import Link from "next/link";
+import ProductCard from "../src/sharedui/productCard";
+import VariantCard from "../src/sharedui/variantCard";
 
 export const getServerSideProps = async () => {
-  let products = (await getProducts(2))?.data?.data?.data ?? [];
+  let products = (await getProducts(3))?.data?.data?.data ?? [];
   let categories = (await getCategories())?.data?.data?.data ?? [];
   let brands = (await getBrands())?.data?.data?.data ?? [];
-  // let bestSellers = (await getBestSellers())?.data?.data?.data ?? [];
-  // let bigDeals = (await getBigDeals())?.data?.data?.data ?? [];
-  let bestSellers = [];
-  let bigDeals = [];
+  let bigDeals = (await getBigDeals())?.data?.data?.products ?? [];
+  let bestSellers = (await getBestSellers())?.data?.data?.variants ?? [];
 
   return {
     props: { products, categories, brands, bestSellers, bigDeals },
@@ -66,7 +65,7 @@ const Home = ({ products, categories, brands, bestSellers, bigDeals }) => {
         slidesPerView={1}
       >
         {products.map((item) => (
-          <SwiperSlide key={item.id} className="slide">
+          <SwiperSlide key={item.id}>
             <div className="top-product-container pt-5 ">
               <section className="d-flex flex-column justify-content-center">
                 <p className="top-product-name">
@@ -168,6 +167,26 @@ const Home = ({ products, categories, brands, bestSellers, bigDeals }) => {
         <div className="d-flex justify-content-center">
           <div className="mainContainer">
             <h3 className="heading-text">BestSellers</h3>
+            <Swiper
+              cssMode={true}
+              navigation={true}
+              pagination={{ clickable: true }}
+              mousewheel={true}
+              keyboard={true}
+              modules={[Navigation, Pagination, Mousewheel, Keyboard]}
+              className="common-swiper mb-5"
+              spaceBetween={20}
+              slidesPerView={5}
+            >
+              {bestSellers?.map((item) => (
+                <SwiperSlide key={item?.variant?._id}>
+                  <VariantCard
+                    product={item?.variant?.product}
+                    variant={item?.variant}
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
         </div>
       )}
@@ -176,6 +195,23 @@ const Home = ({ products, categories, brands, bestSellers, bigDeals }) => {
         <div className="d-flex justify-content-center">
           <div className="mainContainer">
             <h3 className="heading-text">Big Deals</h3>
+            <Swiper
+              cssMode={true}
+              navigation={true}
+              pagination={{ clickable: true }}
+              mousewheel={true}
+              keyboard={true}
+              modules={[Navigation, Pagination, Mousewheel, Keyboard]}
+              className="common-swiper mb-5"
+              spaceBetween={20}
+              slidesPerView={5}
+            >
+              {bigDeals.map((item) => (
+                <SwiperSlide key={item.id}>
+                  <ProductCard product={item} />
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
         </div>
       )}

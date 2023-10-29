@@ -109,3 +109,19 @@
     }
   }
 }
+
+.common-swiper {
+  position: relative !important;
+  overflow-y: visible !important;
+  .swiper-button-prev,
+  .swiper-button-next {
+    position: absolute;
+    top: -2.5rem;
+    &::after {
+      font-size: 2rem;
+    }
+  }
+  .swiper-button-prev {
+    left: 78vw;
+  }
+}

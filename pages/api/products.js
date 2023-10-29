@@ -15,3 +15,11 @@ export async function getBrands() {
 export async function getBiddings() {
   return await authorizedHttpJson.get(`${api_url}/biddings`);
 }
+
+export async function getBestSellers() {
+  return await httpJson.get(`${api_url}/products/bestSelling`);
+}
+
+export async function getBigDeals() {
+  return await httpJson.get(`${api_url}/products/bigDeal`);
+}
