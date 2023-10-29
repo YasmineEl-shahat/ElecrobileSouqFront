@@ -12,3 +12,6 @@ export async function getMyCart() {
 export async function updateCartItem(id, data) {
   return await authorizedHttpJson.patch(`${api_url}/cards/${id}`, data);
 }
+export async function deleteCartItem(id) {
+  return await authorizedHttpJson.delete(`${api_url}/cards/${id}`);
+}

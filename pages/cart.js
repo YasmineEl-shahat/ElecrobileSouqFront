@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
-import { getMyCart, updateCartItem } from "./api/cart";
+import { deleteCartItem, getMyCart, updateCartItem } from "./api/cart";
 import Image from "next/image";
 import { image_url } from "../config/config";
 import Link from "next/link";
@@ -10,6 +10,7 @@ import {
   PlusIcon,
   TrashIcon,
 } from "../src/assets/icons";
+import { toast } from "react-toastify";
 
 export async function getServerSideProps() {
   return {
@@ -42,33 +43,53 @@ const Cart = () => {
     setTotal(totalPrice);
   };
 
+  const updateDate = (res, id) => {
+    const updatedCartItems = cartItems.map((item) =>
+      item._id === id
+        ? {
+            ...item,
+            quantity: res?.data?.data?.card?.quantity,
+            price: res.data?.data?.card?.price,
+          }
+        : item
+    );
+    setCartItems(updatedCartItems);
+    calculateTotal(updatedCartItems);
+  };
   const increaseQuantity = (id, quantity, variant_quantity) => {
     if (quantity < variant_quantity)
-      updateCartItem(
-        id,
-        JSON.stringify({ quantity: quantity + 1 })
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((error) => {
-            console.log(error);
-          })
-      );
+      updateCartItem(id, JSON.stringify({ quantity: quantity + 1 }))
+        .then((res) => updateDate(res, id))
+        .catch((error) => {
+          console.log(error);
+          toast.error("failed to increase");
+        });
   };
   const decreaseQuantity = (id, quantity) => {
     if (quantity > 1)
-      updateCartItem(
-        id,
-        JSON.stringify({ quantity: quantity - 1 })
-          .then((res) => {})
-          .catch((error) => {
-            console.log(error);
-          })
-      );
+      updateCartItem(id, JSON.stringify({ quantity: quantity - 1 }))
+        .then((res) => updateDate(res, id))
+        .catch((error) => {
+          console.log(error);
+          toast.error("failed to decrease");
+        });
+  };
+
+  const handleDelete = (id) => {
+    const updatedCartItems = cartItems.filter((item) => item._id !== id);
+    setCartItems(updatedCartItems);
+    calculateTotal(updatedCartItems);
+    deleteCartItem(id)
+      .then(() => toast.success("item deleted successfully"))
+      .catch((error) => {
+        console.log(error);
+        toast.error("failed to delete item");
+      });
   };
 
   useEffect(() => {
     getData();
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -103,7 +124,7 @@ const Cart = () => {
                         <h2>$ {item?.price}</h2>
                       </div>
                       <div className="d-flex justify-content-between flex-column align-items-end">
-                        <button>
+                        <button onClick={() => handleDelete(item?._id)}>
                           <TrashIcon className="text-danger" size={18} />
                         </button>
                         <section className="quantity-container rounded-pill">
