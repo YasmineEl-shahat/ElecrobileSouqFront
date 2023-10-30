@@ -29,8 +29,8 @@ export const getServerSideProps = async () => {
   let products = (await getProducts(3))?.data?.data?.data ?? [];
   let categories = (await getCategories())?.data?.data?.data ?? [];
   let brands = (await getBrands())?.data?.data?.data ?? [];
-  let bigDeals = (await getBigDeals())?.data?.data?.products ?? [];
-  let bestSellers = (await getBestSellers())?.data?.data?.variants ?? [];
+  let bigDeals = (await getBigDeals(20))?.data?.data?.products ?? [];
+  let bestSellers = (await getBestSellers(20))?.data?.data?.variants ?? [];
   let biddings = [];
 
   return {

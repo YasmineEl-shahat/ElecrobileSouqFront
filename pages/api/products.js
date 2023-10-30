@@ -12,10 +12,10 @@ export async function getBrands() {
   return await httpJson.get(`${api_url}/brands`);
 }
 
-export async function getBestSellers() {
-  return await httpJson.get(`${api_url}/products/bestSelling`);
+export async function getBestSellers(limit = "") {
+  return await httpJson.get(`${api_url}/products/bestSelling?limit=${limit}`);
 }
 
-export async function getBigDeals() {
-  return await httpJson.get(`${api_url}/products/bigDeal`);
+export async function getBigDeals(limit = "") {
+  return await httpJson.get(`${api_url}/products/bigDeal?limit=${limit}`);
 }

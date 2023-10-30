@@ -23,10 +23,18 @@ import { getTotalPrice } from "../../src/utils/helpers/getTotalPrice";
 import { toast } from "react-toastify";
 import { getMyCart, postCart } from "../api/cart";
 import { getMyWishList, postWishList } from "../api/wishlist";
+import ProductCard from "../../src/sharedui/productCard";
+import { SwiperSlide } from "swiper/react";
+import Swiper from "swiper";
+import { getSubCategoryProducts } from "../api/sub-categories";
 
 export const getServerSideProps = async ({ query }) => {
   const { id } = query;
   let product = (await getProduct(id))?.data?.data?.data ?? {};
+
+  let similarProducts =
+    (await getSubCategoryProducts(product?.subCategory?._id, 20))?.data?.data
+      ?.products ?? [];
 
   // setting price
   const { price: priceProb, totalPrice: totalPriceProb } =
@@ -61,7 +69,15 @@ export const getServerSideProps = async ({ query }) => {
   }
 
   return {
-    props: { product, priceProb, totalPriceProb, imagesProp, colors, reviews },
+    props: {
+      product,
+      priceProb,
+      totalPriceProb,
+      imagesProp,
+      colors,
+      reviews,
+      similarProducts,
+    },
   };
 };
 const Product = ({
@@ -71,6 +87,7 @@ const Product = ({
   imagesProp,
   colors,
   reviews,
+  similarProducts,
 }) => {
   // --------------------------- state and vars -------------------------------------
 
@@ -438,6 +455,31 @@ const Product = ({
               </button>
             </div>
           </section>
+
+          {similarProducts?.length > 0 && (
+            <div className="d-flex justify-content-center">
+              <div className="mainContainer">
+                <h3 className="heading-text">Similar Products</h3>
+                <Swiper
+                  cssMode={true}
+                  navigation={true}
+                  pagination={{ clickable: true }}
+                  mousewheel={true}
+                  keyboard={true}
+                  modules={[Navigation, Pagination, Mousewheel, Keyboard]}
+                  className="common-swiper mb-5"
+                  spaceBetween={20}
+                  slidesPerView={5}
+                >
+                  {similarProducts.map((item) => (
+                    <SwiperSlide key={item.id}>
+                      <ProductCard product={item} />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
+            </div>
+          )}
 
           {/* description and reviews */}
           <Tab
