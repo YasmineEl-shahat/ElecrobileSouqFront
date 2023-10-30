@@ -24,6 +24,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ProductCard from "../src/sharedui/productCard";
 import VariantCard from "../src/sharedui/variantCard";
+import { searchProduct } from "./api/search";
 
 export const getServerSideProps = async () => {
   let products = (await getProducts(3))?.data?.data?.data ?? [];
@@ -31,8 +32,21 @@ export const getServerSideProps = async () => {
   let brands = (await getBrands())?.data?.data?.data ?? [];
   let bigDeals = (await getBigDeals(20))?.data?.data?.products ?? [];
   let bestSellers = (await getBestSellers(20))?.data?.data?.variants ?? [];
-  let biddings = [];
+  let biddings =
+    (
+      await searchProduct({
+        category: "6517dbc538001813b052bd73",
+        isAction: true,
+      })
+    )?.data?.data?.data ?? [];
 
+  const currentDate = new Date();
+  const filteredBiddingProducts = biddings.filter((product) => {
+    const endDate = new Date(product.endDate);
+    return endDate > currentDate; // Filter products with endDate greater than current date
+  });
+
+  biddings = filteredBiddingProducts;
   return {
     props: { products, categories, brands, bestSellers, bigDeals, biddings },
   };
@@ -90,19 +104,23 @@ const Home = ({
         <div className="d-flex justify-content-center biddingContainer mb-4">
           <div className="mainContainer">
             <h3 className="heading-text">Bidding Products</h3>
-            <div className="biddings">
+            <Swiper
+              cssMode={true}
+              navigation={true}
+              pagination={{ clickable: true }}
+              mousewheel={true}
+              keyboard={true}
+              modules={[Navigation, Pagination, Mousewheel, Keyboard]}
+              className="common-swiper mb-5"
+              spaceBetween={20}
+              slidesPerView={5}
+            >
               {biddings.map((item) => (
-                <div className="bidding-card" key={item.id}>
-                  <p className="bidding-name">{item.name}</p>
-                  <Image
-                    src={image_url + item.image}
-                    width={150}
-                    height={150}
-                    alt="bidding product"
-                  />
-                </div>
+                <SwiperSlide key={item.id}>
+                  <ProductCard product={item} isBidding={true} />
+                </SwiperSlide>
               ))}
-            </div>
+            </Swiper>
           </div>
         </div>
       )}
@@ -203,7 +221,7 @@ const Home = ({
             >
               {bigDeals.map((item) => (
                 <SwiperSlide key={item.id}>
-                  <ProductCard product={item} />
+                  <ProductCard product={item} isBigDeal={true} />
                 </SwiperSlide>
               ))}
             </Swiper>

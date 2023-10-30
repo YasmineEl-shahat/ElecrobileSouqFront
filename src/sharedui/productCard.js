@@ -3,7 +3,7 @@ import { CartIcon } from "../assets/icons";
 import Link from "next/link";
 import { getTotalPrice } from "../utils/helpers/getTotalPrice";
 
-const ProductCard = ({ product, isBigDeal }) => {
+const ProductCard = ({ product, isBigDeal, isBidding }) => {
   const { price, totalPrice } = getTotalPrice(product);
 
   return (

@@ -75,6 +75,27 @@ export const getServerSideProps = async ({ query }) => {
       });
   }
 
+  // set bidding data
+  const currentDate = new Date();
+  const isBidding =
+    product?.isAction && new Date(product?.endDate) > currentDate;
+  const timeDifference = isBidding && new Date(product?.endDate) - currentDate;
+  let endTime = 0;
+  if (timeDifference > 0) {
+    const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+    const minutes = Math.floor(
+      (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+    );
+    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+    const formattedTime = `Ending In ${hours
+      .toString()
+      .padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds
+      .toString()
+      .padStart(2, "0")}`;
+    endTime = formattedTime;
+  }
+
   return {
     props: {
       product,
@@ -84,6 +105,8 @@ export const getServerSideProps = async ({ query }) => {
       colors,
       reviews,
       similarProducts,
+      isBidding,
+      endTime,
     },
   };
 };
@@ -95,6 +118,8 @@ const Product = ({
   colors,
   reviews,
   similarProducts,
+  isBidding,
+  endTime,
 }) => {
   // --------------------------- state and vars -------------------------------------
 
@@ -324,7 +349,7 @@ const Product = ({
 
             <li className="breadcrumb-item active">{product?.name}</li>
           </ol>
-
+          {isBidding && <span className="btn--cart">Bidding</span>}
           {/* Product Details */}
           <section className="product-choose-wrapper">
             <div>

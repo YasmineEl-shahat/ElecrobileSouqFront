@@ -12,7 +12,3 @@ export async function searchProduct(params) {
   });
   return await httpJson.get(url);
 }
-
-export async function getBiddings() {
-  return await httpJson.get(`${api_url}/products/auction/category`);
-}
