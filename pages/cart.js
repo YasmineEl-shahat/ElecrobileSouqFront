@@ -11,6 +11,7 @@ import {
   TrashIcon,
 } from "../src/assets/icons";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 export async function getServerSideProps() {
   return {
@@ -23,6 +24,8 @@ export async function getServerSideProps() {
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [total, setTotal] = useState(0);
+  const router = useRouter();
+  const { payment_error } = router.query;
 
   const getData = () => {
     getMyCart()
@@ -88,6 +91,12 @@ const Cart = () => {
   };
 
   useEffect(() => {
+    if (payment_error) {
+      toast.error("payment failed");
+      setTimeout(() => {
+        router.push("cart");
+      }, 2000);
+    }
     getData();
     // eslint-disable-next-line
   }, []);

@@ -10,6 +10,14 @@ import { getProduct } from "./api/products";
 import Rating from "../src/sharedui/Rating";
 import { CartIcon, TrashIcon } from "../src/assets/icons";
 
+export async function getServerSideProps() {
+  return {
+    props: {
+      privateRoute: true,
+    },
+  };
+}
+
 const Wishlist = () => {
   const [wishListItems, setWishListItems] = useState([]);
 
@@ -121,7 +129,10 @@ const Wishlist = () => {
                       )}
                       <span> {item?.product?.subCategory?.name}</span>
                     </h6>
-                    <h2 className="mb-3">{item?.product?.name}</h2>
+                    <Link href={`/products/${item?.product?._id}`} passHref>
+                      <h2 className="mb-3">{item?.product?.name}</h2>
+                    </Link>
+
                     <article className="d-flex align-items-center">
                       <Rating ratingsAverage={item?.product?.ratingsAverage} />
                       <span className="rate-average">
