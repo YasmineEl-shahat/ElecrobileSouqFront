@@ -101,7 +101,7 @@ const Cart = () => {
             <div className="cart-container">
               <div className="main">
                 {cartItems?.map((item) => (
-                  <div key={item?._id} className="d-flex product-details ">
+                  <div key={item?._id} className="d-flex product-details">
                     <article className="img-container">
                       <Image
                         src={image_url + item?.variant?.imageCover}

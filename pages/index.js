@@ -31,9 +31,10 @@ export const getServerSideProps = async () => {
   let brands = (await getBrands())?.data?.data?.data ?? [];
   let bigDeals = (await getBigDeals())?.data?.data?.products ?? [];
   let bestSellers = (await getBestSellers())?.data?.data?.variants ?? [];
+  let biddings = [];
 
   return {
-    props: { products, categories, brands, bestSellers, bigDeals },
+    props: { products, categories, brands, bestSellers, bigDeals, biddings },
   };
 };
 const Home = ({

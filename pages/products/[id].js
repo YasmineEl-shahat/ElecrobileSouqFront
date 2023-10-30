@@ -257,7 +257,7 @@ const Product = ({
         });
       getMyWishList()
         .then((res) => {
-          setWishList(res?.data?.data?.wishlists);
+          setWishList(res?.data?.data?.favorites);
           setIsInWishList(
             res?.data?.data?.favorites?.some(
               (wishlist) => wishlist?.product?._id === product?._id
