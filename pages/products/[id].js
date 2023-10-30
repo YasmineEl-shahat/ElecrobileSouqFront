@@ -24,8 +24,15 @@ import { toast } from "react-toastify";
 import { getMyCart, postCart } from "../api/cart";
 import { getMyWishList, postWishList } from "../api/wishlist";
 import ProductCard from "../../src/sharedui/productCard";
-import { SwiperSlide } from "swiper/react";
-import Swiper from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
+// import Swiper core and required modules
+import { Navigation, Pagination, Mousewheel, Keyboard } from "swiper/modules";
 import { getSubCategoryProducts } from "../api/sub-categories";
 
 export const getServerSideProps = async ({ query }) => {
@@ -34,7 +41,7 @@ export const getServerSideProps = async ({ query }) => {
 
   let similarProducts =
     (await getSubCategoryProducts(product?.subCategory?._id, 20))?.data?.data
-      ?.products ?? [];
+      ?.data ?? [];
 
   // setting price
   const { price: priceProb, totalPrice: totalPriceProb } =
@@ -457,27 +464,25 @@ const Product = ({
           </section>
 
           {similarProducts?.length > 0 && (
-            <div className="d-flex justify-content-center">
-              <div className="mainContainer">
-                <h3 className="heading-text">Similar Products</h3>
-                <Swiper
-                  cssMode={true}
-                  navigation={true}
-                  pagination={{ clickable: true }}
-                  mousewheel={true}
-                  keyboard={true}
-                  modules={[Navigation, Pagination, Mousewheel, Keyboard]}
-                  className="common-swiper mb-5"
-                  spaceBetween={20}
-                  slidesPerView={5}
-                >
-                  {similarProducts.map((item) => (
-                    <SwiperSlide key={item.id}>
-                      <ProductCard product={item} />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-              </div>
+            <div className="mainContainer">
+              <h3 className="heading-text">Similar Products</h3>
+              <Swiper
+                cssMode={true}
+                navigation={true}
+                pagination={{ clickable: true }}
+                mousewheel={true}
+                keyboard={true}
+                modules={[Navigation, Pagination, Mousewheel, Keyboard]}
+                className="common-swiper mb-5"
+                spaceBetween={20}
+                slidesPerView={5}
+              >
+                {similarProducts.map((item) => (
+                  <SwiperSlide key={item.id}>
+                    <ProductCard product={item} />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
             </div>
           )}
 
