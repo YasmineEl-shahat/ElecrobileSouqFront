@@ -92,9 +92,12 @@ const Cart = () => {
   };
 
   const checkOut = () => {
-    getCheckout(JSON.stringify({ cards: cartItems?.map((item) => item?._id) }))
+    getCheckout(
+      JSON.stringify({ cards: [...cartItems?.map((item) => item?._id)] })
+    )
       .then((res) => {
-        console.log(res);
+        const url = res?.data?.session?.url;
+        window.open(url);
       })
       .catch((error) => {
         console.log(error);

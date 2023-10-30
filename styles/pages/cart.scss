@@ -16,6 +16,12 @@
   grid-template-areas: "main main main aside aside";
   grid-auto-rows: minmax(20vh, auto);
   grid-gap: 2rem;
+  @include mQ(750px) {
+    display: block;
+    .main {
+      margin-bottom: 2rem;
+    }
+  }
   .main {
     display: grid;
     grid-area: main;
@@ -30,6 +36,9 @@
     }
   }
   .product-details {
+    @include mQ(310px) {
+      flex-wrap: wrap;
+    }
     &:not(:last-of-type) {
       border-bottom: 1px solid $light-border-color;
       margin-bottom: 1rem;
@@ -49,6 +58,9 @@
       font-weight: 600;
       &:first-child {
         cursor: pointer;
+      }
+      @include mQ(400px) {
+        font-size: $smallFont;
       }
     }
     .quantity-container {
