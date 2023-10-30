@@ -59,3 +59,19 @@
     }
   }
 }
+
+.paid-successfully {
+  .check {
+    color: $secondary;
+    border-radius: 50%;
+    border: 3px solid $secondary;
+    padding: 1rem;
+  }
+  h1 {
+    color: $blue;
+    font-weight: 700;
+  }
+  .btn--cart {
+    padding: 1rem 8rem;
+  }
+}

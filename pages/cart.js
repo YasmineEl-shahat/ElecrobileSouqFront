@@ -172,11 +172,10 @@ const Cart = () => {
                   <p>Total</p>
                   <h3>${total}</h3>
                 </article>
-                <Link href={""} passHref>
-                  <button className="btn--cart">
-                    Go to Checkout <ArrowRightIcon />
-                  </button>
-                </Link>
+
+                <button className="btn--cart">
+                  Go to Checkout <ArrowRightIcon />
+                </button>
               </div>
             </div>
           </>
