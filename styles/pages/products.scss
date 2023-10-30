@@ -115,7 +115,12 @@
   .total-price {
     color: $darkGray;
   }
-
+  .cart-header {
+    img {
+      filter: invert(46%) sepia(53%) saturate(5090%) hue-rotate(1deg)
+        brightness(105%) contrast(106%);
+    }
+  }
   .quantity-container {
     border: 1px solid $lightGray;
     border-radius: 2rem;

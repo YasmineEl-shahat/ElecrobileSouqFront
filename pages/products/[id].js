@@ -34,6 +34,10 @@ import "swiper/css/scrollbar";
 // import Swiper core and required modules
 import { Navigation, Pagination, Mousewheel, Keyboard } from "swiper/modules";
 import { getSubCategoryProducts } from "../api/sub-categories";
+import Image from "next/image";
+import { updateFormattedBiddingTime } from "../../src/utils/helpers/updateFormattedBiddingTime";
+import { postBidding } from "../api/bidding";
+import { channel } from "../api/pusher";
 
 export const getServerSideProps = async ({ query }) => {
   const { id } = query;
@@ -79,22 +83,7 @@ export const getServerSideProps = async ({ query }) => {
   const currentDate = new Date();
   const isBidding =
     product?.isAction && new Date(product?.endDate) > currentDate;
-  const timeDifference = isBidding && new Date(product?.endDate) - currentDate;
-  let endTime = 0;
-  if (timeDifference > 0) {
-    const hours = Math.floor(timeDifference / (1000 * 60 * 60));
-    const minutes = Math.floor(
-      (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
-    );
-    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-
-    const formattedTime = `Ending In ${hours
-      .toString()
-      .padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds
-      .toString()
-      .padStart(2, "0")}`;
-    endTime = formattedTime;
-  }
+  let endTimeProp = isBidding && updateFormattedBiddingTime(product?.endDate);
 
   return {
     props: {
@@ -106,7 +95,7 @@ export const getServerSideProps = async ({ query }) => {
       reviews,
       similarProducts,
       isBidding,
-      endTime,
+      endTimeProp,
     },
   };
 };
@@ -119,10 +108,9 @@ const Product = ({
   reviews,
   similarProducts,
   isBidding,
-  endTime,
+  endTimeProp,
 }) => {
   // --------------------------- state and vars -------------------------------------
-
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dateOptions = {
     year: "numeric",
@@ -155,11 +143,22 @@ const Product = ({
 
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [isBiddingModalOpen, setIsBiddingModalOpen] = useState(false);
 
   const [isInCart, setIsInCart] = useState(false);
   const [cart, setCart] = useState([]);
   const [isInWishList, setIsInWishList] = useState(false);
   const [wishList, setWishList] = useState([]);
+
+  const [endTime, setEndTime] = useState(endTimeProp);
+  const [bidAmount, setBidAmount] = useState(
+    endTimeProp
+      ? product?.variants[0]?.current_price
+        ? product?.variants[0]?.current_price
+        : product.price + product?.variants[0]?.extraPrice + product?.biddingGap
+      : null
+  );
+  const [bidError, setBidError] = useState("");
 
   // --------------------------- handlers ------------------------------------------
   const changeColor = (color) => {
@@ -172,6 +171,14 @@ const Product = ({
     // variant
     const variant = product.variants.find((variant) => variant.color === color);
     setSelectedVariant(variant);
+
+    if (endTime) {
+      setBidAmount(
+        variant?.current_price
+          ? variant?.current_price
+          : product.price + variant?.extraPrice + product?.biddingGap
+      );
+    }
     getMyCart()
       .then((res) => {
         setCart(res?.data?.data?.cards);
@@ -262,6 +269,10 @@ const Product = ({
           toast.error("failed to add to cart");
         });
   };
+  const bidHandler = () => {
+    if (!isAuthenticated) setIsLoginModalOpen(true);
+    else setIsBiddingModalOpen(true);
+  };
   const addRate = () => {
     if (!isAuthenticated) setIsLoginModalOpen(true);
     else setIsReviewModalOpen(true);
@@ -286,6 +297,32 @@ const Product = ({
       .catch((error) => {
         console.log(error);
         toast.error("failed to add review");
+      });
+  };
+
+  const confirmBidding = () => {
+    const amount = document.getElementById("bidText").value;
+    const data = {
+      variant: selectedVariant?._id,
+      amount,
+    };
+    postBidding(JSON.stringify(data))
+      .then((res) => {
+        toast.success("Bid amount added successfully");
+        setIsBiddingModalOpen(false);
+        channel.bind("current_price", (data) => {
+          try {
+            console.log("Received pusher response data:", data);
+            setBidAmount(data?.current_price);
+          } catch (error) {
+            console.error("Error:", error);
+          }
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        setBidError(error?.response?.data?.message);
+        toast.error("failed to bid");
       });
   };
 
@@ -317,8 +354,39 @@ const Product = ({
           console.log(error);
         });
     }
+    let interval;
+    if (endTimeProp) {
+      let end = updateFormattedBiddingTime(product.endDate);
+      setEndTime(end);
+      interval = setInterval(() => {
+        let end = updateFormattedBiddingTime(product.endDate, interval);
+        setEndTime(end);
+      }, interval);
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
     // eslint-disable-next-line
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    if (bidAmount) {
+      const var_id = selectedVariant?._id;
+      channel.bind("current_price", (data) => {
+        try {
+          console.log("Received response data:", data?.current_price);
+          setBidAmount(data?.current_price);
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      });
+    }
+
+    return () => {
+      channel.unbind("current_price");
+    };
+  }, [bidAmount]);
 
   return (
     <>
@@ -349,7 +417,17 @@ const Product = ({
 
             <li className="breadcrumb-item active">{product?.name}</li>
           </ol>
-          {isBidding && <span className="btn--cart">Bidding</span>}
+          {endTime && (
+            <span className="btn--cart px-5 btn--bidding mb-3">
+              Bidding{" "}
+              <Image
+                src="/assets/icons/judge.svg"
+                width={20}
+                height={20}
+                alt="judge"
+              />
+            </span>
+          )}
           {/* Product Details */}
           <section className="product-choose-wrapper">
             <div>
@@ -458,7 +536,20 @@ const Product = ({
               {price !== totalPrice && (
                 <h1 className="price prev-price">$ {price}</h1>
               )}
-              <h1 className="price total-price ">$ {totalPrice}</h1>
+              <div className="d-flex justify-content-between">
+                <h1 className="price total-price">$ {totalPrice} </h1>
+                {endTime && (
+                  <h1 className="price cart-header">
+                    $ {bidAmount}{" "}
+                    <Image
+                      src="/assets/icons/judge.svg"
+                      width={20}
+                      height={20}
+                      alt="judge"
+                    />
+                  </h1>
+                )}
+              </div>
 
               {!isInCart && (
                 <section className="quantity-container my-4">
@@ -485,6 +576,24 @@ const Product = ({
               >
                 {isInCart ? "In Cart" : "Add to Cart"} <CartIcon />
               </button>
+
+              {endTime && (
+                <>
+                  <button
+                    className="btn--cart btn--bidding my-4"
+                    onClick={bidHandler}
+                  >
+                    Bid Now{" "}
+                    <Image
+                      src="/assets/icons/judge.svg"
+                      width={20}
+                      height={20}
+                      alt="judge"
+                    />
+                  </button>
+                  <h1 className="cart-header">{endTime}</h1>
+                </>
+              )}
             </div>
           </section>
 
@@ -629,7 +738,7 @@ const Product = ({
           </button>
         </Link>
       </CustomModal>
-      {/* ------------------------------- review modal ------------------------------------ */}
+      {/* ------------------------------- review modal ----------------------------------- */}
       <CustomModal
         isModalOpen={isReviewModalOpen}
         handleCancel={() => setIsReviewModalOpen(false)}
@@ -642,6 +751,27 @@ const Product = ({
         />
         <button className="btn--cart w-100" onClick={confirmReview}>
           Confirm review
+        </button>
+      </CustomModal>
+      {/* ------------------------------- bidding modal ---------------------------------- */}
+
+      <CustomModal
+        isModalOpen={isBiddingModalOpen}
+        handleCancel={() => setIsBiddingModalOpen(false)}
+      >
+        <p className="modal-text">Enter New Bid Amount</p>
+        <input
+          type="number"
+          className="text--global text--secondary mb-3"
+          id="bidText"
+          min={product?.startBidding}
+          style={{ width: "280px" }}
+        />
+        <h6 className="text-danger" style={{ width: "280px" }}>
+          {bidError}
+        </h6>
+        <button className="btn--cart w-100" onClick={confirmBidding}>
+          Bid Now
         </button>
       </CustomModal>
     </>
