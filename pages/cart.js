@@ -12,6 +12,7 @@ import {
 } from "../src/assets/icons";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import { getCheckout } from "./api/payment";
 
 export async function getServerSideProps() {
   return {
@@ -90,6 +91,16 @@ const Cart = () => {
       });
   };
 
+  const checkOut = () => {
+    getCheckout(JSON.stringify({ cards: cartItems?.map((item) => item?._id) }))
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Checkout failed");
+      });
+  };
   useEffect(() => {
     if (payment_error) {
       toast.error("payment failed");
@@ -173,7 +184,7 @@ const Cart = () => {
                   <h3>${total}</h3>
                 </article>
 
-                <button className="btn--cart">
+                <button className="btn--cart" onClick={checkOut}>
                   Go to Checkout <ArrowRightIcon />
                 </button>
               </div>
