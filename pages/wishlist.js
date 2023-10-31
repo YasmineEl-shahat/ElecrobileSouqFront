@@ -9,6 +9,12 @@ import { toast } from "react-toastify";
 import { getProduct } from "./api/products";
 import Rating from "../src/sharedui/Rating";
 import { CartIcon, TrashIcon } from "../src/assets/icons";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addCartItemThunk,
+  calculateTotal,
+  getCartThunk,
+} from "../src/redux/reducers/cartSlice";
 
 export async function getServerSideProps() {
   return {
@@ -19,7 +25,9 @@ export async function getServerSideProps() {
 }
 
 const Wishlist = () => {
+  const dispatch = useDispatch();
   const [wishListItems, setWishListItems] = useState([]);
+  // const cartItems = useSelector((state) => state.cart.cart);
 
   const getData = () => {
     getMyCart()
@@ -47,7 +55,6 @@ const Wishlist = () => {
                 };
               })
             );
-            console.log(updatedWishList);
             setWishListItems(updatedWishList);
           })
           .catch((error) => {
@@ -86,12 +93,10 @@ const Wishlist = () => {
     );
     setWishListItems(updatedWishList);
 
-    // Call the API to add the item to the cart
-    postCart(JSON.stringify(cartItemData))
-      .then((res) => {
-        console.log(res);
-        toast.success("Item added to cart successfully");
-      })
+    dispatch(addCartItemThunk(cartItemData))
+      .then(() => toast.success("Item added to cart successfully"))
+      .then(() => dispatch(getCartThunk()))
+      .then(() => dispatch(calculateTotal()))
       .catch((error) => {
         console.log(error);
         toast.error("Failed to add item to cart");

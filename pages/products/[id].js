@@ -325,7 +325,9 @@ const Product = ({
         toast.error("failed to bid");
       });
   };
-
+  const inCart = (variant_id) => {
+    return cart?.some((card) => card?.variant?._id === variant_id);
+  };
   // ------------------------------------------use effect -----------------------------------
   useEffect(() => {
     if (isAuthenticated) {
@@ -598,7 +600,7 @@ const Product = ({
           </section>
 
           {similarProducts?.length > 0 && (
-            <div className="mainContainer">
+            <>
               <h3 className="heading-text">Similar Products</h3>
               <Swiper
                 cssMode={true}
@@ -634,7 +636,7 @@ const Product = ({
                   </SwiperSlide>
                 ))}
               </Swiper>
-            </div>
+            </>
           )}
 
           {/* description and reviews */}

@@ -133,7 +133,7 @@ const Home = ({
               }}
             >
               {biddings.map((item) => (
-                <SwiperSlide key={item.id}>
+                <SwiperSlide key={item._id}>
                   <ProductCard product={item} isBidding={true} />
                 </SwiperSlide>
               ))}

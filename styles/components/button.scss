@@ -39,6 +39,9 @@ body {
     height: 3rem;
     border-radius: 50%;
   }
+  .btn--incart {
+    background-color: $secondary;
+  }
   button {
     &:disabled {
       cursor: auto;

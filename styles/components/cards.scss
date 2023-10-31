@@ -3,6 +3,9 @@
 
 .product-card {
   cursor: pointer;
+  @include flexBet;
+  flex-direction: column;
+  flex-wrap: nowrap;
 
   border: 0.1rem solid $light-border-color !important;
   border-radius: 6px;
@@ -10,7 +13,7 @@
   height: 300px !important;
   text-transform: capitalize;
   img {
-    height: 65%;
+    height: 60%;
     margin-bottom: 1rem;
   }
   .product-category {
@@ -25,5 +28,12 @@
   .product-price {
     font-size: $MediumFont;
     color: $darkGray;
+  }
+  .deal-price {
+    color: #ff316a;
+  }
+  .prev-deal-price {
+    font-size: 1rem;
+    text-decoration: line-through;
   }
 }

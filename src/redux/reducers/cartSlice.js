@@ -3,6 +3,7 @@ import {
   getMyCart,
   updateCartItem,
   deleteCartItem,
+  postCart,
 } from "../../../pages/api/cart";
 
 export const getCartThunk = createAsyncThunk("cart", async () => {
@@ -10,6 +11,12 @@ export const getCartThunk = createAsyncThunk("cart", async () => {
   return cart;
 });
 
+export const addCartItemThunk = createAsyncThunk(
+  "cart/addCartItem",
+  async (data) => {
+    const response = await postCart(JSON.stringify(data));
+  }
+);
 export const updateCartItemThunk = createAsyncThunk(
   "cart/updateCartItem",
   async ({ id, quantity }) => {
@@ -42,18 +49,6 @@ const cartSlice = createSlice({
       }
       state.totalPrice = totalPrice;
     },
-    updateData: (state, action) => {
-      const updatedCartItems = state.cart.map((item) =>
-        item._id === action?.payload?.id
-          ? {
-              ...item,
-              quantity: action?.payload?.res?.data?.data?.card?.quantity,
-              price: action?.payload?.res.data?.data?.card?.price,
-            }
-          : item
-      );
-      state.cart = updatedCartItems;
-    },
   },
   extraReducers: (builder) => {
     // Add reducers for additional action types here, and handle loading state as needed
@@ -71,7 +66,8 @@ const cartSlice = createSlice({
         state.loader = true;
       })
       .addCase(updateCartItemThunk.fulfilled, (state, action) => {
-        const updatedCartItem = action.payload.data.card;
+        console.log(action.payload?.data?.data?.card);
+        const updatedCartItem = action.payload?.data?.data?.card;
         const index = state.cart.findIndex(
           (item) => item._id === updatedCartItem._id
         );
@@ -92,8 +88,15 @@ const cartSlice = createSlice({
       .addCase(deleteCartItemThunk.rejected, (state, action) => {
         state.error = action.error.message;
         state.loader = false;
+      })
+      .addCase(addCartItemThunk.fulfilled, (state, action) => {
+        state.loader = false;
+      })
+      .addCase(addCartItemThunk.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.loader = false;
       });
   },
 });
-export const { calculateTotal, updateData } = cartSlice.actions;
+export const { calculateTotal } = cartSlice.actions;
 export default cartSlice.reducer;
