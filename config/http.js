@@ -2,6 +2,7 @@ import axios from "axios";
 
 const ISSERVER = typeof window === "undefined";
 export let savedToken;
+export let refreshToken;
 
 if (
   !ISSERVER &&
@@ -13,12 +14,6 @@ if (
   );
 }
 
-export function setSavedToken(value) {
-  savedToken = value;
-}
-
-export let refreshToken;
-
 if (
   !ISSERVER &&
   localStorage.getItem("persist:root") &&
@@ -29,11 +24,16 @@ if (
   );
 }
 
+export function setSavedToken(value) {
+  savedToken = value;
+}
+
 export function setRefreshToken(value) {
   refreshToken = value;
 }
 
-const token = `Bearer ` + savedToken;
+// Initialize the token variable with the initial savedToken
+let token = `Bearer ` + savedToken;
 
 export let httpJson = axios.create({
   headers: {
@@ -48,6 +48,7 @@ export let httpForm = axios.create({
     "Content-Type": "multipart/form-data",
   },
 });
+
 export let authorizedHttpJson = axios.create({
   headers: {
     "Access-Control-Allow-Origin": "*",
@@ -55,6 +56,7 @@ export let authorizedHttpJson = axios.create({
     Authorization: token,
   },
 });
+
 export let authorizedHttpForm = axios.create({
   headers: {
     "Access-Control-Allow-Origin": "*",

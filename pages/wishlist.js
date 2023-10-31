@@ -15,6 +15,7 @@ import {
   calculateTotal,
   getCartThunk,
 } from "../src/redux/reducers/cartSlice";
+import Spinner from "../components/Spinner";
 
 export async function getServerSideProps() {
   return {
@@ -27,6 +28,8 @@ export async function getServerSideProps() {
 const Wishlist = () => {
   const dispatch = useDispatch();
   const [wishListItems, setWishListItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   // const cartItems = useSelector((state) => state.cart.cart);
 
   const getData = () => {
@@ -56,6 +59,7 @@ const Wishlist = () => {
               })
             );
             setWishListItems(updatedWishList);
+            setLoading(false);
           })
           .catch((error) => {
             console.log(error);
@@ -109,70 +113,76 @@ const Wishlist = () => {
   }, []);
   return (
     <main className="d-flex justify-content-center">
-      <div className="mainContainer my-5">
-        {wishListItems?.length > 0 ? (
-          <>
-            <h1 className="cart-header mb-4">Wishlist</h1>
-            {wishListItems?.map((item) => (
-              <div
-                key={item._id}
-                className="wishlist-container mb-5 d-flex align-items-center"
-              >
-                <Image
-                  src={image_url + item?.variant?.imageCover}
-                  alt={item?.product?.name}
-                  width={140}
-                  height={140}
-                />
-                <div className="d-flex justify-content-between w-100">
-                  <div className="product-details">
-                    <h6 className="mb-3">
-                      {item?.product?.subCategory?.category && (
-                        <span>
-                          {item?.product?.subCategory?.category?.name},
-                        </span>
-                      )}
-                      <span> {item?.product?.subCategory?.name}</span>
-                    </h6>
-                    <Link href={`/products/${item?.product?._id}`} passHref>
-                      <h2 className="mb-3">{item?.product?.name}</h2>
-                    </Link>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <div className="mainContainer my-5">
+          {wishListItems?.length > 0 ? (
+            <>
+              <h1 className="cart-header mb-4">Wishlist</h1>
+              {wishListItems?.map((item) => (
+                <div
+                  key={item._id}
+                  className="wishlist-container mb-5 d-flex align-items-center"
+                >
+                  <Image
+                    src={image_url + item?.variant?.imageCover}
+                    alt={item?.product?.name}
+                    width={140}
+                    height={140}
+                  />
+                  <div className="d-flex justify-content-between w-100">
+                    <div className="product-details">
+                      <h6 className="mb-3">
+                        {item?.product?.subCategory?.category && (
+                          <span>
+                            {item?.product?.subCategory?.category?.name},
+                          </span>
+                        )}
+                        <span> {item?.product?.subCategory?.name}</span>
+                      </h6>
+                      <Link href={`/products/${item?.product?._id}`} passHref>
+                        <h2 className="mb-3">{item?.product?.name}</h2>
+                      </Link>
 
-                    <article className="d-flex align-items-center">
-                      <Rating ratingsAverage={item?.product?.ratingsAverage} />
-                      <span className="rate-average">
-                        {item?.product?.ratingsAverage}
-                      </span>
-                      <span className="rate-quantity">
-                        ({item?.product?.ratingsQuantity})
-                      </span>
-                    </article>
-                    <pre className="my-4 rate-quantity">
-                      {item?.product?.description?.substring(0, 100)}
-                      {item?.product?.description?.length > 100 && "..."}
-                    </pre>
-                  </div>
-                  <div className="d-flex justify-content-between flex-column align-items-end">
-                    <button onClick={() => handleDelete(item._id)}>
-                      <TrashIcon className="text-danger" size={18} />
-                    </button>
-                    <button
-                      onClick={() => addToCartHandler(item)}
-                      className="btn--cart d-flex align-items-center"
-                      disabled={item?.isInCart}
-                    >
-                      {item?.isInCart ? "In Cart " : "Add to Cart "}{" "}
-                      <CartIcon />
-                    </button>
+                      <article className="d-flex align-items-center">
+                        <Rating
+                          ratingsAverage={item?.product?.ratingsAverage}
+                        />
+                        <span className="rate-average">
+                          {item?.product?.ratingsAverage}
+                        </span>
+                        <span className="rate-quantity">
+                          ({item?.product?.ratingsQuantity})
+                        </span>
+                      </article>
+                      <pre className="my-4 rate-quantity">
+                        {item?.product?.description?.substring(0, 100)}
+                        {item?.product?.description?.length > 100 && "..."}
+                      </pre>
+                    </div>
+                    <div className="d-flex justify-content-between flex-column align-items-end">
+                      <button onClick={() => handleDelete(item._id)}>
+                        <TrashIcon className="text-danger" size={18} />
+                      </button>
+                      <button
+                        onClick={() => addToCartHandler(item)}
+                        className="btn--cart d-flex align-items-center"
+                        disabled={item?.isInCart}
+                      >
+                        {item?.isInCart ? "In Cart " : "Add to Cart "}{" "}
+                        <CartIcon />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </>
-        ) : (
-          <p>Your wishlist is empty</p>
-        )}
-      </div>
+              ))}
+            </>
+          ) : (
+            <p>Your wishlist is empty</p>
+          )}
+        </div>
+      )}
     </main>
   );
 };
