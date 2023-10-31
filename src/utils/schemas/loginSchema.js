@@ -1,5 +1,9 @@
 import * as yup from "yup";
-import { emailPattern, oldPasswordPattern } from "../validators/regexPattern";
+import {
+  emailPattern,
+  passwordPattern,
+  oldPasswordPattern,
+} from "../validators/regexPattern";
 export const schema = yup
   .object({
     email: yup
@@ -10,9 +14,13 @@ export const schema = yup
     password: yup
       .string()
       .matches(
-        oldPasswordPattern,
-        "password must be at lest 8 characters, one uppercase letter, one lowercase letter and one number"
+        passwordPattern,
+        "Password must be at least 8 characters and contain at least 1 uppercase, 1 lowercase, 1 number and 1 symbol"
       )
+      // .matches(
+      //   oldPasswordPattern,
+      //   "password must be at lest 8 characters, one uppercase letter, one lowercase letter and one number"
+      // )
       .min(8, "Password should be at least 8 chars")
       .required("Password is required")
       .trim(),

@@ -16,6 +16,9 @@
     height: 60%;
     margin-bottom: 1rem;
   }
+  .bid-image {
+    height: 50%;
+  }
   .product-category {
     color: $mediumGray;
     font-size: 1.2rem;
@@ -28,6 +31,7 @@
   .product-price {
     font-size: $MediumFont;
     color: $darkGray;
+    font-weight: 600;
   }
   .deal-price {
     color: #ff316a;
@@ -35,5 +39,11 @@
   .prev-deal-price {
     font-size: 1rem;
     text-decoration: line-through;
+  }
+  .btn--bidding {
+    font-size: 1rem;
+  }
+  .bid-price {
+    color: $blue;
   }
 }

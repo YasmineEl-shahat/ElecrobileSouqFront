@@ -374,7 +374,6 @@ const Product = ({
 
   useEffect(() => {
     if (bidAmount) {
-      const var_id = selectedVariant?._id;
       channel.bind("current_price", (data) => {
         try {
           console.log("Received response data:", data?.current_price);

@@ -112,13 +112,13 @@ const Wishlist = () => {
     // eslint-disable-next-line
   }, []);
   return (
-    <main className="d-flex justify-content-center">
+    <main className="d-flex justify-content-center wish">
       {loading ? (
         <Spinner />
       ) : (
         <div className="mainContainer my-5">
           {wishListItems?.length > 0 ? (
-            <>
+            <div className="wish-wrapper">
               <h1 className="cart-header mb-4">Wishlist</h1>
               {wishListItems?.map((item) => (
                 <div
@@ -131,7 +131,7 @@ const Wishlist = () => {
                     width={140}
                     height={140}
                   />
-                  <div className="d-flex justify-content-between w-100">
+                  <div className=" details-wrapper w-100">
                     <div className="product-details">
                       <h6 className="mb-3">
                         {item?.product?.subCategory?.category && (
@@ -163,7 +163,10 @@ const Wishlist = () => {
                     </div>
                     <div className="d-flex justify-content-between flex-column align-items-end">
                       <button onClick={() => handleDelete(item._id)}>
-                        <TrashIcon className="text-danger" size={18} />
+                        <TrashIcon
+                          className="text-danger btn--trash"
+                          size={18}
+                        />
                       </button>
                       <button
                         onClick={() => addToCartHandler(item)}
@@ -177,7 +180,7 @@ const Wishlist = () => {
                   </div>
                 </div>
               ))}
-            </>
+            </div>
           ) : (
             <p>Your wishlist is empty</p>
           )}
