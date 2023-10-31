@@ -26,8 +26,6 @@ const Login = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(router);
-
     if (isAuthenticated) router.push("/");
   }, [router, isAuthenticated]);
 
@@ -47,9 +45,15 @@ const Login = () => {
         setSubmitting(false);
         clearErrors();
         setBackError("");
-        dispatch(login({ user: res.data.user, token: res.data.token }));
-        toast.success("Login Successfully");
+        dispatch(
+          login({
+            user: res.data.user,
+            token: res.data.token,
+            refreshToken: res.data.refreshToken,
+          })
+        );
         router.push("/");
+        toast.success("Login Successfully");
       })
       .catch((error) => {
         setBackError(error?.response?.data?.message);
@@ -71,7 +75,11 @@ const Login = () => {
       <div className="mainContainer py-5 d-flex align-items-center flex-column">
         <section className="auth-tabs">
           <Link href="/auth/login" passHref>
-            <button className={router.asPath === "/auth/login" && "active"}>
+            <button
+              className={
+                router.asPath === "/auth/login" && "active active-login"
+              }
+            >
               LOGIN
             </button>
           </Link>

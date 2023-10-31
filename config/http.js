@@ -17,7 +17,24 @@ export function setSavedToken(value) {
   savedToken = value;
 }
 
+export let refreshToken;
+
+if (
+  !ISSERVER &&
+  localStorage.getItem("persist:root") &&
+  JSON.parse(localStorage.getItem("persist:root"))?.refreshToken
+) {
+  refreshToken = JSON.parse(
+    JSON.parse(localStorage.getItem("persist:root"))?.refreshToken
+  );
+}
+
+export function setRefreshToken(value) {
+  refreshToken = value;
+}
+
 const token = `Bearer ` + savedToken;
+
 export let httpJson = axios.create({
   headers: {
     "Access-Control-Allow-Origin": "*",

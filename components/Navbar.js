@@ -7,12 +7,13 @@ import {
   CartIcon,
 } from "../src/assets/icons";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomModal from "../src/sharedui/modal";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../src/redux/reducers/authSlice";
 import { image_url } from "../config/config";
+import { calculateTotal, getCartThunk } from "../src/redux/reducers/cartSlice";
 
 const Navbar = ({ categories }) => {
   const router = useRouter();
@@ -20,6 +21,7 @@ const Navbar = ({ categories }) => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const user = useSelector((state) => state.auth.user);
+  const total = useSelector((state) => state.cart.totalPrice);
 
   const wishlistHandler = () => {
     if (!isAuthenticated) setIsLoginModalOpen(true);
@@ -40,6 +42,18 @@ const Navbar = ({ categories }) => {
       else router.push("/products?name=" + name);
     }
   };
+
+  useEffect(() => {
+    if (isAuthenticated)
+      dispatch(getCartThunk())
+        .then(() => {
+          dispatch(calculateTotal());
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+  }, [dispatch]);
+
   return (
     <>
       <nav className="d-flex justify-content-center">
@@ -126,7 +140,7 @@ const Navbar = ({ categories }) => {
             </button>
             <button onClick={cartHandler}>
               <CartIcon size={15} />
-              <span>$0.00</span>
+              <span>${total ?? "0.00"}</span>
             </button>
           </span>
         </div>

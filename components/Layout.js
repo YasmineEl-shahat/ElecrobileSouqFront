@@ -6,10 +6,10 @@ import Footer from "./Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategoriesThunk } from "../src/redux/reducers/categoriesSlice";
 import Spinner from "./Spinner";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { login, logout } from "../src/redux/reducers/authSlice";
-import { refreshToken } from "../pages/api/auth";
-import { setSavedToken } from "../config/http";
+import { userRefreshToken } from "../pages/api/auth";
+import { setSavedToken, setRefreshToken } from "../config/http";
 
 const Layout = ({ title, children }) => {
   const dispatch = useDispatch();
@@ -31,17 +31,27 @@ const Layout = ({ title, children }) => {
       setSavedToken(
         JSON.parse(JSON.parse(localStorage.getItem("persist:root"))?.token)
       );
-      // refreshToken()
-      //   .then((res) => {
-      //     console.log("refresh", res);
-      //     dispatch(login({ user: res.data.user, token: res.data.token }));
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //     dispatch(logout());
-      //   });
+      setRefreshToken(
+        JSON.parse(
+          JSON.parse(localStorage.getItem("persist:root"))?.refreshToken
+        )
+      );
     }
-  }, [ISSERVER]);
+    // userRefreshToken()
+    //   .then((res) => {
+    //     dispatch(
+    //       login({
+    //         user: res.data.user,
+    //         token: res.data.token,
+    //         refreshToken: res.data.refreshToken,
+    //       })
+    //     );
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     dispatch(logout());
+    //   });
+  }, []);
 
   return (
     <>

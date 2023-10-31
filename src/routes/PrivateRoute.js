@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { refreshToken } from "../../pages/api/auth";
+import { userRefreshToken } from "../../pages/api/auth";
 import { login, logout } from "../redux/reducers/authSlice";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -12,14 +12,27 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   useEffect(() => {
     if (!isAuthenticated) router.push("/auth/login");
     else {
-      refreshToken()
-        .then((res) => {
-          dispatch(login({ user: res.data.user, token: res.data.token }));
-        })
-        .catch((error) => {
-          // dispatch(logout());
-          // router.push("/auth/login");
-        });
+      // userRefreshToken(
+      //   JSON.stringify({
+      //     refreshToken: JSON.parse(
+      //       JSON.parse(localStorage.getItem("persist:root"))?.refreshToken
+      //     ),
+      //   })
+      // )
+      //   .then((res) => {
+      //     dispatch(
+      //       login({
+      //         user: res.data.user,
+      //         token: res.data.token,
+      //         refreshToken: res.data.refreshToken,
+      //       })
+      //     );
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //     // dispatch(logout());
+      //     // router.push("/auth/login");
+      //   });
     }
     // eslint-disable-next-line
   }, [isAuthenticated, router]);

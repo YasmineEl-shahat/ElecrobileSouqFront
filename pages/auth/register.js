@@ -66,7 +66,11 @@ const Register = () => {
       <div className="mainContainer py-5 d-flex align-items-center flex-column">
         <section className="auth-tabs">
           <Link href="/auth/login" passHref>
-            <button className={router.asPath === "/auth/login" && "active"}>
+            <button
+              className={
+                router.asPath === "/auth/login" && "active active-login"
+              }
+            >
               LOGIN
             </button>
           </Link>

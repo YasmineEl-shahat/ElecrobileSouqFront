@@ -113,7 +113,24 @@ const Home = ({
               modules={[Navigation, Pagination, Mousewheel, Keyboard]}
               className="common-swiper mb-5"
               spaceBetween={20}
-              slidesPerView={5}
+              slidesPerView={1}
+              breakpoints={{
+                1200: {
+                  slidesPerView: 5,
+                },
+                1000: {
+                  slidesPerView: 4,
+                },
+                800: {
+                  slidesPerView: 3,
+                },
+                600: {
+                  slidesPerView: 2,
+                },
+                300: {
+                  slidesPerView: 1,
+                },
+              }}
             >
               {biddings.map((item) => (
                 <SwiperSlide key={item.id}>
@@ -189,7 +206,24 @@ const Home = ({
               modules={[Navigation, Pagination, Mousewheel, Keyboard]}
               className="common-swiper mb-5"
               spaceBetween={20}
-              slidesPerView={5}
+              slidesPerView={1}
+              breakpoints={{
+                1200: {
+                  slidesPerView: 5,
+                },
+                1000: {
+                  slidesPerView: 4,
+                },
+                800: {
+                  slidesPerView: 3,
+                },
+                600: {
+                  slidesPerView: 2,
+                },
+                300: {
+                  slidesPerView: 1,
+                },
+              }}
             >
               {bestSellers?.map((item) => (
                 <SwiperSlide key={item?.variant?._id}>
@@ -217,7 +251,24 @@ const Home = ({
               modules={[Navigation, Pagination, Mousewheel, Keyboard]}
               className="common-swiper mb-5"
               spaceBetween={20}
-              slidesPerView={5}
+              slidesPerView={1}
+              breakpoints={{
+                1200: {
+                  slidesPerView: 5,
+                },
+                1000: {
+                  slidesPerView: 4,
+                },
+                800: {
+                  slidesPerView: 3,
+                },
+                600: {
+                  slidesPerView: 2,
+                },
+                300: {
+                  slidesPerView: 1,
+                },
+              }}
             >
               {bigDeals.map((item) => (
                 <SwiperSlide key={item.id}>
@@ -229,7 +280,7 @@ const Home = ({
         </div>
       )}
 
-      <div className="firstOrder d-flex justify-content-center py-4 mb-3">
+      {/* <div className="firstOrder d-flex justify-content-center py-4 mb-3">
         <div className="mainContainer d-flex justify-content-between flex-wrap align-items-center">
           <span>
             Subscribe to Our Newsletter - get a $20 Coupon for your first order!
@@ -242,7 +293,7 @@ const Home = ({
             ></input>
           </form>
         </div>
-      </div>
+      </div> */}
     </main>
   );
 };

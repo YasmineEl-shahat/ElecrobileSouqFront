@@ -13,6 +13,13 @@ import {
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { getCheckout } from "./api/payment";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  calculateTotal,
+  getCartThunk,
+  updateCartItemThunk,
+  updateData,
+} from "../src/redux/reducers/cartSlice";
 
 export async function getServerSideProps() {
   return {
@@ -23,47 +30,73 @@ export async function getServerSideProps() {
 }
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState([]);
-  const [total, setTotal] = useState(0);
+  const dispatch = useDispatch();
+  // const [cartItems, setCartItems] = useState([]);
+  const cartItems = useSelector((state) => state.cart.cart);
+  const total = useSelector((state) => state.cart.totalPrice);
+
+  // const [total, setTotal] = useState(0);
   const router = useRouter();
   const { payment_error } = router.query;
 
+  // const getData = () => {
+  //   getMyCart()
+  //     .then((res) => {
+  //       setCartItems(res?.data?.data?.cards);
+  //       calculateTotal(res?.data?.data?.cards);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
+
   const getData = () => {
-    getMyCart()
-      .then((res) => {
-        setCartItems(res?.data?.data?.cards);
-        calculateTotal(res?.data?.data?.cards);
+    dispatch(getCartThunk())
+      .then(() => {
+        dispatch(calculateTotal());
       })
       .catch((error) => {
         console.log(error);
       });
   };
+  // const calculateTotal = (items) => {
+  //   let totalPrice = 0;
+  //   for (const item of items) {
+  //     totalPrice += item.price;
+  //   }
+  //   setTotal(totalPrice);
+  // };
 
-  const calculateTotal = (items) => {
-    let totalPrice = 0;
-    for (const item of items) {
-      totalPrice += item.price;
-    }
-    setTotal(totalPrice);
-  };
+  // const updateData = (res, id) => {
+  //   const updatedCartItems = cartItems.map((item) =>
+  //     item._id === id
+  //       ? {
+  //           ...item,
+  //           quantity: res?.data?.data?.card?.quantity,
+  //           price: res.data?.data?.card?.price,
+  //         }
+  //       : item
+  //   );
+  //   setCartItems(updatedCartItems);
+  //   calculateTotal(updatedCartItems);
+  // };
+  // const increaseQuantity = (id, quantity, variant_quantity) => {
+  //   if (quantity < variant_quantity)
+  //     updateCartItem(id, JSON.stringify({ quantity: quantity + 1 }))
+  //       .then((res) => updateData(res, id))
+  //       .catch((error) => {
+  //         console.log(error);
+  //         toast.error("failed to increase");
+  //       });
+  // };
 
-  const updateDate = (res, id) => {
-    const updatedCartItems = cartItems.map((item) =>
-      item._id === id
-        ? {
-            ...item,
-            quantity: res?.data?.data?.card?.quantity,
-            price: res.data?.data?.card?.price,
-          }
-        : item
-    );
-    setCartItems(updatedCartItems);
-    calculateTotal(updatedCartItems);
-  };
   const increaseQuantity = (id, quantity, variant_quantity) => {
     if (quantity < variant_quantity)
-      updateCartItem(id, JSON.stringify({ quantity: quantity + 1 }))
-        .then((res) => updateDate(res, id))
+      dispatch(
+        updateCartItemThunk(id, JSON.stringify({ quantity: quantity + 1 }))
+      )
+        .then((res) => dispatch(updateData(res, id)))
+        .then(() => dispatch(calculateTotal()))
         .catch((error) => {
           console.log(error);
           toast.error("failed to increase");
@@ -71,13 +104,25 @@ const Cart = () => {
   };
   const decreaseQuantity = (id, quantity) => {
     if (quantity > 1)
-      updateCartItem(id, JSON.stringify({ quantity: quantity - 1 }))
-        .then((res) => updateDate(res, id))
+      dispatch(
+        updateCartItemThunk(id, JSON.stringify({ quantity: quantity - 1 }))
+      )
+        .then((res) => dispatch(updateData(res, id)))
+        .then(() => dispatch(calculateTotal()))
         .catch((error) => {
           console.log(error);
           toast.error("failed to decrease");
         });
   };
+  // const decreaseQuantity = (id, quantity) => {
+  //   if (quantity > 1)
+  //     updateCartItem(id, JSON.stringify({ quantity: quantity - 1 }))
+  //       .then((res) => updateData(res, id))
+  //       .catch((error) => {
+  //         console.log(error);
+  //         toast.error("failed to decrease");
+  //       });
+  // };
 
   const handleDelete = (id) => {
     const updatedCartItems = cartItems.filter((item) => item._id !== id);
@@ -104,6 +149,7 @@ const Cart = () => {
         toast.error("Checkout failed");
       });
   };
+
   useEffect(() => {
     if (payment_error) {
       toast.error("payment failed");
@@ -113,7 +159,7 @@ const Cart = () => {
     }
     getData();
     // eslint-disable-next-line
-  }, []);
+  }, [dispatch]);
 
   return (
     <main className="d-flex justify-content-center">

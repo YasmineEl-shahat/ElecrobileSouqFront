@@ -97,6 +97,9 @@ body {
           &:not(:last-of-type) {
             margin-right: 2rem;
           }
+          &:hover {
+            color: $primary;
+          }
         }
         span {
           margin-left: 0.5rem;

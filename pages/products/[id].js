@@ -609,7 +609,24 @@ const Product = ({
                 modules={[Navigation, Pagination, Mousewheel, Keyboard]}
                 className="common-swiper mb-5"
                 spaceBetween={20}
-                slidesPerView={5}
+                slidesPerView={1}
+                breakpoints={{
+                  1200: {
+                    slidesPerView: 5,
+                  },
+                  1000: {
+                    slidesPerView: 4,
+                  },
+                  800: {
+                    slidesPerView: 3,
+                  },
+                  600: {
+                    slidesPerView: 2,
+                  },
+                  300: {
+                    slidesPerView: 1,
+                  },
+                }}
               >
                 {similarProducts.map((item) => (
                   <SwiperSlide key={item.id}>

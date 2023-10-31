@@ -14,6 +14,7 @@ const ProductCard = ({ product, isBigDeal, isBidding }) => {
             {product?.subCategory?.category?.name}
           </p>
           <p className="product-name">{product?.name}</p>
+          {isBidding && <div className="d-flex justify-content-end"></div>}
           {/* eslint-disable */}
           <img
             src={image_url + product?.variants[0]?.imageCover}
