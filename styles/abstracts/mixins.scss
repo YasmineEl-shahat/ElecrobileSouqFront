@@ -46,16 +46,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 @mixin flexAround {
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
 }
 
 @mixin flexBet {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 @mixin Centering {

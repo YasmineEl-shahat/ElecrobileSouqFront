@@ -1,24 +1,24 @@
 // colors
-$primary: #927af4ff;
-$secondary: #77d0e8;
-$primaryGray: #565d6dff;
-$primaryBlack: #171a1fff;
+$primary: #0077e4;
+$secondary: #ff6000;
+$white: #ffffff;
+$blue: #003566;
 
-// Typography Start
+$lightGray: #dde1e8;
+$mediumGray: #586a84;
+$darkGray: #1d232c;
+
+$light-border-color: #eef0f4;
+
+// Typography
 // Font sizes
 $GlobalFont: 62.5%;
-$HeadFont: 1.8rem;
-$MediumFont: 1.4rem;
-$smallFont: 1.2rem;
+$HeadFont: 2.4rem;
+$MediumFont: 1.8rem;
+$smallFont: 1.4rem;
 
 // Line Heights
 $HeadLineSpacing: 2.8rem;
-$MediumLineSpacing: 2.2rem;
-$smallLineSpacing: 1.5rem;
-
-//Typography End
 
 //shadow
-$globalShadow: 0px 0px 1.5px $primaryGray;
-
-$globalRadius: 22.5px;
+$globalShadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.31);

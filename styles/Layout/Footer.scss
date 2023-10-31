@@ -1,0 +1,30 @@
+@import "../abstracts/variables.scss";
+@import "../abstracts/mixins.scss";
+
+footer {
+  background: linear-gradient(
+    92deg,
+    rgba(3, 54, 101, 0.13) 6.65%,
+    rgba(246, 95, 4, 0.01) 98.64%
+  );
+
+  font-size: $smallFont;
+  color: $mediumGray;
+  h4 {
+    color: $darkGray;
+    font-size: 1.6rem;
+    font-weight: 600;
+    line-height: $HeadLineSpacing;
+  }
+  .icons-wrapper {
+    margin-top: 2rem;
+    a {
+      margin-right: 2rem;
+    }
+  }
+  .links {
+    p {
+      cursor: pointer;
+    }
+  }
+}

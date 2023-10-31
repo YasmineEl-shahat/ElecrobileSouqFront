@@ -14,7 +14,9 @@ module.exports = {
       config.plugins = [
         ...config.plugins,
         new webpack.DefinePlugin({
-          "process.env.API_URL": JSON.stringify("http://localhost:3000"),
+          "process.env.API_URL": JSON.stringify(
+            "https://electrobile-souq.onrender.com/api/v1"
+          ),
         }),
       ];
     }
@@ -23,7 +25,9 @@ module.exports = {
       config.plugins = [
         ...config.plugins,
         new webpack.DefinePlugin({
-          "process.env.API_URL": JSON.stringify("http://localhost:3000"),
+          "process.env.API_URL": JSON.stringify(
+            "https://electrobile-souq.onrender.com/api/v1"
+          ),
         }),
         //Webpack will pick the name for us and add a hash to it.
         //the file name will only change when our CSS changes.
@@ -52,9 +56,10 @@ module.exports = {
   },
   images: {
     domains: [
-      "http://localhost:8080",
-      "jimmy.nader-mo.tech",
-      "mir-s3-cdn-cf.behance.net",
+      "http://localhost:3000",
+      "localhost",
+      "http://localhost:3000undefined",
+      "electrobile-souq.onrender.com",
     ],
   },
 };

@@ -1,18 +1,7 @@
 const Spinner = () => {
   return (
-    <div className="lds-default">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
+    <div className="loader-wrapper">
+      <span className="loader"></span>
     </div>
   );
 };

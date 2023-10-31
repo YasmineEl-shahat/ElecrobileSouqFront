@@ -1,0 +1,33 @@
+@import "../abstracts/variables.scss";
+@import "../abstracts/mixins.scss";
+
+.tab-buttons {
+  display: flex;
+  font-size: $MediumFont;
+
+  button {
+    padding: 1rem 2rem;
+    border: 1px solid $light-border-color;
+    color: $mediumGray;
+
+    &:first-child {
+      border-top-left-radius: 4px;
+    }
+
+    &:last-child {
+      border-top-right-radius: 4px;
+    }
+
+    &.active {
+      border-bottom: 2px solid #fff;
+      margin-bottom: -1px;
+      color: $darkGray;
+    }
+  }
+}
+
+.tab-content {
+  padding: 4rem 2rem;
+  border-radius: 0 4px 4px 4px;
+  border: 1px solid $light-border-color;
+}

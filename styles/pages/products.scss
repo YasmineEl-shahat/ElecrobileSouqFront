@@ -1,0 +1,182 @@
+@import "./abstracts/variables.scss";
+@import "./abstracts/mixins.scss";
+
+.breadcrumb {
+  li {
+    text-transform: capitalize;
+    &:not(:last-child) {
+      cursor: pointer;
+    }
+    @include mQ(675px) {
+      font-size: $smallFont;
+    }
+  }
+}
+
+.rate-quantity {
+  color: $mediumGray;
+  font-size: $smallFont;
+}
+.rate-average {
+  color: $darkGray;
+  font-size: $smallFont;
+  margin: 0 0.8rem;
+}
+
+.product-choose-wrapper {
+  @include flexBet;
+
+  & > div {
+    width: 25vw;
+    margin-bottom: 4rem;
+    @include mQ(1096px) {
+      width: 40vw;
+    }
+
+    @include mQ(770px) {
+      width: 100vw;
+      figure {
+        width: 100% !important;
+        img:not(.iiz__zoom-img) {
+          width: 100% !important;
+        }
+      }
+    }
+    &:last-of-type {
+      border: 1px solid $light-border-color;
+      height: fit-content;
+      border-radius: 6px;
+    }
+  }
+  .iiz__img {
+    height: 40rem;
+  }
+  .product-choose {
+    @include flexCenter;
+    @include mQ(527px) {
+      width: 100%;
+    }
+    img.selected {
+      border: 1px solid $primary;
+      border-radius: 4px;
+    }
+    img {
+      padding: 0.2rem 0.5rem;
+      height: 6rem;
+      width: 6rem;
+      margin: 1rem 0.5rem;
+      cursor: pointer;
+      transition: 0.3s;
+
+      @include mQ(337px) {
+        height: 6rem;
+        width: 5rem;
+      }
+    }
+  }
+
+  .product-details {
+    h6 {
+      font-size: $smallFont;
+      color: $mediumGray;
+      span {
+        text-transform: capitalize;
+      }
+    }
+    h2 {
+      font-size: $HeadFont;
+      color: $primary;
+      font-weight: 500;
+    }
+
+    .brand {
+      color: $lightGray;
+      font-size: 4rem;
+      font-weight: 900;
+    }
+    .color {
+      width: 36px;
+      height: 36px;
+      border: 2px solid $lightGray;
+      border-radius: 5px;
+      margin-right: 1rem;
+      cursor: pointer;
+      @include flexCenter;
+    }
+  }
+
+  .price {
+    font-size: 3.6rem;
+  }
+  .prev-price {
+    color: $mediumGray;
+    text-decoration: line-through;
+  }
+  .total-price {
+    color: $darkGray;
+  }
+  .cart-header {
+    img {
+      filter: invert(46%) sepia(53%) saturate(5090%) hue-rotate(1deg)
+        brightness(105%) contrast(106%);
+    }
+  }
+  .quantity-container {
+    border: 1px solid $lightGray;
+    border-radius: 2rem;
+    padding: 0.5rem 1rem;
+    @include flexBet;
+    width: 50%;
+    font-size: $MediumFont;
+    color: $darkGray;
+    button {
+      color: $mediumGray;
+    }
+  }
+  .btn--cart {
+    width: 100%;
+  }
+}
+
+.reviews-wrapper {
+  hr {
+    color: $lightGray;
+  }
+  .preview {
+    & > div {
+      &:first-of-type {
+        border-right: 1px solid $light-border-color;
+      }
+    }
+
+    .rate-average {
+      font-size: 2rem;
+    }
+    .rate-quantity {
+      font-size: $MediumFont;
+    }
+  }
+  .review {
+    article {
+      img {
+        border-radius: 50%;
+      }
+    }
+    &:not(:last-of-type) {
+      border-bottom: 1px solid $light-border-color;
+    }
+  }
+  section {
+    font-size: $smallFont;
+    color: $mediumGray;
+    margin-top: 1rem;
+    .progress {
+      min-width: 30%;
+      margin: 0 1.5rem;
+      .progress-bar {
+        border-radius: 4px;
+        background-color: $primary;
+      }
+    }
+  }
+}

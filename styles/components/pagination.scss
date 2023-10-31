@@ -1,0 +1,26 @@
+@import "../abstracts/variables.scss";
+@import "../abstracts/mixins.scss";
+
+.pagination {
+  @include flexCenter;
+
+  .page {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: $light-border-color;
+    color: $mediumGray;
+    @include flexCenter;
+    margin: 0 0.5rem;
+  }
+  .active {
+    color: white;
+    background-color: $primary;
+  }
+  .previous {
+    margin-right: 2rem;
+  }
+  .next {
+    margin-left: 2rem;
+  }
+}

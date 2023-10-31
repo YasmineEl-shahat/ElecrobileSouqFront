@@ -1,10 +1,16 @@
 import { api_url } from "../../config/config";
-import { httpJson } from "../../config/http";
+import { httpJson, refreshToken } from "../../config/http";
 
 export async function userLogin(data) {
-  return await httpJson.post(`${api_url}/login`, data);
+  return await httpJson.post(`${api_url}/auth/login`, data);
 }
 
-export async function resetPassword(data) {
-  return await httpJson.patch(`${api_url}/resetpassword`, data);
+export async function userRegister(data) {
+  return await httpJson.post(`${api_url}/auth/register`, data);
+}
+
+export async function userRefreshToken(
+  data = JSON.stringify({ refreshToken })
+) {
+  return await httpJson.post(`${api_url}/auth/refreshToken`, data);
 }

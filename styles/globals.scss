@@ -1,16 +1,30 @@
-@import url("https://fonts.googleapis.com/css2?family=Mulish&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@600&family=Roboto&display=swap");
+
 @import "./abstracts/variables.scss";
 @import "./abstracts/mixins.scss";
+
 @import "./Layout/Navbar.scss";
-@import "./components/Spinner.scss";
+@import "./Layout/Footer.scss";
+@import "./Layout/CategoriesNav.scss";
+
 @import "./components/button.scss";
 @import "./components/label.scss";
 @import "./components/textInput.scss";
 @import "./components/radio.scss";
 @import "./components/forms.scss";
+@import "./components/tabs.scss";
+@import "./components/rating.scss";
+@import "./components/modal.scss";
+@import "./components/cards.scss";
+@import "./components/pagination.scss";
+@import "./components/Spinner.scss";
 
 @import "./pages/index.scss";
 @import "./pages/notfound.scss";
+@import "./pages/products.scss";
+@import "./pages/search.scss";
+@import "./pages/cart.scss";
+@import "./pages/wishlist.scss";
 
 * {
   box-sizing: border-box;
@@ -25,26 +39,35 @@ html {
   font-size: $GlobalFont;
 
   body {
-    font-family: "Mulish", sans-serif;
+    font-family: "Roboto", sans-serif;
 
     overflow-x: hidden;
 
+    .breadcrumb {
+      font-size: 1.4rem;
+      color: $mediumGray;
+    }
+    main {
+      min-height: 40.5vh;
+    }
     &::-webkit-scrollbar {
       width: 0.5rem;
     }
 
     &::-webkit-scrollbar-thumb {
-      background: linear-gradient($primary, transparent);
+      background: $primary;
       border-radius: 6px;
     }
 
     pre {
-      font-family: "Inter", sans-serif;
+      font-family: "Roboto", sans-serif;
       white-space: pre-wrap; /* Since CSS 2.1 */
       white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
       white-space: -pre-wrap; /* Opera 4-6 */
       white-space: -o-pre-wrap; /* Opera 7 */
       word-wrap: break-word; /* Internet Explorer 5.5+ */
+      margin-bottom: 0;
+      overflow-x: hidden;
     }
 
     a {
@@ -59,15 +82,14 @@ html {
     .invisible {
       display: none;
     }
-    .invalid {
-      color: red;
-    }
-    .mainContainer {
-      margin-left: 25.1rem;
-      padding: 3rem 5rem;
 
-      @include mQ(500px) {
-        padding: 2rem;
+    .mainContainer {
+      width: 82.39%;
+      @include mQ(1300px) {
+        width: 88.39%;
+      }
+      @include mQ(992px) {
+        width: 90%;
       }
     }
     ul {
@@ -75,7 +97,9 @@ html {
       padding-left: 0;
       margin-bottom: 0;
     }
-
+    .form-control {
+      box-shadow: none !important;
+    }
     input,
     select,
     textarea,
@@ -92,11 +116,16 @@ html {
     button {
       cursor: pointer;
     }
-    .addWrapper {
-      @include flexBet;
-      align-items: center;
-      margin-bottom: 1rem;
-      font-size: $smallFont;
+    .dropdown-arrow {
+      position: absolute;
+      top: 50%;
+      right: 5px;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-top: 6px solid $secondary;
+      border-right: 4px solid transparent;
+      border-left: 4px solid transparent;
     }
   }
 }

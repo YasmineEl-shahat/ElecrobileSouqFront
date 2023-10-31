@@ -2,40 +2,49 @@
 @import "../abstracts/mixins.scss";
 
 body {
-  .btn--global {
-    padding: 1rem 2rem;
-    height: fit-content;
+  .btn--wishlist {
+    border-radius: 2.4rem;
+    border: 1px solid $mediumGray;
+    width: 100%;
+    padding: 0.5rem 0;
+    font-size: 1.4rem;
+    color: $mediumGray;
+  }
+  .btn--cart {
+    background-color: $secondary;
     color: white;
-    background-color: $primary;
-    border-radius: 3px;
-  }
-
-  .btn--forms {
-    float: right;
-    text-transform: capitalize;
+    font-size: 1.6rem;
     padding: 1rem 4rem;
-  }
-
-  .modal-btns {
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
-    button {
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      margin: 1rem;
+    border-radius: 2.8rem;
+    @include mQ(678px) {
+      font-size: $smallFont;
     }
   }
-  .btn--cancel {
+  .btn--bidding {
+    background-color: $blue;
+    @include flexCenter;
+    width: fit-content;
+  }
+  .btn--primary {
+    padding: 1rem 4rem;
+    border-radius: 2.4rem;
+    color: white;
+    background-color: $primary;
+    font-size: 1.4rem;
+  }
+  .btn--card {
+    background-color: $lightGray;
+    color: white;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+  }
+  .btn--incart {
     background-color: $secondary;
   }
-  .btn--confirm {
-    background-color: $primary;
-  }
-  .btn--toggle i {
-    color: $primary;
+  button {
+    &:disabled {
+      cursor: auto;
+    }
   }
 }

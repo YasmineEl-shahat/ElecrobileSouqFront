@@ -1,0 +1,49 @@
+@import "../abstracts/variables.scss";
+@import "../abstracts/mixins.scss";
+
+.product-card {
+  cursor: pointer;
+  @include flexBet;
+  flex-direction: column;
+  flex-wrap: nowrap;
+
+  border: 0.1rem solid $light-border-color !important;
+  border-radius: 6px;
+  padding: 1rem 2rem;
+  height: 300px !important;
+  text-transform: capitalize;
+  img {
+    height: 60%;
+    margin-bottom: 1rem;
+  }
+  .bid-image {
+    height: 50%;
+  }
+  .product-category {
+    color: $mediumGray;
+    font-size: 1.2rem;
+  }
+  .product-name {
+    color: $primary;
+    font-size: $smallFont;
+    font-weight: 500;
+  }
+  .product-price {
+    font-size: $MediumFont;
+    color: $darkGray;
+    font-weight: 600;
+  }
+  .deal-price {
+    color: #ff316a;
+  }
+  .prev-deal-price {
+    font-size: 1rem;
+    text-decoration: line-through;
+  }
+  .btn--bidding {
+    font-size: 1rem;
+  }
+  .bid-price {
+    color: $blue;
+  }
+}

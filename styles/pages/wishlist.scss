@@ -1,0 +1,106 @@
+@import "./abstracts/variables.scss";
+@import "./abstracts/mixins.scss";
+
+.wish {
+  .loader-wrapper {
+    &::before {
+      background-image: none;
+    }
+  }
+  .wish-wrapper {
+    margin: 0 20rem;
+    @include mQ(1150px) {
+      margin: 0 15rem;
+    }
+    @include mQ(950px) {
+      margin: 0 5rem;
+    }
+    @include mQ(750px) {
+      margin: 0;
+    }
+  }
+}
+
+.wishlist-container {
+  border: 1px solid rgba(0, 53, 102, 0.51);
+  border-radius: 22px;
+  padding: 1.5rem 3rem;
+  .details-wrapper {
+    @include flexBet;
+    flex-wrap: nowrap;
+  }
+  .product-details {
+    margin-left: 2rem;
+
+    h6 {
+      font-size: $smallFont;
+      color: $mediumGray;
+      span {
+        text-transform: capitalize;
+      }
+    }
+
+    h2 {
+      font-size: $HeadFont;
+      color: $primary;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    @include mQ(700px) {
+      h2 {
+        font-size: $smallFont;
+      }
+      h6 {
+        font-size: 1.2rem;
+      }
+    }
+    .color {
+      width: 36px;
+      height: 36px;
+      border: 2px solid $lightGray;
+      border-radius: 5px;
+      margin-right: 1rem;
+      cursor: pointer;
+
+      @include flexCenter;
+    }
+  }
+
+  .btn--cart {
+    min-width: max-content;
+
+    @include mQ(700px) {
+      font-size: 1.2rem;
+    }
+  }
+
+  @include mQ(700px) {
+    padding: 1rem 2rem;
+    flex-direction: column;
+
+    .product-details {
+      margin-left: 0;
+      text-align: center;
+    }
+
+    .btn--cart {
+      margin-top: 1rem;
+      width: 100%;
+      @include flexCenter;
+    }
+    .details-wrapper {
+      flex-wrap: wrap;
+      & > div {
+        width: 100%;
+        @include flexCenter;
+        flex-direction: column;
+      }
+    }
+    position: relative;
+    .btn--trash {
+      position: absolute;
+      top: 1.5rem;
+      right: 2rem;
+    }
+  }
+}
