@@ -186,11 +186,7 @@ const Search = ({
     router.push(
       `/products?name=${name === undefined ? "" : name}&category=${id}&brand=${
         brand === undefined ? "" : brand
-      }&subCategory=${
-        subCategory === undefined || id === "" ? "" : subCategory
-      }&ratingsAverage=${
-        ratingsAverage === undefined ? "" : ratingsAverage
-      }&sort=${sort === undefined ? "" : sort}`
+      }&limit=20&sort=${sort === undefined ? "" : sort}`
     );
   };
   const changeSubCategory = (id) => {
@@ -199,9 +195,7 @@ const Search = ({
         category === undefined ? "" : category
       }&brand=${
         brand === undefined ? "" : brand
-      }&subCategory=${id}&ratingsAverage=${
-        ratingsAverage === undefined ? "" : ratingsAverage
-      }&sort=${sort === undefined ? "" : sort}`
+      }&subCategory=${id}&limit=20&sort=${sort === undefined ? "" : sort}`
     );
   };
   const changeBrand = (id) => {
@@ -210,9 +204,7 @@ const Search = ({
         category === undefined ? "" : category
       }&subCategory=${
         subCategory === undefined ? "" : subCategory
-      }&brand=${id}&ratingsAverage=${
-        ratingsAverage === undefined ? "" : ratingsAverage
-      }&sort=${sort === undefined ? "" : sort}`
+      }&brand=${id}&limit=20&sort=${sort === undefined ? "" : sort}`
     );
   };
   const changeRating = (rating) => {
@@ -221,7 +213,9 @@ const Search = ({
         category === undefined ? "" : category
       }&subCategory=${subCategory === undefined ? "" : subCategory}&brand=${
         brand === undefined ? "" : brand
-      }&ratingsAverage=${rating}&sort=${sort === undefined ? "" : sort}`
+      }&limit=20&ratingsAverage=${rating}&sort=${
+        sort === undefined ? "" : sort
+      }`
     );
   };
   const changePrice = (range) => {
@@ -230,9 +224,7 @@ const Search = ({
         category === undefined ? "" : category
       }&subCategory=${subCategory === undefined ? "" : subCategory}&brand=${
         brand === undefined ? "" : brand
-      }&ratingsAverage=${
-        ratingsAverage === undefined ? "" : ratingsAverage
-      }&minPrice=${range[0]}&maxPrice=${range[1]}&sort=${
+      }&limit=20&minPrice=${range[0]}&maxPrice=${range[1]}&sort=${
         sort === undefined ? "" : sort
       }`
     );
@@ -244,9 +236,7 @@ const Search = ({
         category === undefined ? "" : category
       }&subCategory=${subCategory === undefined ? "" : subCategory}&brand=${
         brand === undefined ? "" : brand
-      }&limit=${e.target.value}&ratingsAverage=${
-        ratingsAverage === undefined ? "" : ratingsAverage
-      }&sort=${sort === undefined ? "" : sort}`
+      }&limit=${e.target.value}&sort=${sort === undefined ? "" : sort}`
     );
   };
 
@@ -258,8 +248,6 @@ const Search = ({
         brand === undefined ? "" : brand
       }&limit=${limit === undefined ? "" : limit}&page=${
         page === undefined ? "" : page
-      }&ratingsAverage=${
-        ratingsAverage === undefined ? "" : ratingsAverage
       }&sort=${e.target.value}`
     );
   };
@@ -272,8 +260,6 @@ const Search = ({
         brand === undefined ? "" : brand
       }&limit=${limit === undefined ? "" : limit}&page=${
         data.selected + 1
-      }&ratingsAverage=${
-        ratingsAverage === undefined ? "" : ratingsAverage
       }&sort=${sort === undefined ? "" : sort}`
     );
   };
