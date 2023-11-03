@@ -84,8 +84,8 @@ const Cart = () => {
         window.open(url);
       })
       .catch((error) => {
-        console.log(error);
-        toast.error("Checkout failed");
+        console.log(error?.response?.data?.message);
+        toast.error(error?.response?.data?.message);
       });
   };
 
