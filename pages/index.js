@@ -72,6 +72,7 @@ const Home = ({
         className="top-swiper"
         spaceBetween={10}
         slidesPerView={1}
+        autoplay={{ delay: 3000 }}
       >
         {products.map((item) => (
           <SwiperSlide key={item.id}>
