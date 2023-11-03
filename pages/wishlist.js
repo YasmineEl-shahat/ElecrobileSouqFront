@@ -62,11 +62,11 @@ const Wishlist = () => {
             setLoading(false);
           })
           .catch((error) => {
-            console.log(error);
+            toast.error(error?.response?.data?.message);
           });
       })
       .catch((error) => {
-        console.log(error);
+        toast.error(error?.response?.data?.message);
       });
   };
   const handleDelete = (id) => {
@@ -77,8 +77,7 @@ const Wishlist = () => {
     deleteWishListItem(id)
       .then(() => toast.success("item deleted successfully"))
       .catch((error) => {
-        console.log(error);
-        toast.error("failed to delete item");
+        toast.error(error?.response?.data?.message);
       });
   };
 
@@ -102,8 +101,7 @@ const Wishlist = () => {
       .then(() => dispatch(getCartThunk()))
       .then(() => dispatch(calculateTotal()))
       .catch((error) => {
-        console.log(error);
-        toast.error("Failed to add item to cart");
+        toast.error(error?.response?.data?.message);
       });
   };
 

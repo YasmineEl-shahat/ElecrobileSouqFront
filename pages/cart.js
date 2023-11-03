@@ -41,9 +41,7 @@ const Cart = () => {
       .then(() => {
         dispatch(calculateTotal());
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   };
 
   const increaseQuantity = (id, quantity, variant_quantity) => {
@@ -51,8 +49,7 @@ const Cart = () => {
       dispatch(updateCartItemThunk({ id, quantity: quantity + 1 }))
         .then(() => dispatch(calculateTotal()))
         .catch((error) => {
-          console.log(error);
-          toast.error("failed to increase");
+          toast.error(error?.response?.data?.message);
         });
   };
   const decreaseQuantity = (id, quantity) => {
@@ -60,8 +57,7 @@ const Cart = () => {
       dispatch(updateCartItemThunk({ id, quantity: quantity - 1 }))
         .then(() => dispatch(calculateTotal()))
         .catch((error) => {
-          console.log(error);
-          toast.error("failed to decrease");
+          toast.error(error?.response?.data?.message);
         });
   };
 
@@ -70,8 +66,7 @@ const Cart = () => {
       .then(() => toast.success("item deleted successfully"))
       .then(() => dispatch(calculateTotal()))
       .catch((error) => {
-        console.log(error);
-        toast.error("failed to delete item");
+        toast.error(error?.response?.data?.message);
       });
   };
 
@@ -84,7 +79,6 @@ const Cart = () => {
         window.open(url);
       })
       .catch((error) => {
-        console.log(error?.response?.data?.message);
         toast.error(error?.response?.data?.message);
       });
   };

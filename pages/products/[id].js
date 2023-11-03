@@ -188,9 +188,7 @@ const Product = ({
           )
         );
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
 
     // images
     setSelectedImg(image_url + variant.imageCover);
@@ -246,8 +244,7 @@ const Product = ({
           toast.success("added to wishlist successfully");
         })
         .catch((error) => {
-          console.log(error);
-          toast.error("failed to add to wishlist");
+          toast.error(error?.response?.data?.message);
         });
   };
   const addToCart = () => {
@@ -265,8 +262,7 @@ const Product = ({
           toast.success("added to cart successfully");
         })
         .catch((error) => {
-          console.log(error);
-          toast.error("failed to add to cart");
+          toast.error(error?.response?.data?.message);
         });
   };
   const bidHandler = () => {
@@ -295,8 +291,7 @@ const Product = ({
         ]);
       })
       .catch((error) => {
-        console.log(error);
-        toast.error("failed to add review");
+        toast.error(error?.response?.data?.message);
       });
   };
 
@@ -320,9 +315,7 @@ const Product = ({
         });
       })
       .catch((error) => {
-        console.log(error);
         setBidError(error?.response?.data?.message);
-        toast.error("failed to bid");
       });
   };
   const inCart = (variant_id) => {
@@ -340,9 +333,7 @@ const Product = ({
             )
           );
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch((error) => {});
       getMyWishList()
         .then((res) => {
           setWishList(res?.data?.data?.favorites);
@@ -352,9 +343,7 @@ const Product = ({
             )
           );
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch((error) => {});
     }
     let interval;
     if (endTimeProp) {
