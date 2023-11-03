@@ -8,6 +8,7 @@
     border-radius: 6px;
   }
   .top-product-container {
+    padding: 5rem 0;
     background: var(
       --pale_gradient_green,
       linear-gradient(182deg, #f2fff7 0%, #c3f4ff 100%)
@@ -16,11 +17,11 @@
     @include flexCenter;
     .top-product-name {
       text-transform: uppercase;
-      font-size: 5rem;
+      font-size: 3.5rem;
       color: $darkGray;
       margin-right: 2rem;
       @include mQ(678px) {
-        font-size: 3rem;
+        font-size: $HeadFont;
       }
     }
     .btn--cart {
