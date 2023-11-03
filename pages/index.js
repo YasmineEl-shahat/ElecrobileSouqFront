@@ -78,7 +78,8 @@ const Home = ({
             <div className="top-product-container pt-5 ">
               <section className="d-flex flex-column justify-content-center">
                 <p className="top-product-name">
-                  {item.name} <br />
+                  {item?.name.substring(0, 20)}
+                  {item?.name?.length > 20 && "..."} <br />
                   coming soon
                 </p>
 

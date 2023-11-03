@@ -38,7 +38,8 @@ const ProductCard = ({ product, isBigDeal, isBidding }) => {
             {product?.subCategory?.category?.name}
           </p>
           <p className={`product-name ${isBidding && "mb-0"}`}>
-            {product?.name}
+            {product?.name.substring(0, 20)}
+            {product?.name?.length > 20 && "..."}
           </p>
           {isBidding && (
             <div className="d-flex justify-content-end mb-2">

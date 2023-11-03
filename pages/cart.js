@@ -125,7 +125,11 @@ const Cart = () => {
                             href={`/products/${item?.variant?.product?._id}`}
                             passHref
                           >
-                            <h2>{item?.variant?.product?.name}</h2>
+                            <h2>
+                              {item?.variant?.product?.name.substring(0, 20)}
+                              {item?.variant?.product?.name?.length > 20 &&
+                                "..."}
+                            </h2>
                           </Link>
                           <h6>color: {item?.variant?.color}</h6>
                         </section>

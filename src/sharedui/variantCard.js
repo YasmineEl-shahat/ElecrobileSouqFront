@@ -35,7 +35,10 @@ const VariantCard = ({ product, variant }) => {
           <p className="product-category">
             {product?.subCategory?.category?.name}
           </p>
-          <p className="product-name">{product?.name}</p>
+          <p className="product-name">
+            {product?.name.substring(0, 20)}
+            {product?.name?.length > 20 && "..."}
+          </p>
           {/* eslint-disable */}
           <img src={image_url + variant?.imageCover} alt={product?.name} />
           <div className="d-flex justify-content-between align-items-center">

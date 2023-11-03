@@ -142,7 +142,10 @@ const Wishlist = () => {
                         <span> {item?.product?.subCategory?.name}</span>
                       </h6>
                       <Link href={`/products/${item?.product?._id}`} passHref>
-                        <h2 className="mb-3">{item?.product?.name}</h2>
+                        <h2 className="mb-3">
+                          {item?.product?.name.substring(0, 20)}
+                          {item?.product?.name?.length > 20 && "..."}
+                        </h2>
                       </Link>
 
                       <article className="d-flex align-items-center">
