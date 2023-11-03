@@ -11,6 +11,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
+import "swiper/css/autoplay";
 
 import {
   getProducts,
@@ -72,11 +73,11 @@ const Home = ({
         className="top-swiper"
         spaceBetween={10}
         slidesPerView={1}
-        autoplay={{ delay: 3000 }}
+        autoplay={{ delay: 300 }}
       >
         {products.map((item) => (
           <SwiperSlide key={item.id}>
-            <div className="top-product-container pt-5 ">
+            <div className="top-product-container">
               <section className="d-flex flex-column justify-content-center">
                 <p className="top-product-name">
                   {item?.name.substring(0, 20)}
