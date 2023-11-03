@@ -552,7 +552,7 @@ const Product = ({
                 )}
               </div>
 
-              {!isInCart && (
+              {!isInCart && !endTime && (
                 <section className="quantity-container my-4">
                   <button
                     onClick={() => decreaseQuantity()}
@@ -569,14 +569,15 @@ const Product = ({
                   </button>
                 </section>
               )}
-
-              <button
-                className="btn--cart"
-                onClick={addToCart}
-                disabled={isInCart}
-              >
-                {isInCart ? "In Cart" : "Add to Cart"} <CartIcon />
-              </button>
+              {!endTime && (
+                <button
+                  className="btn--cart"
+                  onClick={addToCart}
+                  disabled={isInCart}
+                >
+                  {isInCart ? "In Cart" : "Add to Cart"} <CartIcon />
+                </button>
+              )}
 
               {endTime && (
                 <>
